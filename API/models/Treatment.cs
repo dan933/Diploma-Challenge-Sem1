@@ -3,9 +3,9 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace API.models
 {
-    public class Pet
+    public class Treatment
     {
-        public Pet(){
+        public Treatment(){
 
         }
 
@@ -13,6 +13,10 @@ namespace API.models
 
         public string? PetName { get; set; }
 
-        public string? Type { get; set; }
+        public int ProcedureID { get; set; }
+
+        public DateTime Date { get; set; }
+        public string? Notes { get; set; }
+        public Decimal Payment { get; set; }
     }
 }

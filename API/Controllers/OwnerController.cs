@@ -96,4 +96,62 @@ public class OwnerController : ControllerBase
         return Ok(pets);
 
     }
+
+    [HttpGet]
+    [Route("{ownerID:int}/view-treatments")]
+    public async Task<ActionResult<List<Treatment>>> ViewTreatments()
+    {
+
+        var ownerID = Convert.ToInt32(RouteData.Values["ownerID"]);
+
+        var treatments = await _context.Treatment
+        .Where(treatment => treatment.OwnerId == ownerID)
+        .ToListAsync();
+
+        return Ok(treatments);
+
+    }
+
+
+    [HttpGet]
+    [Route("{ownerID:int}/view-procedures")]
+    public async Task<ActionResult<List<ProcedureView>>> ViewProcedures()
+    {
+        var ownerID = Convert.ToInt32(RouteData.Values["ownerID"]);
+
+        var procedures =
+        await _context.view_procedure
+        .Where(procedure => procedure.OwnerId == ownerID)
+        .ToListAsync();
+
+        return Ok(procedures);
+    }
+
+    [HttpPut]
+    [Route("{ownerID:int}/update-details")]
+    public async Task<ActionResult<Response<Owner?>>> UpdateOwnerDetails([FromBody] OwnerRequest ownerRequest){
+        var ownerID = Convert.ToInt32(RouteData.Values["ownerID"]);
+
+        var owner =
+        await _context.Owner
+        .FindAsync(ownerID);
+
+        Response<Owner?> resposne;
+
+        if(owner == null){
+            resposne = new Response<Owner?>(null, false, $"OwnerID: {ownerID} does not exist.");
+            return StatusCode(409, resposne);
+        }
+
+        owner.Firstname = ownerRequest.Firstname;
+        owner.Surname = ownerRequest.Surname;
+        owner.Phone = ownerRequest.Phone;
+
+        await _context.SaveChangesAsync();
+
+        resposne = new Response<Owner?>(owner, true, "Owner Updated successfully.");
+
+        return Ok(resposne);
+
+    }
 }

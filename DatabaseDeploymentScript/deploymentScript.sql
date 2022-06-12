@@ -1,5 +1,6 @@
 USE DiplomaChallengeSem1;
 
+DROP VIEW IF EXISTS view_PROCEDURE;
 DROP TABLE IF EXISTS ProcedureSelection;
 DROP TABLE IF EXISTS TREATMENT;
 DROP TABLE IF EXISTS PETSelection;
@@ -50,6 +51,16 @@ CREATE TABLE TREATMENT
 );
 
 GO
+
+
+CREATE VIEW view_PROCEDURE AS 
+SELECT t.OwnerID,t.PetName,t.[Date], p.[Description], p.Price
+FROM TREATMENT AS T
+INNER JOIN [PROCEDURE] AS P ON T.ProcedureID = P.ProcedureID;
+
+GO
+
+
 
 INSERT INTO [OWNER] (OwnerID,Surname,Firstname,Phone )
 VALUES
