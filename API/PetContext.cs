@@ -17,5 +17,11 @@ public class PetContext: DbContext {
         options.UseSqlServer(Configuration.GetConnectionString("DB"));
     }
 
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+       modelBuilder.Entity<Owner>()
+        .HasKey(p => new { p.OwnerId });
+    }
+
     public virtual DbSet<Owner> Owner { get; set; } = null!;
 }

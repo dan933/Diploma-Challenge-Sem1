@@ -1,5 +1,5 @@
 using System.ComponentModel.DataAnnotations;
-
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace API.models
 {
@@ -7,6 +7,16 @@ namespace API.models
     {
         public Owner(){
 
+        }
+
+        public Owner(
+            int ownerId, string? surname,
+            string? firstName, string? phone)
+        {
+            OwnerId = ownerId;
+            Surname = surname;
+            Firstname = firstName;
+            Phone = phone;
         }
 
         public int OwnerId { get; set; }

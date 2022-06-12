@@ -14,15 +14,37 @@ public class OwnerController : ControllerBase
         _context = context;
     }
 
-    [HttpGet]
-    [Route("get-all")]
-    public async Task<ActionResult<List<Owner>>> getOwners()
+    [HttpPost]
+    [Route("Create")]
+    public async Task<ActionResult<Response<Owner?>>> CreateOwner([FromBody] OwnerRequest ownerRequest)
     {
         try
         {
-            List<Owner> Owners = await _context.Owner.ToListAsync();
+            //gets the largest ID in the DB
+            var lastID = await _context.Owner
+            .OrderByDescending(owner => owner.OwnerId)
+            .Select(owner => owner.OwnerId)
+            .FirstAsync();
 
-            return Ok(Owners);
+            int ownerID = 0;
+
+            if(lastID <= 0){
+                ownerID = 1;
+            }else{
+                ownerID += lastID + 1;
+            }
+
+            var newOwner = new Owner(
+                ownerID, ownerRequest.Surname,
+                ownerRequest.Firstname, ownerRequest.Phone);
+
+            
+
+            await _context.Owner.AddAsync(newOwner);
+            await _context.SaveChangesAsync();
+
+            var response = new Response<Owner>(newOwner, true, "Owner successfully created");
+            return Ok();
         }
         catch (System.Exception)
         {
