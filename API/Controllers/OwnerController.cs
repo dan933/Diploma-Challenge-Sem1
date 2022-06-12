@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 namespace API.Controllers;
 
 [ApiController]
-[Route("api/Owner")]
+[Route("api/owner")]
 public class OwnerController : ControllerBase
 {
     private readonly PetContext _context;
@@ -16,7 +16,7 @@ public class OwnerController : ControllerBase
     }
 
     [HttpPost]
-    [Route("Create")]
+    [Route("create")]
     public async Task<ActionResult<Response<Owner?>>> CreateOwner([FromBody] OwnerRequest ownerRequest)
     {
         try
