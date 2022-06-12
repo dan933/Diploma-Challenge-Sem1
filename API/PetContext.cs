@@ -26,7 +26,7 @@ public class PetContext: DbContext {
         .HasKey(p => new { p.OwnerId, p.PetName });
 
         modelBuilder.Entity<Treatment>()
-        .HasNoKey();
+        .HasKey(t => new { t.OwnerId, t.PetName, t.ProcedureID, t.Date });
 
         modelBuilder.Entity<ProcedureView>()
         .HasNoKey();

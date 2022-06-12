@@ -19,8 +19,7 @@ public class StaffController : ControllerBase
     [Route("create-accounts")]
     public async Task<ActionResult<Response<Owner?>>> CreateOwners([FromBody] List<OwnerRequest> ownerRequests)
     {
-        // try
-        // {
+
         var trimmedOwnerReq = new List<OwnerRequest>();
 
         //remove trailing white space
@@ -89,5 +88,38 @@ public class StaffController : ControllerBase
 
         return Ok(trimmedOwnerReq);
 
+    }
+
+    [HttpPost]
+    [Route("create-treatment")]
+    public async Task<ActionResult<Response<Treatment?>>> CreateTreatment([FromBody] Treatment treatmentReq)
+    {
+        var isPet = await _context.Pet
+        .Where(p => p.OwnerId == treatmentReq.OwnerId)
+        .Where(p => p.PetName == treatmentReq.PetName)
+        .FirstOrDefaultAsync();
+
+        Response<Treatment?> response;
+
+        if (isPet == null){
+            response = new Response<Treatment?>(null, false, "Pet and/or owner do not exist");
+            return StatusCode(409, response);
+        }
+
+        var isProcedure = await _context.view_procedure
+        .Where(p => p.ProcedureID == treatmentReq.ProcedureID)
+        .FirstOrDefaultAsync();
+
+        if(isProcedure == null){
+            response = new Response<Treatment?>(null, false, "Procedure does not exist");
+            return StatusCode(409, response);
+        }
+
+        await _context.AddAsync(treatmentReq);
+        await _context.SaveChangesAsync();
+
+        response = new Response<Treatment?>(treatmentReq, true, "Treatment has been added");
+
+        return Ok(response);
     }
 }

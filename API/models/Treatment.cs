@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace API.models
 {
@@ -9,14 +10,39 @@ namespace API.models
 
         }
 
+        public Treatment(
+            int OwnerId,
+            string? PetName,
+            int ProcedureID,
+            DateTime Date,
+            string? Notes,
+            Decimal Payment
+        )
+        {
+            this.OwnerId = OwnerId;
+            this.PetName = PetName;
+            this.ProcedureID = ProcedureID;
+            this.Date = Date;
+            this.Notes = Notes;
+            this.Payment = Payment;
+        }
+
+        [JsonPropertyName("OwnerId")]
         public int OwnerId { get; set; }
 
+        [JsonPropertyName("PetName")]
         public string? PetName { get; set; }
-
+        
+        [JsonPropertyName("ProcedureID")]
         public int ProcedureID { get; set; }
-
+        
+        [JsonPropertyName("Date")]
         public DateTime Date { get; set; }
+
+        [JsonPropertyName("Notes")]
         public string? Notes { get; set; }
+
+        [JsonPropertyName("Payment")]
         public Decimal Payment { get; set; }
     }
 }

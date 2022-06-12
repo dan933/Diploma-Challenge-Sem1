@@ -48,13 +48,15 @@ CREATE TABLE TREATMENT
     Notes NVARCHAR(300),
     Payment MONEY
     Constraint FK_PET FOREIGN Key (OwnerID, PetName) REFERENCES PET
+    Constraint PK_Treatment Primary Key (OwnerId, PetName, ProcedureID, [Date])
+
 );
 
 GO
 
 
 CREATE VIEW view_PROCEDURE AS 
-SELECT t.OwnerID,t.PetName,t.[Date], p.[Description], p.Price
+SELECT t.OwnerID,t.PetName,t.[Date],p.ProcedureID, p.[Description], p.Price
 FROM TREATMENT AS T
 INNER JOIN [PROCEDURE] AS P ON T.ProcedureID = P.ProcedureID;
 
