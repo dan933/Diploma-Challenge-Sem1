@@ -21,7 +21,11 @@ public class PetContext: DbContext {
     {
        modelBuilder.Entity<Owner>()
         .HasKey(p => new { p.OwnerId });
+
+        modelBuilder.Entity<Pet>()
+        .HasKey(p => new { p.OwnerId, p.PetName });
     }
 
     public virtual DbSet<Owner> Owner { get; set; } = null!;
+    public virtual DbSet<Pet> Pet { get; set; } = null!;
 }

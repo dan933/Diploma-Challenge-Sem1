@@ -10,7 +10,8 @@ public class OwnerController : ControllerBase
 {
     private readonly PetContext _context;
 
-    public OwnerController(PetContext context){
+    public OwnerController(PetContext context)
+    {
         _context = context;
     }
 
@@ -20,36 +21,79 @@ public class OwnerController : ControllerBase
     {
         try
         {
+            //remove trailing white space
+            ownerRequest.Firstname = ownerRequest.Firstname?.Trim();
+            ownerRequest.Surname = ownerRequest.Surname?.Trim();
+            ownerRequest.Phone = ownerRequest.Phone?.Trim();
+
+
+            //check to see if owner already exists with the same phone number
+            var isOwner = await _context.Owner
+            .Where(owner => owner.Phone == ownerRequest.Phone)
+            .FirstOrDefaultAsync();
+
+            Response<Owner?> response;
+
+            // Owner already exists
+            if (isOwner?.OwnerId != null)
+            {
+                response = new Response<Owner?>(isOwner, false, "Owner with this phone number already exists");
+                return StatusCode(409, response);
+            }
+
+
             //gets the largest ID in the DB
             var lastID = await _context.Owner
             .OrderByDescending(owner => owner.OwnerId)
             .Select(owner => owner.OwnerId)
-            .FirstAsync();
+            .FirstOrDefaultAsync();
 
             int ownerID = 0;
 
-            if(lastID <= 0){
+            if (lastID <= 0)
+            {
                 ownerID = 1;
-            }else{
+            }
+            else
+            {
+                //Increases ID by one                
                 ownerID += lastID + 1;
             }
 
-            var newOwner = new Owner(
+            var newOwner =
+            new Owner
+            (
                 ownerID, ownerRequest.Surname,
-                ownerRequest.Firstname, ownerRequest.Phone);
+                ownerRequest.Firstname, ownerRequest.Phone
+            );
 
-            
+
 
             await _context.Owner.AddAsync(newOwner);
             await _context.SaveChangesAsync();
 
-            var response = new Response<Owner>(newOwner, true, "Owner successfully created");
-            return Ok();
+            response = new Response<Owner?>(newOwner, true, "Owner successfully created");
+            return Ok(response);
         }
         catch (System.Exception)
         {
-            
+
             throw;
         }
+    }
+
+    [HttpGet]
+    [Route("{ownerID:int}/view-pets")]
+    public async Task<ActionResult<List<Pet>>> ViewPets(){
+
+        var ownerID = Convert.ToInt32(RouteData.Values["ownerID"]);
+
+        var pets =
+        await _context.Pet
+        .Where(pet => pet.OwnerId == ownerID)
+        .ToListAsync();
+
+        return Ok(pets);
+
     }
 }
