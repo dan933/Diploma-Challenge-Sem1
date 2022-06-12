@@ -122,4 +122,45 @@ public class StaffController : ControllerBase
 
         return Ok(response);
     }
+
+
+    [HttpPut]
+    [Route("{treatmentID:int}/treatment-paid")]
+    public async Task<ActionResult<Response<Treatment?>>> TreatmentPaid(){
+
+        Response<Treatment?> response;
+
+        var treatmentID = Convert.ToInt32(RouteData.Values["treatmentID"]);
+
+        var treatment = await _context.Treatment
+        .Where(t => t.ID == treatmentID)
+        .FirstOrDefaultAsync();
+
+
+        if (treatment == null){
+
+            response = new Response<Treatment?>(null, false, "Treatment not found");
+            return response;
+        }
+
+        var procedure = await _context.view_procedure
+        .Where(p => p.ProcedureID == treatment!.ProcedureID)
+        .FirstOrDefaultAsync();
+        
+
+        if(treatment!.Payment == procedure!.Price){
+            response = new Response<Treatment?>(treatment, false, "Treatment has already been paid for.");
+            return response;
+
+        }else{
+            var difference = procedure.Price - treatment.Payment;
+
+            treatment.Payment = treatment.Payment + difference;
+
+            await _context.SaveChangesAsync();
+        }
+
+        response = new Response<Treatment?>(treatment, true, "Treatment has been marked as paid");
+        return response;
+    }
 }

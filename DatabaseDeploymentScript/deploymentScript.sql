@@ -41,6 +41,7 @@ GO
 
 CREATE TABLE TREATMENT
 (
+    ID INT IDENTITY(1,1) PRIMARY KEY,
     OwnerID INT,
     PetName NVARCHAR(300),
     ProcedureID INT FOREIGN key REFERENCES [PROCEDURE],
@@ -48,8 +49,6 @@ CREATE TABLE TREATMENT
     Notes NVARCHAR(300),
     Payment MONEY
     Constraint FK_PET FOREIGN Key (OwnerID, PetName) REFERENCES PET
-    Constraint PK_Treatment Primary Key (OwnerId, PetName, ProcedureID, [Date])
-
 );
 
 GO

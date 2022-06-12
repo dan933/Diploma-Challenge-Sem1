@@ -27,6 +27,10 @@ namespace API.models
             this.Payment = Payment;
         }
 
+        [Key]
+        [JsonPropertyName("ID")]
+        public int ID { get; set; }
+
         [JsonPropertyName("OwnerId")]
         public int OwnerId { get; set; }
 
