@@ -19,6 +19,9 @@ namespace API.models
             Phone = phone;
         }
 
+
+        public int ID { get; set; }
+        
         public int OwnerId { get; set; }
 
         public string? Surname { get; set; }

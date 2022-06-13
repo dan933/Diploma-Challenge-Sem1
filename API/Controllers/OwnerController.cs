@@ -84,6 +84,7 @@ public class OwnerController : ControllerBase
     }
 
     [HttpGet]
+    // [Authorize("read:user")]
     [Authorize]
     [Route("{ownerID:int}/view-pets")]
     public async Task<ActionResult<List<Pet>>> ViewPets(){

@@ -11,10 +11,12 @@ DROP TABLE IF EXISTS [Owner];
 GO
 
 CREATE TABLE [OWNER]
-(
-    OwnerId INT PRIMARY KEY,
+(   
+    ID INT IDENTITY(1,1) PRIMARY Key,
+    OwnerId INT,
     Surname NVARCHAR(300) NOT NULL,
     Firstname NVARCHAR(300) NOT NULL,
+    Email NVARCHAR(300),
     Phone NVARCHAR(300) NOT NULL
 );
 

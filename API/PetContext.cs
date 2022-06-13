@@ -20,7 +20,7 @@ public class PetContext: DbContext {
         protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
        modelBuilder.Entity<Owner>()
-        .HasKey(o => new { o.OwnerId });
+        .HasKey(o => new { o.ID });
 
         modelBuilder.Entity<Pet>()
         .HasKey(p => new { p.OwnerId, p.PetName });
