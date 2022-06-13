@@ -1,8 +1,10 @@
+using System.Text.RegularExpressions;
 using API.models;
 using Auth0.ManagementApi;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json.Linq;
 using RestSharp;
 
 namespace API.Controllers;
@@ -46,10 +48,17 @@ public class OwnerController : ControllerBase
             request.AddParameter("application/json", "{\"client_id\":\"L6nnmAddJrNPKicBm97WFD8I6flvCgiy\",\"client_secret\":\"2xA-2uwAJ7Iye8yV1OZIg_jBTK0MKJtLyo-BNV6FPI_KD3QaemxHGYJViRnKCVvD\",\"audience\":\"https://dev-tt6-hw09.us.auth0.com/api/v2/\",\"grant_type\":\"client_credentials\"}", ParameterType.RequestBody);
             RestResponse tokenResponse = client.Execute(request);
 
-            //create a user
+            //get management token
+            dynamic token = JObject.Parse(tokenResponse.Content)["access_token"].ToString();
 
+            var clientManagement = new ManagementApiClient(token, new Uri("https://YOUR_AUTH0_DOMAIN/api/v2"));
 
-            return Ok(tokenResponse.Content);            
+            await clientManagement
+            .Users
+            .CreateAsync()
+
+            return Ok(await clientManagement.Connections.GetAsync("auth0"));
+                     
         }
         catch (System.Exception)
         {
