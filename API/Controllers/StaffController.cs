@@ -1,6 +1,7 @@
 using API.models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using RestSharp;
 
 namespace API.Controllers;
 
@@ -13,6 +14,19 @@ public class StaffController : ControllerBase
     public StaffController(PetContext context)
     {
         _context = context;
+    }
+
+    [HttpGet]
+    [Route("get-token")]
+    public async Task<ActionResult<Response<string?>>>GetToken(){
+        
+        var client = new RestClient("https://dev-tt6-hw09.us.auth0.com");
+        var request = new RestRequest("/oauth/token",Method.Post);
+        request.AddHeader("content-type", "application/json");
+        request.AddParameter("application/json", "{\"client_id\":\"taBuUExBpBMEMagUBgo0omd9W8kli7eC\",\"client_secret\":\"dk3zpnzWxeDfdVlmUOs4Wgl3dcw4fCjG6EiO0tmCcjsoWBhRs5nDPkHponp_A-s7\",\"audience\":\"https://diploma-challenge-sem-1.com.au\",\"grant_type\":\"client_credentials\"}", ParameterType.RequestBody);
+        RestResponse response = client.Execute(request);
+
+        return Ok(response);
     }
 
     [HttpPost]

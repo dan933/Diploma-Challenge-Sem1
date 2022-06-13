@@ -1,4 +1,5 @@
 using API.models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -83,6 +84,7 @@ public class OwnerController : ControllerBase
     }
 
     [HttpGet]
+    [Authorize]
     [Route("{ownerID:int}/view-pets")]
     public async Task<ActionResult<List<Pet>>> ViewPets(){
 
