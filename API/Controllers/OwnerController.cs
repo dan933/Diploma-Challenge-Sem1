@@ -1,6 +1,7 @@
 using System.Text.RegularExpressions;
 using API.models;
 using Auth0.ManagementApi;
+using Auth0.ManagementApi.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -51,13 +52,21 @@ public class OwnerController : ControllerBase
             //get management token
             dynamic token = JObject.Parse(tokenResponse.Content)["access_token"].ToString();
 
-            var clientManagement = new ManagementApiClient(token, new Uri("https://YOUR_AUTH0_DOMAIN/api/v2"));
+            var clientManagement = new ManagementApiClient(token, new Uri("https://dev-tt6-hw09.us.auth0.com/api/v2"));
 
-            await clientManagement
+            var newUser = new UserCreateRequest();
+            newUser.Connection = "Username-Password-Authentication";
+            newUser.Email = "test@woo.com";            
+            newUser.Password = "Daniel_128;";
+            newUser.FirstName = "Daniel";
+            newUser.LastName = "Albert";
+
+
+            var resp = await clientManagement
             .Users
-            .CreateAsync()
+            .CreateAsync(newUser);
 
-            return Ok(await clientManagement.Connections.GetAsync("auth0"));
+            return Ok(resp);
                      
         }
         catch (System.Exception)
