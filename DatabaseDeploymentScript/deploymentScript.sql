@@ -65,11 +65,11 @@ GO
 
 
 
-INSERT INTO [OWNER] (OwnerID,Surname,Firstname,Phone )
+INSERT INTO [OWNER] (OwnerID,Surname,Firstname,Phone, email )
 VALUES
-    ('1', 'Sinatra', 'Frank', '400111222 '),
-    ('2', 'Ellington', 'Duke', '400222333 '),
-    ('3', 'Fitzgerald', 'Ella', '400333444 ');
+    ('1', 'Sinatra', 'Frank', '400111222','Sinatra@example.com' ),
+    ('2', 'Ellington', 'Duke', '400222333','Ellington@example.com'),
+    ('3', 'Fitzgerald', 'Ella', '400333444','Fitzgerald@example.com');
 
 GO
 INSERT INTO [dbo].[PROCEDURE]
