@@ -16,6 +16,9 @@ public class StaffController : ControllerBase
         _context = context;
     }
 
+
+    //todo login to get token 
+    //or rethink how this works
     [HttpGet]
     [Route("get-token")]
     public async Task<ActionResult<Response<string?>>>GetToken(){
@@ -105,6 +108,8 @@ public class StaffController : ControllerBase
 
     }
 
+    //todo auth header
+    //todo roles for admin
     [HttpPost]
     [Route("create-treatment")]
     public async Task<ActionResult<Response<Treatment?>>> CreateTreatment([FromBody] Treatment treatmentReq)
@@ -138,7 +143,8 @@ public class StaffController : ControllerBase
         return Ok(response);
     }
 
-
+    //todo auth header
+    //todo role admin scope
     [HttpPut]
     [Route("{treatmentID:int}/treatment-paid")]
     public async Task<ActionResult<Response<Treatment?>>> TreatmentPaid(){
@@ -178,4 +184,12 @@ public class StaffController : ControllerBase
         response = new Response<Treatment?>(treatment, true, "Treatment has been marked as paid");
         return response;
     }
+
+
+
+    //todo create new procedures
+    //todo  auth header
+    //todo role admin scope
+
+    //todo CICD pipeline with github and azure
 }

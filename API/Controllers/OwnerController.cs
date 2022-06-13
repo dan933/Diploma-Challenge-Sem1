@@ -46,6 +46,8 @@ public class OwnerController : ControllerBase
             var client = new RestClient("https://dev-tt6-hw09.us.auth0.com");
             var request = new RestRequest("/oauth/token", Method.Post);
             request.AddHeader("content-type", "application/json");
+
+            //todo clean up parameters
             request.AddParameter("application/json", "{\"client_id\":\"L6nnmAddJrNPKicBm97WFD8I6flvCgiy\",\"client_secret\":\"2xA-2uwAJ7Iye8yV1OZIg_jBTK0MKJtLyo-BNV6FPI_KD3QaemxHGYJViRnKCVvD\",\"audience\":\"https://dev-tt6-hw09.us.auth0.com/api/v2/\",\"grant_type\":\"client_credentials\"}", ParameterType.RequestBody);
             RestResponse tokenResponse = client.Execute(request);
 
@@ -61,10 +63,11 @@ public class OwnerController : ControllerBase
             newUser.FirstName = "Daniel";
             newUser.LastName = "Albert";
 
-
             var resp = await clientManagement
             .Users
             .CreateAsync(newUser);
+
+            //todo create user in the sql server database
 
             return Ok(resp);
                      
@@ -93,6 +96,9 @@ public class OwnerController : ControllerBase
 
     }
 
+    //todo login endpoint that gives owner a token
+
+    //todo authorisation header
     [HttpGet]
     [Route("{ownerID:int}/view-treatments")]
     public async Task<ActionResult<List<Treatment>>> ViewTreatments()
@@ -109,6 +115,7 @@ public class OwnerController : ControllerBase
     }
 
 
+    //todo authorisation header
     [HttpGet]
     [Route("{ownerID:int}/view-procedures")]
     public async Task<ActionResult<List<ProcedureView>>> ViewProcedures()
@@ -123,10 +130,13 @@ public class OwnerController : ControllerBase
         return Ok(procedures);
     }
 
+    //todo authorisation header
     [HttpPut]
     [Route("{ownerID:int}/update-details")]
     public async Task<ActionResult<Response<Owner?>>> UpdateOwnerDetails([FromBody] OwnerRequest ownerRequest){
         var ownerID = Convert.ToInt32(RouteData.Values["ownerID"]);
+
+        //todo get user information from auth header
 
         var owner =
         await _context.Owner
@@ -145,6 +155,8 @@ public class OwnerController : ControllerBase
         owner.Email = ownerRequest.Email;
 
         await _context.SaveChangesAsync();
+
+        //todo auth0 details also need to be updated
 
         resposne = new Response<Owner?>(owner, true, "Owner Updated successfully.");
 
