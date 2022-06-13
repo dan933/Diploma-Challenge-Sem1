@@ -1,7 +1,9 @@
 using API.models;
+using Auth0.ManagementApi;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using RestSharp;
 
 namespace API.Controllers;
 
@@ -17,64 +19,37 @@ public class OwnerController : ControllerBase
     }
 
     [HttpPost]
-    [Route("create")]
-    public async Task<ActionResult<Response<Owner?>>> CreateOwner([FromBody] OwnerRequest ownerRequest)
+    [Route("sign-up")]
+    public async Task<ActionResult<Response<Owner?>>> CreateOwner([FromBody] OwnerSignUpReq ownerSignUpReq)
     {
         try
         {
-            //remove trailing white space
-            ownerRequest.Firstname = ownerRequest.Firstname?.Trim();
-            ownerRequest.Surname = ownerRequest.Surname?.Trim();
-            ownerRequest.Phone = ownerRequest.Phone?.Trim();
-
-
-            //check to see if owner already exists with the same phone number
-            var isOwner = await _context.Owner
-            .Where(owner => owner.Phone == ownerRequest.Phone)
-            .FirstOrDefaultAsync();
+            ownerSignUpReq.email = ownerSignUpReq.email != null ? ownerSignUpReq.email.Trim() : ownerSignUpReq.email;
 
             Response<Owner?> response;
 
-            // Owner already exists
-            if (isOwner?.OwnerId != null)
-            {
-                response = new Response<Owner?>(isOwner, false, "Owner with this phone number already exists");
+            //check owner email is not already in the database
+            var isOwner = await _context.Owner
+            .Where(o => o.Email == ownerSignUpReq.email)
+            .FirstOrDefaultAsync();
+
+            
+            if ( isOwner != null ){
+                response = new Response<Owner?>(isOwner, false, "Owner already Exists!");
                 return StatusCode(409, response);
             }
 
+            //get token for management API
+            var client = new RestClient("https://dev-tt6-hw09.us.auth0.com");
+            var request = new RestRequest("/oauth/token", Method.Post);
+            request.AddHeader("content-type", "application/json");
+            request.AddParameter("application/json", "{\"client_id\":\"L6nnmAddJrNPKicBm97WFD8I6flvCgiy\",\"client_secret\":\"2xA-2uwAJ7Iye8yV1OZIg_jBTK0MKJtLyo-BNV6FPI_KD3QaemxHGYJViRnKCVvD\",\"audience\":\"https://dev-tt6-hw09.us.auth0.com/api/v2/\",\"grant_type\":\"client_credentials\"}", ParameterType.RequestBody);
+            RestResponse tokenResponse = client.Execute(request);
 
-            //gets the largest ID in the DB
-            var lastID = await _context.Owner
-            .OrderByDescending(owner => owner.OwnerId)
-            .Select(owner => owner.OwnerId)
-            .FirstOrDefaultAsync();
-
-            int ownerID = 0;
-
-            if (lastID <= 0)
-            {
-                ownerID = 1;
-            }
-            else
-            {
-                //Increases ID by one                
-                ownerID += lastID + 1;
-            }
-
-            var newOwner =
-            new Owner
-            (
-                ownerID, ownerRequest.Surname,
-                ownerRequest.Firstname, ownerRequest.Phone
-            );
+            //create a user
 
 
-
-            await _context.Owner.AddAsync(newOwner);
-            await _context.SaveChangesAsync();
-
-            response = new Response<Owner?>(newOwner, true, "Owner successfully created");
-            return Ok(response);
+            return Ok(tokenResponse.Content);            
         }
         catch (System.Exception)
         {
@@ -149,6 +124,7 @@ public class OwnerController : ControllerBase
         owner.Firstname = ownerRequest.Firstname;
         owner.Surname = ownerRequest.Surname;
         owner.Phone = ownerRequest.Phone;
+        owner.Email = ownerRequest.Email;
 
         await _context.SaveChangesAsync();
 

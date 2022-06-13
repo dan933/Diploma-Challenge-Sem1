@@ -11,12 +11,13 @@ namespace API.models
 
         public Owner(
             int ownerId, string? surname,
-            string? firstName, string? phone)
+            string? firstName, string? phone, string? email)
         {
             OwnerId = ownerId;
             Surname = surname;
             Firstname = firstName;
             Phone = phone;
+            Email = email;
         }
 
 
@@ -29,5 +30,6 @@ namespace API.models
         public string? Firstname { get; set; }
 
         public string? Phone { get; set; }
+        public string? Email { get; set; }
     }
 }

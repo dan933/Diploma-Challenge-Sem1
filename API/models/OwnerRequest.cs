@@ -9,10 +9,11 @@ namespace API.models
         public OwnerRequest(){
 
         }
-        public OwnerRequest(string? Surname, string? Firstname, string? Phone ){
+        public OwnerRequest(string? Surname, string? Firstname, string? Phone, string? Email ){
             this.Surname = Surname;
             this.Firstname = Firstname;
             this.Phone = Phone;
+            this.Email = Email;
         }
 
         [JsonPropertyName("Surname")]
@@ -23,5 +24,8 @@ namespace API.models
 
         [JsonPropertyName("Phone")]
         public string? Phone { get; set; }
+
+        [JsonPropertyName("Email")]
+        public string? Email { get; set; }
     }
 }

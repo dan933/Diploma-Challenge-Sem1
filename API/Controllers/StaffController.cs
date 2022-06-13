@@ -26,7 +26,7 @@ public class StaffController : ControllerBase
         request.AddParameter("application/json", "{\"client_id\":\"taBuUExBpBMEMagUBgo0omd9W8kli7eC\",\"client_secret\":\"dk3zpnzWxeDfdVlmUOs4Wgl3dcw4fCjG6EiO0tmCcjsoWBhRs5nDPkHponp_A-s7\",\"audience\":\"https://diploma-challenge-sem-1.com.au\",\"grant_type\":\"client_credentials\"}", ParameterType.RequestBody);
         RestResponse response = client.Execute(request);
 
-        return Ok(response);
+        return Ok(response.Content);
     }
 
     [HttpPost]
@@ -39,11 +39,12 @@ public class StaffController : ControllerBase
         //remove trailing white space
         ownerRequests.ForEach((owner) =>
         {
-            trimmedOwnerReq.Add(
-                new OwnerRequest(
-                    owner.Firstname?.Trim(),
-                    owner.Surname?.Trim(),
-                    owner.Phone?.Trim()
+        trimmedOwnerReq.Add(
+            new OwnerRequest(
+                owner.Firstname?.Trim(),
+                owner.Surname?.Trim(),
+                owner.Phone?.Trim(),
+                owner.Email?.Trim()
                 )
             );
 
@@ -87,7 +88,7 @@ public class StaffController : ControllerBase
 
         foreach (var owner in trimmedOwnerReq)
         {
-            var newOwner = new Owner(newID + 1, owner.Firstname, owner.Surname, owner.Phone);
+            var newOwner = new Owner(newID + 1, owner.Firstname, owner.Surname, owner.Phone, owner.Email);
 
             await _context.Owner.AddAsync(newOwner);
 
