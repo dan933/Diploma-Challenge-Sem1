@@ -1,6 +1,10 @@
 using API.models;
+using Auth0.ManagementApi;
+using Auth0.ManagementApi.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json.Linq;
 using RestSharp;
 
 namespace API.Controllers;
@@ -15,6 +19,87 @@ public class StaffController : ControllerBase
     {
         _context = context;
     }
+
+    //[Authorize("write:admin")]
+    [HttpPost]
+    [Route("sign-up")]
+    public async Task<ActionResult<Response<Owner?>>> CreateOwner([FromBody] OwnerSignUpReq ownerSignUpReq)
+    {
+        try
+        {
+            ownerSignUpReq.email = ownerSignUpReq.email != null ? ownerSignUpReq.email.Trim() : ownerSignUpReq.email;
+            ownerSignUpReq.family_name = ownerSignUpReq.family_name != null ? ownerSignUpReq.family_name.Trim() : ownerSignUpReq.family_name;
+            ownerSignUpReq.given_name = ownerSignUpReq.given_name != null ? ownerSignUpReq.given_name.Trim() : ownerSignUpReq.given_name;
+            ownerSignUpReq.phone = ownerSignUpReq.phone != null ? ownerSignUpReq.phone.Trim() : ownerSignUpReq.phone;
+
+            Response<Owner?> response;
+
+            //check owner email is not already in the database
+            var isOwner = await _context.Owner
+            .Where(o => o.Email == ownerSignUpReq.email)
+            .FirstOrDefaultAsync();
+
+            
+            if ( isOwner != null ){
+                response = new Response<Owner?>(isOwner, false, "Owner already Exists!");
+                return StatusCode(409, response);
+            }
+
+            //get token for management API
+            //todo environment variables
+            var client = new RestClient("https://dev-tt6-hw09.us.auth0.com");
+            var request = new RestRequest("/oauth/token", Method.Post);
+            request.AddHeader("content-type", "application/json");
+
+            //todo clean up parameters
+            request.AddParameter("application/json", "{\"client_id\":\"L6nnmAddJrNPKicBm97WFD8I6flvCgiy\",\"client_secret\":\"2xA-2uwAJ7Iye8yV1OZIg_jBTK0MKJtLyo-BNV6FPI_KD3QaemxHGYJViRnKCVvD\",\"audience\":\"https://dev-tt6-hw09.us.auth0.com/api/v2/\",\"grant_type\":\"client_credentials\"}", ParameterType.RequestBody);
+            RestResponse tokenResponse = client.Execute(request);
+
+            dynamic token = tokenResponse.Content != null ? JObject.Parse(tokenResponse.Content)["access_token"]!.ToString() : "";
+
+            var clientManagement = new ManagementApiClient(token, new Uri("https://dev-tt6-hw09.us.auth0.com/api/v2"));
+
+            var newUser = new UserCreateRequest();
+            //Authentication database name
+            newUser.Connection = "Username-Password-Authentication";
+            newUser.Email = ownerSignUpReq.email;            
+            newUser.Password = ownerSignUpReq.password;
+            newUser.FirstName = ownerSignUpReq.given_name;
+            newUser.LastName = ownerSignUpReq.family_name;
+
+            var resp = await clientManagement
+            .Users
+            .CreateAsync(newUser);
+
+            var newID = await _context.Owner
+            .OrderByDescending(o => o.OwnerId)
+            .Select(o => o.OwnerId)
+            .FirstOrDefaultAsync();
+
+            var newOwner =
+            new Owner(newID + 1,
+             ownerSignUpReq.family_name,
+              ownerSignUpReq.given_name,
+               ownerSignUpReq.phone,
+               ownerSignUpReq.email);
+
+            await _context.Owner.AddAsync(newOwner);
+            await _context.SaveChangesAsync();
+
+
+
+            response = new Response<Owner?>(newOwner, true, "Owner successfully created.");
+            
+            return Ok(response);
+                     
+        }
+        catch (System.Exception)
+        {
+
+            throw;
+        }
+    }
+
 
 
     //todo login to get token 

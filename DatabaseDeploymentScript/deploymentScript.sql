@@ -22,6 +22,13 @@ CREATE TABLE [OWNER]
 
 GO
 
+-- CREATE TABLE tbl_USER(
+--     ID int IDENTITY(1,1),
+    
+-- )
+
+-- GO
+
 CREATE TABLE PET
 (
     OwnerId INT FOREIGN KEY REFERENCES [OWNER],    
@@ -62,8 +69,6 @@ FROM TREATMENT AS T
 INNER JOIN [PROCEDURE] AS P ON T.ProcedureID = P.ProcedureID;
 
 GO
-
-
 
 INSERT INTO [OWNER] (OwnerID,Surname,Firstname,Phone, email )
 VALUES

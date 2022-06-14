@@ -21,67 +21,9 @@ public class OwnerController : ControllerBase
         _context = context;
     }
 
-    [HttpPost]
-    [Route("sign-up")]
-    public async Task<ActionResult<Response<Owner?>>> CreateOwner([FromBody] OwnerSignUpReq ownerSignUpReq)
-    {
-        try
-        {
-            ownerSignUpReq.email = ownerSignUpReq.email != null ? ownerSignUpReq.email.Trim() : ownerSignUpReq.email;
-
-            Response<Owner?> response;
-
-            //check owner email is not already in the database
-            var isOwner = await _context.Owner
-            .Where(o => o.Email == ownerSignUpReq.email)
-            .FirstOrDefaultAsync();
-
-            
-            if ( isOwner != null ){
-                response = new Response<Owner?>(isOwner, false, "Owner already Exists!");
-                return StatusCode(409, response);
-            }
-
-            //get token for management API
-            var client = new RestClient("https://dev-tt6-hw09.us.auth0.com");
-            var request = new RestRequest("/oauth/token", Method.Post);
-            request.AddHeader("content-type", "application/json");
-
-            //todo clean up parameters
-            request.AddParameter("application/json", "{\"client_id\":\"L6nnmAddJrNPKicBm97WFD8I6flvCgiy\",\"client_secret\":\"2xA-2uwAJ7Iye8yV1OZIg_jBTK0MKJtLyo-BNV6FPI_KD3QaemxHGYJViRnKCVvD\",\"audience\":\"https://dev-tt6-hw09.us.auth0.com/api/v2/\",\"grant_type\":\"client_credentials\"}", ParameterType.RequestBody);
-            RestResponse tokenResponse = client.Execute(request);
-
-            //get management token
-            dynamic token = JObject.Parse(tokenResponse.Content)["access_token"].ToString();
-
-            var clientManagement = new ManagementApiClient(token, new Uri("https://dev-tt6-hw09.us.auth0.com/api/v2"));
-
-            var newUser = new UserCreateRequest();
-            newUser.Connection = "Username-Password-Authentication";
-            newUser.Email = "test@woo.com";            
-            newUser.Password = "Daniel_128;";
-            newUser.FirstName = "Daniel";
-            newUser.LastName = "Albert";
-
-            var resp = await clientManagement
-            .Users
-            .CreateAsync(newUser);
-
-            //todo create user in the sql server database
-
-            return Ok(resp);
-                     
-        }
-        catch (System.Exception)
-        {
-
-            throw;
-        }
-    }
-
+    
     [HttpGet]
-    // [Authorize("read:user")]
-    [Authorize]
+    [Authorize("write:admin")]    
     [Route("{ownerID:int}/view-pets")]
     public async Task<ActionResult<List<Pet>>> ViewPets(){
 

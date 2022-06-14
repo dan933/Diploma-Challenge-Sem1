@@ -11,5 +11,6 @@ namespace API.models
         public string? password { get; set; }
         public string? given_name { get; set; }       
         public string? family_name { get; set; }       
+        public string? phone { get; set; }       
     }
 }
