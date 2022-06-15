@@ -12,6 +12,9 @@ export class LoginPageComponent implements OnInit {
   constructor(public auth: AuthService) { }
 
   ngOnInit(): void {
+    if (this.auth.isAuthenticated$) {
+      this.auth.loginWithRedirect();
+    }
   }
 
   login = () =>{
