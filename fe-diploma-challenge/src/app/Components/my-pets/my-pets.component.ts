@@ -18,6 +18,9 @@ export class MyPetsComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.auth.user$.subscribe(
+      (resp) => {console.log(resp)}
+    )
     this.api.getPets().subscribe(
       (resp) => {console.log(resp)}
     )

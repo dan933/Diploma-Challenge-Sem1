@@ -20,7 +20,7 @@ export class LoginPageComponent implements OnInit {
   }
 
   login = () => {
-    this.auth.loginWithRedirect({redirect_uri:environment.AUTH0.redirectUri});
+    this.auth.loginWithRedirect({ appState:{target:'/pets'} })
   }
 
 }

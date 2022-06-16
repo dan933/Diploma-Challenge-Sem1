@@ -24,14 +24,12 @@ public class OwnerController : ControllerBase
     
     [HttpGet]
     [Authorize]    
-    [Route("{ownerID:int}/view-pets")]
+    [Route("view-pets")]
     public async Task<ActionResult<List<Pet>>> ViewPets(){
-
-        var ownerID = Convert.ToInt32(RouteData.Values["ownerID"]);
-
+        var sub = HttpContext?.User.Claims.FirstOrDefault(c => c.Type == System.Security.Claims.ClaimTypes.Email)?.Value;
+        Console.WriteLine(sub);
         var pets =
         await _context.Pet
-        .Where(pet => pet.OwnerId == ownerID)
         .ToListAsync();
 
         return Ok(pets);

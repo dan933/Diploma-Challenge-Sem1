@@ -21,7 +21,7 @@ export class ApiService {
   ) { }
 
   getPets = () => {
-    return this.http.get(`${environment.apiURL}/api/owner/1/view-pets`)
+    return this.http.get(`${environment.apiURL}/api/owner/view-pets`)
   }
 
 

@@ -47,7 +47,7 @@ import { AuthHttpInterceptor } from '@auth0/auth0-angular';
             uri: `${environment.apiURL}/*`,
             tokenOptions: {
               audience: environment.AUTH0.audience,
-              scope:'read:message'
+              scope: 'read:message'
             }
           }
         ]
