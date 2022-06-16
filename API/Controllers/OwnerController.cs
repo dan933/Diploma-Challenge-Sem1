@@ -23,13 +23,12 @@ public class OwnerController : ControllerBase
 
     
     [HttpGet]
-    [Authorize]    
+    [Authorize("read:message")]    
     [Route("view-pets")]
     public async Task<ActionResult<List<Pet>>> ViewPets(){
-        var sub = HttpContext?.User.Claims.FirstOrDefault(c => c.Type == System.Security.Claims.ClaimTypes.Email)?.Value;
-        Console.WriteLine(sub);
-        var pets =
-        await _context.Pet
+        var sub = HttpContext?.User.Claims.FirstOrDefault(c => c.Type == System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
+
+        var pets = await _context.Pet
         .ToListAsync();
 
         return Ok(pets);

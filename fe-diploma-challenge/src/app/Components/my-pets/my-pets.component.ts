@@ -10,6 +10,12 @@ import { ApiService } from 'src/app/Services/api.service';
 })
 export class MyPetsComponent implements OnInit {
 
+  //how will I differentiate who is an admin and who is not
+  //how will I add existing users to the sql db
+  //How will the data be connected to the users
+  // use meta data to differentiate between users
+
+
   token = "";
 
   constructor(
@@ -18,7 +24,7 @@ export class MyPetsComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.auth.user$.subscribe(
+    this.api.auth.getAccessTokenSilently().subscribe(
       (resp) => {console.log(resp)}
     )
     this.api.getPets().subscribe(

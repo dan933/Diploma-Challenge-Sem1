@@ -17,7 +17,10 @@ builder.Services.AddCors(options =>
         name: AllowPetsApp,
         policy =>
         {
-            policy.WithOrigins("http://localhost:4200");
+            policy.WithOrigins(
+                "https://localhost:4200",
+                "http://localhost:4200"
+                );
             policy.AllowAnyHeader();
             policy.AllowAnyMethod();
         }
@@ -31,7 +34,8 @@ string domain = builder.Configuration["Auth0:Domain"];
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+    
+
 }).AddJwtBearer(options =>
 {
     options.Authority = domain;
@@ -39,13 +43,13 @@ builder.Services.AddAuthentication(options =>
 
     options.TokenValidationParameters = new TokenValidationParameters
     {
-        NameClaimType = ClaimTypes.NameIdentifier        
+        NameClaimType = ClaimTypes.NameIdentifier
     };
 });
 
 builder.Services.AddAuthorization(options =>
 {
-     options.AddPolicy("read:user", policy => policy.Requirements.Add(new HasScopeRequirement("read:user", domain)));
+     options.AddPolicy("read:message", policy => policy.Requirements.Add(new HasScopeRequirement("read:message", domain)));
      options.AddPolicy("write:user", policy => policy.Requirements.Add(new HasScopeRequirement("write:user", domain)));
      options.AddPolicy("write:admin", policy => policy.Requirements.Add(new HasScopeRequirement("write:admin", domain)));
 

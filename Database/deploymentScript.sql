@@ -6,13 +6,14 @@ DROP TABLE IF EXISTS TREATMENT;
 DROP TABLE IF EXISTS PETSelection;
 DROP TABLE IF EXISTS [PROCEDURE];
 DROP TABLE IF EXISTS PET;
-DROP TABLE IF EXISTS [Owner];
+DROP TABLE IF EXISTS [OWNER];
 
 GO
 
 CREATE TABLE [OWNER]
 (   
     OwnerId INT IDENTITY(1,1) PRIMARY Key,
+    UserID NVARCHAR(300),
     Surname NVARCHAR(300) NOT NULL,
     Firstname NVARCHAR(300) NOT NULL,
     Email NVARCHAR(300),
@@ -69,11 +70,11 @@ INNER JOIN [PROCEDURE] AS P ON T.ProcedureID = P.ProcedureID;
 
 GO
 
-INSERT INTO [OWNER] (Surname,Firstname,Phone, email )
+INSERT INTO [OWNER] (UserID, Surname,Firstname,Phone, email )
 VALUES
-    ('Sinatra', 'Frank', '400111222','Sinatra@example.com' ),
-    ('Ellington', 'Duke', '400222333','Ellington@example.com'),
-    ('Fitzgerald', 'Ella', '400333444','Fitzgerald@example.com');
+    ('auth0|62aadf7f430b9f209305db7a','Sinatra', 'Frank', '400111222','Sinatra@example.com' ),
+    ('auth0|62aadfb55f91adecb61b9bd9','Ellington', 'Duke', '400222333','Ellington@example.com'),
+    ('auth0|62aadfd8dc7486a3ede1c34e','Fitzgerald', 'Ella', '400333444','Fitzgerald@example.com');
 
 GO
 INSERT INTO [dbo].[PROCEDURE]

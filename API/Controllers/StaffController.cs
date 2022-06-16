@@ -52,7 +52,7 @@ public class StaffController : ControllerBase
             request.AddHeader("content-type", "application/json");
 
             //todo clean up parameters
-            request.AddParameter("application/json", "{\"client_id\":\"L6nnmAddJrNPKicBm97WFD8I6flvCgiy\",\"client_secret\":\"2xA-2uwAJ7Iye8yV1OZIg_jBTK0MKJtLyo-BNV6FPI_KD3QaemxHGYJViRnKCVvD\",\"audience\":\"https://dev-tt6-hw09.us.auth0.com/api/v2/\",\"grant_type\":\"client_credentials\"}", ParameterType.RequestBody);
+            request.AddParameter("application/json", "{\"client_id\":\"kUAAhoahZIBdb6SMoQZbryn9fZ6WIbsy\",\"client_secret\":\"zTHQ3l3jxD_coV1WO5xJGe1GyXOdZfwapI54k-EPLc3l4NuuyHAvm9c1UpwlObhN\",\"audience\":\"https://dev-tt6-hw09.us.auth0.com/api/v2/\",\"grant_type\":\"client_credentials\"}", ParameterType.RequestBody);
             RestResponse tokenResponse = client.Execute(request);
 
             dynamic token = tokenResponse.Content != null ? JObject.Parse(tokenResponse.Content)["access_token"]!.ToString() : "";
@@ -71,17 +71,15 @@ public class StaffController : ControllerBase
             .Users
             .CreateAsync(newUser);
 
-            var newID = await _context.Owner
-            .OrderByDescending(o => o.OwnerId)
-            .Select(o => o.OwnerId)
-            .FirstOrDefaultAsync();
+            var userID = resp.UserId;
 
             var newOwner =
-            new Owner(newID + 1,
-             ownerSignUpReq.family_name,
-              ownerSignUpReq.given_name,
-               ownerSignUpReq.phone,
-               ownerSignUpReq.email);
+            new Owner(
+            userID,
+            ownerSignUpReq.family_name,
+            ownerSignUpReq.given_name,
+            ownerSignUpReq.phone,
+            ownerSignUpReq.email);
 
             await _context.Owner.AddAsync(newOwner);
             await _context.SaveChangesAsync();
@@ -98,99 +96,6 @@ public class StaffController : ControllerBase
 
             throw;
         }
-    }
-
-
-
-    //todo login to get token 
-    //or rethink how this works
-    [HttpGet]
-    [Route("get-token")]
-    public async Task<ActionResult<Response<string?>>>GetToken(){
-        
-        var client = new RestClient("https://dev-tt6-hw09.us.auth0.com");
-        var request = new RestRequest("/oauth/token",Method.Post);
-        request.AddHeader("content-type", "application/json");
-        request.AddParameter("application/json", "{\"client_id\":\"taBuUExBpBMEMagUBgo0omd9W8kli7eC\",\"client_secret\":\"dk3zpnzWxeDfdVlmUOs4Wgl3dcw4fCjG6EiO0tmCcjsoWBhRs5nDPkHponp_A-s7\",\"audience\":\"https://diploma-challenge-sem-1.com.au\",\"grant_type\":\"client_credentials\"}", ParameterType.RequestBody);
-        RestResponse response = client.Execute(request);
-
-        return Ok(response.Content);
-    }
-
-    [HttpPost]
-    [Route("create-accounts")]
-    public async Task<ActionResult<Response<Owner?>>> CreateOwners([FromBody] List<OwnerRequest> ownerRequests)
-    {
-
-        var trimmedOwnerReq = new List<OwnerRequest>();
-
-        //remove trailing white space
-        ownerRequests.ForEach((owner) =>
-        {
-        trimmedOwnerReq.Add(
-            new OwnerRequest(
-                owner.Firstname?.Trim(),
-                owner.Surname?.Trim(),
-                owner.Phone?.Trim(),
-                owner.Email?.Trim()
-                )
-            );
-
-        });
-
-        var ownersPhoneNumbers = new List<string>();
-
-
-
-        trimmedOwnerReq.ForEach(owner =>
-        {
-            if (owner.Phone != null)
-            {
-                ownersPhoneNumbers.Add(owner.Phone);
-            }
-
-        });
-
-
-        var addedOwnersSuccessfully = new List<Owner>();
-
-        var response = new Response<List<Owner>>();
-
-        var isOwner = await _context.Owner
-            .Where(o => ownersPhoneNumbers.Contains(o.Phone))
-            .ToListAsync(); 
-
-        if (isOwner.Count() != 0){
-        
-            response = new Response<List<Owner>>(isOwner, false, "Some Owners already exist");
-
-            return StatusCode(409, response);
-        }
-
-            var newID = await _context.Owner
-            .OrderByDescending(o => o.OwnerId)
-            .Select(o => o.OwnerId)
-            .FirstOrDefaultAsync();
-
-        newID = newID == 0 ? 1 : newID;
-
-        foreach (var owner in trimmedOwnerReq)
-        {
-            var newOwner = new Owner(newID + 1, owner.Firstname, owner.Surname, owner.Phone, owner.Email);
-
-            await _context.Owner.AddAsync(newOwner);
-
-            addedOwnersSuccessfully.Add(newOwner);
-
-            newID += 1;
-        }
-
-        _context.SaveChanges();
-
-        response = new Response<List<Owner>>(addedOwnersSuccessfully, true, "Owners successfully Added");
-
-        return Ok(trimmedOwnerReq);
-
     }
 
     //todo auth header

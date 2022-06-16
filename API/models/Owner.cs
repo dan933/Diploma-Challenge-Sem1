@@ -10,10 +10,10 @@ namespace API.models
         }
 
         public Owner(
-            int ownerId, string? surname,
+            string? userID, string? surname,
             string? firstName, string? phone, string? email)
         {
-            OwnerId = ownerId;
+            UserID = userID;
             Surname = surname;
             Firstname = firstName;
             Phone = phone;
@@ -21,9 +21,8 @@ namespace API.models
         }
 
 
-        public int ID { get; set; }
-        
         public int OwnerId { get; set; }
+        public string? UserID { get; set; }
 
         public string? Surname { get; set; }
 
