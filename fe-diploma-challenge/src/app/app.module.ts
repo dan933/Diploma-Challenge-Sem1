@@ -5,6 +5,9 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { LoginPageComponent } from './Components/login-page/login-page.component';
 
+//--------- Form Builder ----------//
+import { FormBuilder, Validators, ReactiveFormsModule, FormsModule} from '@angular/forms';
+
 import { environment } from 'src/environments/environment';
 
 // Import the module from the SDK
@@ -19,6 +22,7 @@ import { AppMaterialModule } from './app-material/app-material.module';
 //------ api modules --------//
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthHttpInterceptor } from '@auth0/auth0-angular';
+import { SignUpPageComponent } from './Components/sign-up-page/sign-up-page.component';
 
 
 @NgModule({
@@ -26,13 +30,17 @@ import { AuthHttpInterceptor } from '@auth0/auth0-angular';
     AppComponent,
     LoginPageComponent,
     MyPetsComponent,
-    NavBarComponent
+    NavBarComponent,
+    SignUpPageComponent
   ],
   imports: [
     BrowserModule,
+    ReactiveFormsModule,
+    FormsModule,
     AppRoutingModule,
     AppMaterialModule,
     HttpClientModule,
+
 
     AuthModule.forRoot({
       domain:environment.AUTH0.domain,
@@ -56,7 +64,7 @@ import { AuthHttpInterceptor } from '@auth0/auth0-angular';
 
     BrowserAnimationsModule,
   ],
-  providers: [{ provide: HTTP_INTERCEPTORS, useClass: AuthHttpInterceptor, multi: true },],
+  providers: [{ provide: HTTP_INTERCEPTORS, useClass: AuthHttpInterceptor, multi: true },FormBuilder,Validators],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

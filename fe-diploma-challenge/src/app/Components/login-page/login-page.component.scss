@@ -2,6 +2,7 @@
     display: flex;
     align-content: center;
     justify-content: center;
+    min-height: 90vh;
 
     .login-box{
         display: flex;
@@ -9,13 +10,16 @@
         align-items: center;
         margin-top: auto;
         margin-bottom: auto;
+        row-gap: 15px;
 
         h1{
             font-size: 70px;
+            margin-top: 3px;
+            margin-bottom: 10px;
         }
 
         button{
-            width: 100%;
+            width: 70%;
             padding: 20px;
             border-radius: 10px;
             transition: all 0.6s ease;
