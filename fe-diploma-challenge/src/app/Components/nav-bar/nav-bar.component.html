@@ -1,6 +1,16 @@
 <mat-toolbar color="primary" class="nav">
   <mat-toolbar-row>
     <span>Pet App</span>
+    <div class="right med-icon">
+       <button
+      *ngIf="isLoggedIn"
+      mat-mini-fab
+      matTooltip="Profile"
+    >
+      <mat-icon>
+        person
+      </mat-icon>
+    </button>
     <button
     *ngIf="isLoggedIn"
       mat-mini-fab
@@ -10,6 +20,8 @@
       >
         <mat-icon>logout</mat-icon>
     </button>
+    </div>
+
   </mat-toolbar-row>
     <mat-toolbar-row *ngIf="isLoggedIn">
       <button mat-raised-button routerLink="/pets" routerLinkActive="active">Pets</button>

@@ -14,10 +14,10 @@ CREATE TABLE [OWNER]
 (   
     OwnerId INT IDENTITY(1,1) PRIMARY Key,
     UserID NVARCHAR(300),
-    Surname NVARCHAR(300) NOT NULL,
-    Firstname NVARCHAR(300) NOT NULL,
+    Surname NVARCHAR(300),
+    Firstname NVARCHAR(300),
     Email NVARCHAR(300),
-    Phone NVARCHAR(300) NOT NULL
+    Phone NVARCHAR(300)
 );
 
 GO

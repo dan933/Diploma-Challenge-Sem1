@@ -26,14 +26,16 @@ public class OwnerController : ControllerBase
     [Authorize("read:message")]    
     [Route("view-pets")]
     public async Task<ActionResult<List<Pet>>> ViewPets(){
+        
         var sub = HttpContext?.User.Claims.FirstOrDefault(c => c.Type == System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
 
-        var ownerID = await _context.Owner
+        int ownerID = await _context.Owner
         .Where(o => o.UserID == sub)
         .Select(o => o.OwnerId)
         .FirstOrDefaultAsync();
 
         if(ownerID <= 0){
+            //create owner table record
             return StatusCode(409, "boo");
         }
 
