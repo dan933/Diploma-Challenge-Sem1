@@ -23,7 +23,7 @@ public class OwnerController : ControllerBase
 
     
     [HttpGet]
-    [Authorize("read:message")]    
+    [Authorize]    
     [Route("view-pets")]
     public async Task<ActionResult<List<Pet>>> ViewPets(){
         

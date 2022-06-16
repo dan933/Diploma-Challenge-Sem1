@@ -23,6 +23,7 @@ import { AppMaterialModule } from './app-material/app-material.module';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthHttpInterceptor } from '@auth0/auth0-angular';
 import { SignUpPageComponent } from './Components/sign-up-page/sign-up-page.component';
+import { PetsTableComponent } from './Components/my-pets/pets-table/pets-table.component';
 
 
 @NgModule({
@@ -31,7 +32,8 @@ import { SignUpPageComponent } from './Components/sign-up-page/sign-up-page.comp
     LoginPageComponent,
     MyPetsComponent,
     NavBarComponent,
-    SignUpPageComponent
+    SignUpPageComponent,
+    PetsTableComponent
   ],
   imports: [
     BrowserModule,

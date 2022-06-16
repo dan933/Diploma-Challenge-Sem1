@@ -21,6 +21,7 @@ builder.Services.AddCors(options =>
                 "https://localhost:4200",
                 "http://localhost:4200"
                 );
+            policy.AllowCredentials();
             policy.AllowAnyHeader();
             policy.AllowAnyMethod();
         }
@@ -49,9 +50,8 @@ builder.Services.AddAuthentication(options =>
 
 builder.Services.AddAuthorization(options =>
 {
-     options.AddPolicy("read:message", policy => policy.Requirements.Add(new HasScopeRequirement("read:message", domain)));
-     options.AddPolicy("write:user", policy => policy.Requirements.Add(new HasScopeRequirement("write:user", domain)));
      options.AddPolicy("write:admin", policy => policy.Requirements.Add(new HasScopeRequirement("write:admin", domain)));
+     options.AddPolicy("read:admin", policy => policy.Requirements.Add(new HasScopeRequirement("read:admin", domain)));
 
 });
 
