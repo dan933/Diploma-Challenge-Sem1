@@ -38,7 +38,20 @@ import { AuthHttpInterceptor } from '@auth0/auth0-angular';
       domain:environment.AUTH0.domain,
       clientId: environment.AUTH0.clientId,
       redirectUri: environment.AUTH0.redirectUri,
-      audience: environment.AUTH0.audience
+      audience: environment.AUTH0.audience,
+      scope: 'read:message',
+
+      httpInterceptor: {
+        allowedList: [
+          {
+            uri: `${environment.apiURL}/*`,
+            tokenOptions: {
+              audience: environment.AUTH0.audience,
+              scope:'read:message'
+            }
+          }
+        ]
+      }
     }),
 
     BrowserAnimationsModule,

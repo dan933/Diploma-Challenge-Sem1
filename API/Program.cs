@@ -7,6 +7,23 @@ using Microsoft.IdentityModel.Tokens;
 
 var builder = WebApplication.CreateBuilder(args);
 
+var  AllowPetsApp = "_allowPetsApp";
+
+
+//add cors
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(
+        name: AllowPetsApp,
+        policy =>
+        {
+            policy.WithOrigins("http://localhost:4200");
+            policy.AllowAnyHeader();
+            policy.AllowAnyMethod();
+        }
+    );
+});
+
 string domain = builder.Configuration["Auth0:Domain"];
 
 // Add services to the container.
@@ -51,6 +68,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseCors(AllowPetsApp);
 
 app.UseHttpsRedirection();
 

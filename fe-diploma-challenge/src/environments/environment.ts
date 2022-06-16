@@ -10,8 +10,8 @@ export const environment = {
     redirectUri: 'http://localhost:4200/pets',
     logoutURL: 'http://localhost:4200/login',
     audience: 'https://diploma-challenge-sem-1.com.au'
-
-  }
+  },
+  apiURL:'https://localhost:7235'
 };
 
 /*
