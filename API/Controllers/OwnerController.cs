@@ -28,7 +28,18 @@ public class OwnerController : ControllerBase
     public async Task<ActionResult<List<Pet>>> ViewPets(){
         var sub = HttpContext?.User.Claims.FirstOrDefault(c => c.Type == System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
 
+        var ownerID = await _context.Owner
+        .Where(o => o.UserID == sub)
+        .Select(o => o.OwnerId)
+        .FirstOrDefaultAsync();
+
+        if(ownerID <= 0){
+            return StatusCode(409, "boo");
+        }
+
+
         var pets = await _context.Pet
+        .Where(p => p.OwnerId == ownerID)
         .ToListAsync();
 
         return Ok(pets);
