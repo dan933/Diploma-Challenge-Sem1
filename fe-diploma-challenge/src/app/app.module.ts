@@ -11,6 +11,15 @@ import { environment } from 'src/environments/environment';
 import { AuthModule } from '@auth0/auth0-angular';
 import { MyPetsComponent } from './Components/my-pets/my-pets.component';
 import { NavBarComponent } from './Components/nav-bar/nav-bar.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+
+//---------- Materials Module ---------------//
+import { AppMaterialModule } from './app-material/app-material.module';
+
+//------ api modules --------//
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { AuthHttpInterceptor } from '@auth0/auth0-angular';
+
 
 @NgModule({
   declarations: [
@@ -22,13 +31,19 @@ import { NavBarComponent } from './Components/nav-bar/nav-bar.component';
   imports: [
     BrowserModule,
     AppRoutingModule,
+    AppMaterialModule,
+    HttpClientModule,
 
     AuthModule.forRoot({
       domain:environment.AUTH0.domain,
-      clientId:environment.AUTH0.clientId
+      clientId: environment.AUTH0.clientId,
+      redirectUri: environment.AUTH0.redirectUri,
+      audience: environment.AUTH0.audience
     }),
+
+    BrowserAnimationsModule,
   ],
-  providers: [],
+  providers: [{ provide: HTTP_INTERCEPTORS, useClass: AuthHttpInterceptor, multi: true },],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

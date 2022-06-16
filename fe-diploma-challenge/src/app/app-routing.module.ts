@@ -9,7 +9,7 @@ import { MyPetsComponent } from './Components/my-pets/my-pets.component';
 const routes: Routes = [
   { path: 'login', component: LoginPageComponent },
   { path: 'pets', component: MyPetsComponent, canActivate:[AuthGuard] },
-  { path: '**', component: MyPetsComponent },
+  { path: '**', redirectTo:'/login'},
 ];
 
 @NgModule({

@@ -1,1 +1,3 @@
-<p>my-pets works!</p>
+<div class="container" *ngIf="auth.user$ | async as user">
+  <h1>Account: {{user.email}}</h1>
+</div>

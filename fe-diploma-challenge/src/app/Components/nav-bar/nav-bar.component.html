@@ -1,1 +1,20 @@
-<p>nav-bar works!</p>
+<mat-toolbar color="primary" class="nav">
+  <mat-toolbar-row>
+    <span>Pet App</span>
+    <button
+    *ngIf="isLoggedIn"
+      mat-mini-fab
+      matTooltip="Logout"
+      class="right med-icon"
+      (click)="auth.logout({returnTo:logoutURL})"
+      >
+        <mat-icon>logout</mat-icon>
+    </button>
+  </mat-toolbar-row>
+    <mat-toolbar-row *ngIf="isLoggedIn">
+      <button mat-raised-button routerLink="/pets" routerLinkActive="active">Pets</button>
+      <button mat-raised-button routerLink="" routerLinkActive="">Pets</button>
+
+    </mat-toolbar-row>
+</mat-toolbar>
+

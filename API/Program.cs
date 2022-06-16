@@ -35,8 +35,6 @@ builder.Services.AddAuthorization(options =>
 });
 
 builder.Services.AddSingleton<IAuthorizationHandler, HasScopeHandler>();
-builder.Services.AddSingleton<IAuthorizationHandler, HasScopeHandler>();
-builder.Services.AddSingleton<IAuthorizationHandler, HasScopeHandler>();
 
 builder.Services.AddDbContext<PetContext>();
 

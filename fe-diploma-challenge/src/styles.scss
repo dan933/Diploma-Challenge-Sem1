@@ -3,3 +3,16 @@ body{
     padding: 0px;
     margin:0px;
 }
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+h1{
+  font-size: 3vw;
+  word-wrap: break-word;
+}
+
+
+.container{
+  padding: 2vw;
+  min-height: 80vh;
+  overflow: auto;
+}

@@ -23,7 +23,7 @@ public class OwnerController : ControllerBase
 
     
     [HttpGet]
-    [Authorize("write:admin")]    
+    [Authorize]    
     [Route("{ownerID:int}/view-pets")]
     public async Task<ActionResult<List<Pet>>> ViewPets(){
 

@@ -12,8 +12,7 @@ GO
 
 CREATE TABLE [OWNER]
 (   
-    ID INT IDENTITY(1,1) PRIMARY Key,
-    OwnerId INT,
+    OwnerId INT IDENTITY(1,1) PRIMARY Key,
     Surname NVARCHAR(300) NOT NULL,
     Firstname NVARCHAR(300) NOT NULL,
     Email NVARCHAR(300),
@@ -70,11 +69,11 @@ INNER JOIN [PROCEDURE] AS P ON T.ProcedureID = P.ProcedureID;
 
 GO
 
-INSERT INTO [OWNER] (OwnerID,Surname,Firstname,Phone, email )
+INSERT INTO [OWNER] (Surname,Firstname,Phone, email )
 VALUES
-    ('1', 'Sinatra', 'Frank', '400111222','Sinatra@example.com' ),
-    ('2', 'Ellington', 'Duke', '400222333','Ellington@example.com'),
-    ('3', 'Fitzgerald', 'Ella', '400333444','Fitzgerald@example.com');
+    ('Sinatra', 'Frank', '400111222','Sinatra@example.com' ),
+    ('Ellington', 'Duke', '400222333','Ellington@example.com'),
+    ('Fitzgerald', 'Ella', '400333444','Fitzgerald@example.com');
 
 GO
 INSERT INTO [dbo].[PROCEDURE]

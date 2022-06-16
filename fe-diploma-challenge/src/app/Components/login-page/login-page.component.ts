@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 
 import { AuthService } from '@auth0/auth0-angular';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-login-page',
@@ -9,16 +11,16 @@ import { AuthService } from '@auth0/auth0-angular';
 })
 export class LoginPageComponent implements OnInit {
 
-  constructor(public auth: AuthService) { }
+  constructor(
+    public auth: AuthService,
+    private route:Router
+    ) { }
 
   ngOnInit(): void {
-    if (this.auth.isAuthenticated$) {
-      this.auth.loginWithRedirect();
-    }
   }
 
-  login = () =>{
-    this.auth.loginWithRedirect()
+  login = () => {
+    this.auth.loginWithRedirect({redirect_uri:environment.AUTH0.redirectUri});
   }
 
 }

@@ -6,7 +6,11 @@ export const environment = {
   production: false,
   AUTH0:{
     domain: 'dev-tt6-hw09.us.auth0.com',
-    clientId: 'WvEpucsSOwsMHpHAAS05qoUXi1JAUHS2'
+    clientId: 'WvEpucsSOwsMHpHAAS05qoUXi1JAUHS2',
+    redirectUri: 'http://localhost:4200/pets',
+    logoutURL: 'http://localhost:4200/login',
+    audience: 'https://diploma-challenge-sem-1.com.au'
+
   }
 };
 

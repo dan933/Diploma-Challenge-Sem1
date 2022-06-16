@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { AuthService } from '@auth0/auth0-angular';
 
 @Component({
   selector: 'app-my-pets',
@@ -7,9 +8,17 @@ import { Component, OnInit } from '@angular/core';
 })
 export class MyPetsComponent implements OnInit {
 
-  constructor() { }
+  token = "";
+
+  constructor(public auth: AuthService) { }
 
   ngOnInit(): void {
+    this.auth.getAccessTokenSilently().subscribe(
+      (resp) => {
+        this.token = resp
+        console.log(resp)
+      }
+    )
   }
 
 }
