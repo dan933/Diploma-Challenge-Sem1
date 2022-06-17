@@ -62,8 +62,7 @@ public class OwnerController : ControllerBase
             var newUser = new UserCreateRequest();
             //Authentication database name
             newUser.Connection = "Username-Password-Authentication";
-            newUser.Email = ownerSignUpReq.email;            
-            newUser.Password = ownerSignUpReq.password;
+            newUser.Email = ownerSignUpReq.email;                        
             newUser.FirstName = ownerSignUpReq.firstName;
             newUser.LastName = ownerSignUpReq.lastName;
 
@@ -99,6 +98,71 @@ public class OwnerController : ControllerBase
     }
 
     
+    [HttpGet]
+    [Authorize]
+    [Route("get-user")]
+    public async Task<ActionResult<Response<Owner?>>> CreateOwner(){
+        var sub = HttpContext?.User.Claims.FirstOrDefault(c => c.Type == System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
+
+        var owner = await _context.Owner
+        .Where(o => o.UserID == sub)
+        .FirstOrDefaultAsync();
+
+        var response = new Response<Owner?>(owner, true, "Owner Successfully returned.");
+
+        return Ok(response);
+
+    }
+
+    [HttpPost]
+    [Authorize]
+    [Route("update-owner")]
+    public async Task<ActionResult<Response<Owner?>>> UpdateOwner([FromBody] OwnerSignUpReq? updateUserReq){
+
+        var sub = HttpContext?.User.Claims.FirstOrDefault(c => c.Type == System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
+
+        var owner = await _context.Owner
+        .Where(o => o.UserID == sub)
+        .FirstOrDefaultAsync();
+
+        if(owner == null){
+            //create owner table record
+            return StatusCode(409, "boo");
+        }
+
+        //get token for management API
+        var client = new RestClient("https://dev-tt6-hw09.us.auth0.com");
+        var request = new RestRequest("/oauth/token", Method.Post);
+        request.AddHeader("content-type", "application/json");
+
+        //todo clean up parameters
+        request.AddParameter("application/json", "{\"client_id\":\"kUAAhoahZIBdb6SMoQZbryn9fZ6WIbsy\",\"client_secret\":\"zTHQ3l3jxD_coV1WO5xJGe1GyXOdZfwapI54k-EPLc3l4NuuyHAvm9c1UpwlObhN\",\"audience\":\"https://dev-tt6-hw09.us.auth0.com/api/v2/\",\"grant_type\":\"client_credentials\"}", ParameterType.RequestBody);
+        RestResponse tokenResponse = client.Execute(request);
+
+        dynamic token = tokenResponse.Content != null ? JObject.Parse(tokenResponse.Content)["access_token"]!.ToString() : "";
+
+        var clientManagement = new ManagementApiClient(token, new Uri("https://dev-tt6-hw09.us.auth0.com/api/v2"));
+
+        var updateUser = new UserUpdateRequest();
+
+        updateUser.Email = updateUserReq?.email != null ? updateUserReq.email : null;        
+        updateUser.FirstName = updateUserReq?.firstName != null ? updateUserReq.firstName : null;
+        updateUser.LastName = updateUserReq?.lastName != null ? updateUserReq.lastName : null;
+
+
+        await clientManagement.Users.UpdateAsync(sub, updateUser);
+
+        owner.Email = updateUserReq?.email != null ? updateUserReq.email : owner.Email;
+        owner.Firstname = updateUserReq?.firstName != null ? updateUserReq.firstName : owner.Firstname;
+        owner.Surname = updateUserReq?.lastName != null ? updateUserReq.lastName : owner.Surname;
+        owner.Phone = updateUserReq?.phoneNumber != null ? updateUserReq.phoneNumber : owner.Phone;
+
+        await _context.SaveChangesAsync();
+
+        return Ok(owner);
+
+    }
+
     [HttpGet]
     [Authorize]    
     [Route("view-pets")]

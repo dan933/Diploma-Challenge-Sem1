@@ -39,4 +39,12 @@ export class ApiService {
   createTreatment = (treatment:any) => {
     return this.http.post(`${environment.apiURL}/api/owner/create-treatment`, treatment)
   }
+
+  updateOwner = (owner:any) => {
+    return this.http.post(`${environment.apiURL}/api/owner/update-owner`, owner)
+  }
+
+  getOwner = () => {
+    return this.http.get(`${environment.apiURL}/api/owner/get-user`)
+  }
 }
