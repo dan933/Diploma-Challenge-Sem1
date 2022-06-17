@@ -80,7 +80,6 @@ export class CreateTreatmentFormComponent implements OnInit {
       )
 
       this.closedialog();
-      location.reload();
     }
   }
 

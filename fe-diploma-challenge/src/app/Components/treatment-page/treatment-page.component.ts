@@ -29,7 +29,13 @@ export class TreatmentPageComponent implements OnInit {
   ) { }
 
   openTreatmentForm() {
-    this.dialog.open(CreateTreatmentFormComponent);
+    const dialogRef = this.dialog.open(CreateTreatmentFormComponent);
+    dialogRef.afterClosed().subscribe(
+      () => {
+        this.api.viewTreatments().subscribe((resp) => this.treatmentData = resp as Treatment[]);
+      }
+    );
+
   }
 
   treatmentData: Treatment[] = []
@@ -40,15 +46,3 @@ export class TreatmentPageComponent implements OnInit {
   }
 
 }
-
-// [
-//   {
-//       "ID": 3,
-//       "OwnerId": 1,
-//       "PetName": "Fluffy",
-//       "ProcedureID": 10,
-//       "Date": "2018-05-10T00:00:00",
-//       "Notes": "Wounds sustained in apparent cat fight.",
-//       "Payment": 30
-//   }
-// ]
