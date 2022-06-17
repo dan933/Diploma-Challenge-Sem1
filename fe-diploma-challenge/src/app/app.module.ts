@@ -26,6 +26,7 @@ import { SignUpPageComponent } from './Components/sign-up-page/sign-up-page.comp
 import { PetsTableComponent } from './Components/my-pets/pets-table/pets-table.component';
 import { TreatmentPageComponent } from './Components/treatment-page/treatment-page.component';
 import { CreateTreatmentFormComponent } from './Components/treatment-page/create-treatment-form/create-treatment-form.component';
+import { ProcedurePageComponent } from './Components/procedure-page/procedure-page.component';
 
 
 @NgModule({
@@ -37,7 +38,8 @@ import { CreateTreatmentFormComponent } from './Components/treatment-page/create
     SignUpPageComponent,
     PetsTableComponent,
     TreatmentPageComponent,
-    CreateTreatmentFormComponent
+    CreateTreatmentFormComponent,
+    ProcedurePageComponent
   ],
   imports: [
     BrowserModule,

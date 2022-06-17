@@ -7,12 +7,14 @@ import { SignUpPageComponent } from './Components/sign-up-page/sign-up-page.comp
 import { AuthGuard } from '@auth0/auth0-angular';
 import { MyPetsComponent } from './Components/my-pets/my-pets.component';
 import { TreatmentPageComponent } from './Components/treatment-page/treatment-page.component';
+import { ProcedurePageComponent } from './Components/procedure-page/procedure-page.component';
 
 const routes: Routes = [
   { path: 'login', component: LoginPageComponent },
   { path: 'sign-up', component: SignUpPageComponent },
   { path: 'pets', component: MyPetsComponent, canActivate: [AuthGuard] },
   { path: 'treatments', component: TreatmentPageComponent, canActivate: [AuthGuard] },
+  { path: 'procedures', component: ProcedurePageComponent, canActivate: [AuthGuard] },
   { path: '**', redirectTo:'/pets'}
 ];
 
