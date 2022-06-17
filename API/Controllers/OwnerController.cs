@@ -176,8 +176,6 @@ public class OwnerController : ControllerBase
         .Select(o => o.OwnerId)
         .FirstOrDefaultAsync();
 
-        Console.WriteLine(ownerID);
-
         if(ownerID <= 0){
             //create owner table record
             return StatusCode(409, "boo");

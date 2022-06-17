@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
 import { AuthService } from '@auth0/auth0-angular';
 import { ApiService } from 'src/app/Services/api.service';
 
@@ -20,7 +21,8 @@ export class CreateTreatmentFormComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     public auth: AuthService,
-    public api: ApiService
+    public api: ApiService,
+    public dialog: MatDialog
   ) { }
 
   passwordValidation = {
@@ -58,19 +60,28 @@ export class CreateTreatmentFormComponent implements OnInit {
     )
   }
 
+  closedialog = () => {
+    this.dialog.closeAll();
+  }
+
   createProcedure = () => {
     console.log(this.createTreatmentForm.controls)
 
-    let treatment: Treatment = {
-      PetName: this.createTreatmentForm.controls['Pet'].value,
-      ProcedureID: this.createTreatmentForm.controls['Procedure'].value.procedureID,
-      Date: this.createTreatmentForm.controls['Date'].value,
-      Notes: this.createTreatmentForm.controls['Notes'].value
-    }
+    if (this.createTreatmentForm.valid) {
+      let treatment: Treatment = {
+        PetName: this.createTreatmentForm.controls['Pet'].value,
+        ProcedureID: this.createTreatmentForm.controls['Procedure'].value.procedureID,
+        Date: this.createTreatmentForm.controls['Date'].value,
+        Notes: this.createTreatmentForm.controls['Notes'].value
+      }
 
-    this.api.createTreatment(treatment).subscribe(
-      (resp) => { console.log(resp)}
-    )
+      this.api.createTreatment(treatment).subscribe(
+        (resp) => { console.log(resp)}
+      )
+
+      this.closedialog();
+      location.reload();
+    }
   }
 
   // signUp = () => {
