@@ -19,10 +19,11 @@ builder.Services.AddCors(options =>
         {
             policy.WithOrigins(
                 "https://localhost:4200",
-                "http://localhost:4200"
+                "http://localhost:4200",
+                "https://challenge-app-one.azurewebsites.net"
                 );
             policy.AllowCredentials();
-            policy.AllowAnyHeader();
+            policy.AllowAnyHeader();            
             policy.AllowAnyMethod();
         }
     );
