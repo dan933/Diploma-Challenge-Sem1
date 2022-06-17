@@ -11,12 +11,14 @@ import { environment } from 'src/environments/environment';
 export class NavBarComponent implements OnInit {
   logoutURL = environment.AUTH0.logoutURL;
   isLoggedIn = false;
+  userEmail? = "";
 
   constructor(
     public auth: AuthService
   ) { }
 
   ngOnInit(): void {
+    this.auth.user$.subscribe((resp) => { this.userEmail = resp?.email })
     this.checkLoginStatus()
   }
 
