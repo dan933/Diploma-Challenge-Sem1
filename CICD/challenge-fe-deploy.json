@@ -5,7 +5,7 @@
     "functions": [],
     "variables": {},
     "resources": [{
-        "name": "challenge-app",
+        "name": "challenge-app-one",
         "type": "Microsoft.Web/serverfarms",
         "apiVersion": "2020-12-01",
         "location": "[resourceGroup().location]",
@@ -15,26 +15,26 @@
             "capacity": 1
         },
         "tags": {
-            "displayName": "challenge-app"
+            "displayName": "challenge-app-one"
         },
         "properties": {
-            "name": "challenge-app"
+            "name": "challenge-app-one"
         }
     }, {
-        "name": "challenge-app",
+        "name": "challenge-app-one",
         "type": "Microsoft.Web/sites",
         "apiVersion": "2020-12-01",
         "location": "[resourceGroup().location]",
         "tags": {
-            "[concat('hidden-related:', resourceGroup().id, '/providers/Microsoft.Web/serverfarms/challenge-app')]": "Resource",
-            "displayName": "challenge-app"
+            "[concat('hidden-related:', resourceGroup().id, '/providers/Microsoft.Web/serverfarms/challenge-app-one')]": "Resource",
+            "displayName": "challenge-app-one"
         },
         "dependsOn": [
-            "[resourceId('Microsoft.Web/serverfarms', 'challenge-app')]"
+            "[resourceId('Microsoft.Web/serverfarms', 'challenge-app-one')]"
         ],
         "properties": {
-            "name": "challenge-app",
-            "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', 'challenge-app')]",
+            "name": "challenge-app-one",
+            "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', 'challenge-app-one')]",
             "siteConfig": {
                 "appSettings": [],
                 "linux_fx_version": "NODE|16"

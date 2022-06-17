@@ -1,6 +1,6 @@
 {
   "name": "fe-diploma-challenge",
-  "homepage": "https://fix.azurewebsites.net",
+  "homepage": "https://challenge-app-one.azurewebsites.net",
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
