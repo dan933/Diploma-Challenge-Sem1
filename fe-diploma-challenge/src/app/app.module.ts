@@ -24,6 +24,7 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthHttpInterceptor } from '@auth0/auth0-angular';
 import { SignUpPageComponent } from './Components/sign-up-page/sign-up-page.component';
 import { PetsTableComponent } from './Components/my-pets/pets-table/pets-table.component';
+import { TreatmentPageComponent } from './Components/treatment-page/treatment-page.component';
 
 
 @NgModule({
@@ -33,7 +34,8 @@ import { PetsTableComponent } from './Components/my-pets/pets-table/pets-table.c
     MyPetsComponent,
     NavBarComponent,
     SignUpPageComponent,
-    PetsTableComponent
+    PetsTableComponent,
+    TreatmentPageComponent
   ],
   imports: [
     BrowserModule,
@@ -54,12 +56,17 @@ import { PetsTableComponent } from './Components/my-pets/pets-table/pets-table.c
       httpInterceptor: {
         allowedList: [
           {
+            uri: `${environment.apiURL}/api/owner/sign-up`,
+            allowAnonymous:true
+          },
+          {
             uri: `${environment.apiURL}/*`,
             tokenOptions: {
-              audience: environment.AUTH0.audience,
-              scope: 'read:message'
+              audience: environment.AUTH0.audience//,
+              //scope: 'read:message'
             }
           }
+
         ]
       }
     }),

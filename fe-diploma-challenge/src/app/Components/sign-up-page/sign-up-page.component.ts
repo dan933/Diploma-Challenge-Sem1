@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AuthService } from '@auth0/auth0-angular';
+import { ApiService } from 'src/app/Services/api.service';
 
 @Component({
   selector: 'app-sign-up-page',
@@ -12,6 +13,7 @@ export class SignUpPageComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     public auth: AuthService,
+    public api: ApiService
   ) { }
 
     passwordValidation = {
@@ -71,9 +73,19 @@ export class SignUpPageComponent implements OnInit {
     } else {
       this.signUpForm.controls['password'].setErrors(null)
         this.signUpForm.controls['confirmPassword'].setErrors(null)
-        this.passwordValidation.errorMessage = ""
-        //register user on auth0
-        //register user on sql db
+      this.passwordValidation.errorMessage = ""
+
+      let signUpReq = {
+        firstName:this.signUpForm.controls['firstName'].value,
+        lastName:this.signUpForm.controls['lastName'].value,
+        phoneNumber:this.signUpForm.controls['phoneNumber'].value,
+        email:this.signUpForm.controls['email'].value,
+        password:this.signUpForm.controls['password'].value,
+      }
+      console.log(signUpReq)
+      this.api.signUp(signUpReq).subscribe(
+        (resp) => console.log(resp)
+      )
     }
   }
 

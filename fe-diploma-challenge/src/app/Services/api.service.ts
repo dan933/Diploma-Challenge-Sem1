@@ -24,5 +24,9 @@ export class ApiService {
     return this.http.get(`${environment.apiURL}/api/owner/view-pets`)
   }
 
+  signUp = (signUpReq: any) => {
+    return this.http.post(`${environment.apiURL}/api/owner/sign-up`, signUpReq)
+  }
+
 
 }

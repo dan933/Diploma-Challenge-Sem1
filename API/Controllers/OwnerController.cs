@@ -21,6 +21,83 @@ public class OwnerController : ControllerBase
         _context = context;
     }
 
+    [HttpPost]
+    [Route("sign-up")]
+    public async Task<ActionResult<Response<Owner?>>> CreateOwner([FromBody] OwnerSignUpReq ownerSignUpReq)
+    {
+        try
+        {
+            ownerSignUpReq.email = ownerSignUpReq.email != null ? ownerSignUpReq.email.Trim() : ownerSignUpReq.email;
+            ownerSignUpReq.lastName = ownerSignUpReq.lastName != null ? ownerSignUpReq.lastName.Trim() : ownerSignUpReq.lastName;
+            ownerSignUpReq.firstName = ownerSignUpReq.firstName != null ? ownerSignUpReq.firstName.Trim() : ownerSignUpReq.firstName;
+            ownerSignUpReq.phoneNumber = ownerSignUpReq.phoneNumber != null ? ownerSignUpReq.phoneNumber.Trim() : ownerSignUpReq.phoneNumber;
+
+            Response<Owner?> response;
+
+            //check owner email is not already in the database
+            var isOwner = await _context.Owner
+            .Where(o => o.Email == ownerSignUpReq.email)
+            .FirstOrDefaultAsync();
+
+            
+            if ( isOwner != null ){
+                response = new Response<Owner?>(isOwner, false, "Owner already Exists!");
+                return StatusCode(409, response);
+            }
+
+            //get token for management API
+            //todo environment variables
+            var client = new RestClient("https://dev-tt6-hw09.us.auth0.com");
+            var request = new RestRequest("/oauth/token", Method.Post);
+            request.AddHeader("content-type", "application/json");
+
+            //todo clean up parameters
+            request.AddParameter("application/json", "{\"client_id\":\"kUAAhoahZIBdb6SMoQZbryn9fZ6WIbsy\",\"client_secret\":\"zTHQ3l3jxD_coV1WO5xJGe1GyXOdZfwapI54k-EPLc3l4NuuyHAvm9c1UpwlObhN\",\"audience\":\"https://dev-tt6-hw09.us.auth0.com/api/v2/\",\"grant_type\":\"client_credentials\"}", ParameterType.RequestBody);
+            RestResponse tokenResponse = client.Execute(request);
+
+            dynamic token = tokenResponse.Content != null ? JObject.Parse(tokenResponse.Content)["access_token"]!.ToString() : "";
+
+            var clientManagement = new ManagementApiClient(token, new Uri("https://dev-tt6-hw09.us.auth0.com/api/v2"));
+
+            var newUser = new UserCreateRequest();
+            //Authentication database name
+            newUser.Connection = "Username-Password-Authentication";
+            newUser.Email = ownerSignUpReq.email;            
+            newUser.Password = ownerSignUpReq.password;
+            newUser.FirstName = ownerSignUpReq.firstName;
+            newUser.LastName = ownerSignUpReq.lastName;
+
+            var resp = await clientManagement
+            .Users
+            .CreateAsync(newUser);
+
+            var userID = resp.UserId;
+
+            var newOwner =
+            new Owner(
+            userID,
+            ownerSignUpReq.lastName,
+            ownerSignUpReq.firstName,
+            ownerSignUpReq.phoneNumber,
+            ownerSignUpReq.email);
+
+            await _context.Owner.AddAsync(newOwner);
+            await _context.SaveChangesAsync();
+
+
+
+            response = new Response<Owner?>(newOwner, true, "Owner successfully created.");
+            
+            return Ok(response);
+                     
+        }
+        catch (System.Exception)
+        {
+
+            throw;
+        }
+    }
+
     
     [HttpGet]
     [Authorize]    
