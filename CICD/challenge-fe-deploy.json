@@ -5,7 +5,7 @@
     "functions": [],
     "variables": {},
     "resources": [{
-        "name": "nba-app",
+        "name": "challenge-app",
         "type": "Microsoft.Web/serverfarms",
         "apiVersion": "2020-12-01",
         "location": "[resourceGroup().location]",
@@ -15,26 +15,26 @@
             "capacity": 1
         },
         "tags": {
-            "displayName": "nba-app"
+            "displayName": "challenge-app"
         },
         "properties": {
-            "name": "nba-app"
+            "name": "challenge-app"
         }
     }, {
-        "name": "nba-app",
+        "name": "challenge-app",
         "type": "Microsoft.Web/sites",
         "apiVersion": "2020-12-01",
         "location": "[resourceGroup().location]",
         "tags": {
-            "[concat('hidden-related:', resourceGroup().id, '/providers/Microsoft.Web/serverfarms/nba-app')]": "Resource",
-            "displayName": "nba-app"
+            "[concat('hidden-related:', resourceGroup().id, '/providers/Microsoft.Web/serverfarms/challenge-app')]": "Resource",
+            "displayName": "challenge-app"
         },
         "dependsOn": [
-            "[resourceId('Microsoft.Web/serverfarms', 'nba-app')]"
+            "[resourceId('Microsoft.Web/serverfarms', 'challenge-app')]"
         ],
         "properties": {
-            "name": "nba-app",
-            "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', 'nba-app')]",
+            "name": "challenge-app",
+            "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', 'challenge-app')]",
             "siteConfig": {
                 "appSettings": [],
                 "linux_fx_version": "NODE|16"

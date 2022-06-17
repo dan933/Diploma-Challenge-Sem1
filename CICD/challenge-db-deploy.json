@@ -34,7 +34,7 @@
                 "type": "firewallRules",
                 "apiVersion": "2014-04-01",
                 "location": "[resourceGroup().location]",
-                "name": "Desktop PC",
+                "name": "Desktop-PC",
                 "properties": {
                     "startIpAddress": "49.198.204.171",
                     "endIpAddress": "49.198.204.171"
@@ -43,38 +43,40 @@
                     "[resourceId('Microsoft.Sql/servers', 'challenge-instance-one')]"
                 ]
             },
-                    {
-            "type": "Microsoft.Sql/servers/firewallRules",
-            "apiVersion": "2021-08-01-preview",
-            "name": "challenge-instance-one/AllowAllWindowsAzureIps_1",
-            "dependsOn": [
-                "[resourceId('Microsoft.Sql/servers', 'challenge-instance-one')]"
-            ],
-            "properties": {
-                "startIpAddress": "0.0.0.0",
-                "endIpAddress": "0.0.0.0"
-            }
-        },
+            {
+                "type": "Microsoft.Sql/servers/firewallRules",
+                "apiVersion": "2021-08-01-preview",
+                "name": "challenge-instance-one/AllowAllWindowsAzureIps_1",
+                "dependsOn": [
+                    "[resourceId('Microsoft.Sql/servers', 'challenge-instance-one')]"
+                ],
+                "properties": {
+                    "startIpAddress": "0.0.0.0",
+                    "endIpAddress": "0.0.0.0"
+                }
+            },
             {
                 "name": "challenge-instance-one/challenge",
                 "type": "Microsoft.Sql/servers/databases",
                 "apiVersion": "2014-04-01",
                 "location": "[resourceGroup().location]",
-                "sku":{
-                    "name": "Standard",
-                    "tier": "Standard"
-                },
                 "tags": {
                     "displayName": "challenge"
-            },
-            "dependsOn": [
-                "[resourceId('Microsoft.Sql/servers', 'challenge-instance-one')]"
-            ],
-            "properties": {
-                "collation": "SQL_Latin1_General_CP1_CI_AS",
-                "edition": "Standard"
+                },
+                "dependsOn": [
+                    "[resourceId('Microsoft.Sql/servers', 'challenge-instance-one')]"
+                ],
+                "properties": {
+                    "collation": "SQL_Latin1_General_CP1_CI_AS",
+                    "edition": "Basic",
+                    "maxSizeBytes": "1073741824",
+                    "requestedServiceObjectiveName": "Basic"
+                }
             }
-            }
+            
+            
+                
+            
         ]
     }],
     "outputs": {}
