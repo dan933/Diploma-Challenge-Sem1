@@ -21,6 +21,7 @@ export class MyPetsComponent implements OnInit {
 
   ) { }
 
-  ngOnInit(): void {  }
+  ngOnInit(): void {
+  }
 
 }

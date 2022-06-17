@@ -70,8 +70,8 @@ import { UserDetailsFormComponent } from './Components/user-details-page/user-de
           {
             uri: `${environment.apiURL}/*`,
             tokenOptions: {
-              audience: environment.AUTH0.audience//,
-              //scope: 'read:message'
+              audience: environment.AUTH0.audience,
+              scope: 'read:admin',
             }
           }
 
