@@ -20,13 +20,18 @@ export class ApiService {
     private http: HttpClient
   ) { }
 
+  signUp = (signUpReq: any) => {
+    return this.http.post(`${environment.apiURL}/api/owner/sign-up`, signUpReq)
+  }
+
   getPets = () => {
     return this.http.get(`${environment.apiURL}/api/owner/view-pets`)
   }
 
-  signUp = (signUpReq: any) => {
-    return this.http.post(`${environment.apiURL}/api/owner/sign-up`, signUpReq)
+  viewTreatments = () => {
+    return this.http.get(`${environment.apiURL}/api/owner/view-treatments`)
   }
+
 
 
 }

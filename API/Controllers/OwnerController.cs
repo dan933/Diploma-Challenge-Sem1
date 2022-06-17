@@ -45,8 +45,8 @@ public class OwnerController : ControllerBase
                 return StatusCode(409, response);
             }
 
-            //get token for management API
             //todo environment variables
+            //get token for management API
             var client = new RestClient("https://dev-tt6-hw09.us.auth0.com");
             var request = new RestRequest("/oauth/token", Method.Post);
             request.AddHeader("content-type", "application/json");
@@ -125,15 +125,24 @@ public class OwnerController : ControllerBase
 
     }
 
-    //todo login endpoint that gives owner a token
 
     //todo authorisation header
     [HttpGet]
-    [Route("{ownerID:int}/view-treatments")]
+    [Route("view-treatments")]
     public async Task<ActionResult<List<Treatment>>> ViewTreatments()
     {
 
-        var ownerID = Convert.ToInt32(RouteData.Values["ownerID"]);
+        var sub = HttpContext?.User.Claims.FirstOrDefault(c => c.Type == System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
+
+        int ownerID = await _context.Owner
+        .Where(o => o.UserID == sub)
+        .Select(o => o.OwnerId)
+        .FirstOrDefaultAsync();
+
+        if(ownerID <= 0){
+            //create owner table record
+            return StatusCode(409, "Boo");
+        }
 
         var treatments = await _context.Treatment
         .Where(treatment => treatment.OwnerId == ownerID)
