@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { AuthService } from '@auth0/auth0-angular';
 import { ApiService } from 'src/app/Services/api.service';
+import { CreateTreatmentFormComponent } from './create-treatment-form/create-treatment-form.component';
 
 export interface Treatment
 {
@@ -8,7 +10,7 @@ export interface Treatment
     OwnerId: number,
     PetName: string,
     ProcedureID: number,
-    Date: Date,
+    Date: any,
     Notes: string,
     Payment: number
 }
@@ -22,8 +24,13 @@ export class TreatmentPageComponent implements OnInit {
 
   constructor(
     public auth: AuthService,
-    public api:ApiService
+    public api: ApiService,
+    public dialog: MatDialog
   ) { }
+
+  openTreatmentForm() {
+    this.dialog.open(CreateTreatmentFormComponent);
+  }
 
   treatmentData: Treatment[] = []
   displayedColumns:string[] = ["ID", "Owner Id", "Pet Name", "Procedure ID", "Date", "Notes", "Payment",]

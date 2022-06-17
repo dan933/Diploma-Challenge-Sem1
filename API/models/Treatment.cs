@@ -49,4 +49,43 @@ namespace API.models
         [JsonPropertyName("Payment")]
         public Decimal Payment { get; set; }
     }
+
+
+    public class TreatmentReq
+    {
+        public TreatmentReq(){
+
+        }
+
+        public TreatmentReq(
+            int OwnerId,
+            string? PetName,
+            int ProcedureID,
+            DateTime Date,
+            string? Notes,
+            Decimal Payment
+        )
+        {
+            this.OwnerId = OwnerId;
+            this.PetName = PetName;
+            this.ProcedureID = ProcedureID;
+            this.Date = Date;
+            this.Notes = Notes;
+        }
+
+        [JsonPropertyName("OwnerId")]
+        public int OwnerId { get; set; }
+
+        [JsonPropertyName("PetName")]
+        public string? PetName { get; set; }
+        
+        [JsonPropertyName("ProcedureID")]
+        public int ProcedureID { get; set; }
+        
+        [JsonPropertyName("Date")]
+        public DateTime Date { get; set; }
+
+        [JsonPropertyName("Notes")]
+        public string? Notes { get; set; }
+    }
 }

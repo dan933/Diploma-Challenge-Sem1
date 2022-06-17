@@ -126,8 +126,8 @@ public class OwnerController : ControllerBase
     }
 
 
-    //todo authorisation header
     [HttpGet]
+    [Authorize]
     [Route("view-treatments")]
     public async Task<ActionResult<List<Treatment>>> ViewTreatments()
     {
@@ -153,23 +153,55 @@ public class OwnerController : ControllerBase
     }
 
 
-    //todo authorisation header
     [HttpGet]
-    [Route("{ownerID:int}/view-procedures")]
-    public async Task<ActionResult<List<ProcedureView>>> ViewProcedures()
-    {
-        var ownerID = Convert.ToInt32(RouteData.Values["ownerID"]);
-
+    [Authorize]
+    [Route("procedures")]
+    public async Task<ActionResult<List<Procedure>>> ViewProcedures()
+    {      
         var procedures =
-        await _context.view_procedure
-        .Where(procedure => procedure.OwnerId == ownerID)
+        await _context.Procedure   
         .ToListAsync();
 
         return Ok(procedures);
     }
 
+    [HttpPost]
+    [Authorize]
+    [Route("create-treatment")]
+    public async Task<ActionResult<Treatment>> CreateTreatment([FromBody] TreatmentReq treatmentReq){
+        var sub = HttpContext?.User.Claims.FirstOrDefault(c => c.Type == System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
+
+        int ownerID = await _context.Owner
+        .Where(o => o.UserID == sub)
+        .Select(o => o.OwnerId)
+        .FirstOrDefaultAsync();
+
+        Console.WriteLine(ownerID);
+
+        if(ownerID <= 0){
+            //create owner table record
+            return StatusCode(409, "boo");
+        }
+
+        var treatment = new Treatment(
+            ownerID,
+             treatmentReq.PetName,
+             treatmentReq.ProcedureID,
+             treatmentReq.Date,
+             treatmentReq.Notes,
+             0
+            );
+
+        await _context.Treatment.AddAsync(treatment);
+        var resp = await _context.SaveChangesAsync();
+
+        return Ok(resp);
+    }
+
+
     //todo authorisation header
     [HttpPut]
+    [Authorize]
     [Route("{ownerID:int}/update-details")]
     public async Task<ActionResult<Response<Owner?>>> UpdateOwnerDetails([FromBody] OwnerRequest ownerRequest){
         var ownerID = Convert.ToInt32(RouteData.Values["ownerID"]);
@@ -201,4 +233,6 @@ public class OwnerController : ControllerBase
         return Ok(resposne);
 
     }
+
+
 }

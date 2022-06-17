@@ -31,6 +31,9 @@ public class PetContext: DbContext {
         modelBuilder.Entity<ProcedureView>()
         .HasNoKey();
 
+        modelBuilder.Entity<Procedure>()
+        .HasKey(p => new {p.ProcedureID});
+
 
     }
 
@@ -39,4 +42,5 @@ public class PetContext: DbContext {
     public virtual DbSet<Treatment> Treatment { get; set; } = null!;
 
     public virtual DbSet<ProcedureView> view_procedure { get; set; } = null!;
+    public virtual DbSet<Procedure> Procedure { get; set; } = null!;
 }

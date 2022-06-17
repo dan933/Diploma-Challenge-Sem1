@@ -15,3 +15,13 @@ h1{
   min-height: 80vh;
   overflow: auto;
 }
+
+.center{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  overflow: auto;
+  padding-bottom: 10px;
+  row-gap: 15px;
+}

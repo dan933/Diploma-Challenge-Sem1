@@ -25,6 +25,7 @@ import { AuthHttpInterceptor } from '@auth0/auth0-angular';
 import { SignUpPageComponent } from './Components/sign-up-page/sign-up-page.component';
 import { PetsTableComponent } from './Components/my-pets/pets-table/pets-table.component';
 import { TreatmentPageComponent } from './Components/treatment-page/treatment-page.component';
+import { CreateTreatmentFormComponent } from './Components/treatment-page/create-treatment-form/create-treatment-form.component';
 
 
 @NgModule({
@@ -35,7 +36,8 @@ import { TreatmentPageComponent } from './Components/treatment-page/treatment-pa
     NavBarComponent,
     SignUpPageComponent,
     PetsTableComponent,
-    TreatmentPageComponent
+    TreatmentPageComponent,
+    CreateTreatmentFormComponent
   ],
   imports: [
     BrowserModule,

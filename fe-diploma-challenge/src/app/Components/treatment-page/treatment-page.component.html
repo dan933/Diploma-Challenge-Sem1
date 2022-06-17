@@ -1,58 +1,58 @@
 
-<table mat-table [dataSource]="treatmentData" class="mat-elevation-z8">
+<div class="center">
+    <h1>Treatments</h1>
+    <table mat-table [dataSource]="treatmentData" class="mat-elevation-z8">
 
-  <!--- Note that these columns can be defined in any order.
-        The actual rendered columns are set as a property on the row definition" -->
+    <!--- Note that these columns can be defined in any order.
+          The actual rendered columns are set as a property on the row definition" -->
 
-  <!-- Treatment ID Column -->
-  <ng-container matColumnDef="ID">
-    <th mat-header-cell *matHeaderCellDef> Treatment ID </th>
-    <td mat-cell *matCellDef="let element"> {{element.ID}} </td>
-  </ng-container>
+    <!-- Treatment ID Column -->
+    <ng-container matColumnDef="ID">
+      <th mat-header-cell *matHeaderCellDef> Treatment ID </th>
+      <td mat-cell *matCellDef="let element"> {{element.ID}} </td>
+    </ng-container>
 
-  <!-- Owner ID Column -->
-  <ng-container matColumnDef="Owner Id">
-    <th mat-header-cell *matHeaderCellDef> Owner ID </th>
-    <td mat-cell *matCellDef="let element"> {{element.OwnerId}} </td>
-  </ng-container>
+    <!-- Owner ID Column -->
+    <ng-container matColumnDef="Owner Id">
+      <th mat-header-cell *matHeaderCellDef> Owner ID </th>
+      <td mat-cell *matCellDef="let element"> {{element.OwnerId}} </td>
+    </ng-container>
 
-  <!-- Pet Name Column -->
-  <ng-container matColumnDef="Pet Name">
-    <th mat-header-cell *matHeaderCellDef>Pet Name</th>
-    <td mat-cell *matCellDef="let element"> {{element.PetName}} </td>
-  </ng-container>
+    <!-- Pet Name Column -->
+    <ng-container matColumnDef="Pet Name">
+      <th mat-header-cell *matHeaderCellDef>Pet Name</th>
+      <td mat-cell *matCellDef="let element"> {{element.PetName}} </td>
+    </ng-container>
 
-  <!-- Procedure ID Column -->
-  <ng-container matColumnDef="Procedure ID">
-    <th mat-header-cell *matHeaderCellDef> Procedure ID </th>
-    <td mat-cell *matCellDef="let element"> {{element.ProcedureID}} </td>
-  </ng-container>
+    <!-- Procedure ID Column -->
+    <ng-container matColumnDef="Procedure ID">
+      <th mat-header-cell *matHeaderCellDef> Procedure ID </th>
+      <td mat-cell *matCellDef="let element"> {{element.ProcedureID}} </td>
+    </ng-container>
 
-  <!-- Date Column -->
-  <ng-container matColumnDef="Date">
-    <th mat-header-cell *matHeaderCellDef> Date </th>
-    <td mat-cell *matCellDef="let element"> {{element.Date}} </td>
-  </ng-container>
+    <!-- Date Column -->
+    <ng-container matColumnDef="Date">
+      <th mat-header-cell *matHeaderCellDef> Date </th>
+      <td mat-cell *matCellDef="let element"> {{element.Date}} </td>
+    </ng-container>
 
-  <!-- Notes Column -->
-  <ng-container matColumnDef="Notes">
-    <th mat-header-cell *matHeaderCellDef> Notes </th>
-    <td mat-cell *matCellDef="let element"> {{element.Notes}} </td>
-  </ng-container>
+    <!-- Notes Column -->
+    <ng-container matColumnDef="Notes">
+      <th mat-header-cell *matHeaderCellDef> Notes </th>
+      <td mat-cell *matCellDef="let element"> {{element.Notes}} </td>
+    </ng-container>
 
-  <!-- Payment Column -->
-  <ng-container matColumnDef="Payment">
-    <th mat-header-cell *matHeaderCellDef> Payment </th>
-    <td mat-cell *matCellDef="let element"> {{element.Payment}} </td>
-  </ng-container>
+    <!-- Payment Column -->
+    <ng-container matColumnDef="Payment">
+      <th mat-header-cell *matHeaderCellDef> Payment </th>
+      <td mat-cell *matCellDef="let element"> $ {{element.Payment}} </td>
+    </ng-container>
 
-  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-  <tr
-  mat-row
-  *matRowDef="let row;
-  columns: displayedColumns;"></tr>
-</table>
-
-<!-- ---------- This was in the tr tag ------------- -->
-<!-- (click)="selectRow(row)" -->
-<!-- [class.selected-row]="selectedRow == row" -->
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr
+    mat-row
+    *matRowDef="let row;
+    columns: displayedColumns;"></tr>
+  </table>
+  <button mat-raised-button color="primary" (click)="openTreatmentForm()">Create Treatment</button>
+</div>
