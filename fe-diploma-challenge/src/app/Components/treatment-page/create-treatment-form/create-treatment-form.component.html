@@ -11,7 +11,7 @@
 
       <mat-form-field appearance="fill">
       <mat-label>Procedure</mat-label>
-        <mat-select formControlName="Procedure" [(ngModel)]="selectedProcedure">
+        <mat-select formControlName="Procedure">
           <mat-option *ngFor="let item of procedures" [value]="item">{{item.description}}</mat-option>
         </mat-select>
       </mat-form-field>

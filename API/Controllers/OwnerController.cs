@@ -21,26 +21,7 @@ public class OwnerController : ControllerBase
     {
         _context = context;
         Configuration = configuration;
-    }
-
-    // [HttpGet]
-    // [Authorize]
-    // [Route("check-role")]
-    // public async Task<ActionResult<Response<string>>> CheckRole(){
-
-    //     var sub = HttpContext?.User.Claims.FirstOrDefault(c => c.Type == System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
-
-    //     var managementHelper = new ManagementHelper();
-
-    //     var token = managementHelper.GetManagementToken(Configuration);
-
-    //     var clientManagement = new ManagementApiClient(token, new Uri(Configuration["Auth0:ManagementAudience"]));
-
-    //     var userRoles = await clientManagement.Users.GetRolesAsync(sub);
-
-    //     return Ok(userRoles);
-    // }
-    
+    }   
 
     [HttpPost]
     [Route("sign-up")]

@@ -22,16 +22,9 @@ export class NavBarComponent implements OnInit {
     public api: ApiService,
   ) { }
 
-  checkUserRoles = () => {
-    this.api.getUserRoles().subscribe({
-      next: (resp) => { console.log(resp) },
-      error:(err) => console.log(err)
-    })
-  }
-
-
 
   ngOnInit(): void {
+
     this.auth.user$.subscribe((resp) => { this.userEmail = resp?.email })
     this.checkLoginStatus()
   }

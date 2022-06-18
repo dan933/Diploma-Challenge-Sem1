@@ -33,11 +33,16 @@ export class ApiService {
     return this.http.get(`${environment.apiURL}/api/owner/view-pets`)
   }
 
+  adminGetPets = () => {
+    return this.http.get(`${environment.apiURL}/api/staff/view-pets`)
+  }
+
+
   viewTreatments = () => {
     return this.http.get(`${environment.apiURL}/api/owner/view-treatments`)
   }
 
-  staffViewTreatments = () => {
+  adminViewTreatments = () => {
     return this.http.get(`${environment.apiURL}/api/staff/view-treatments`)
   }
 
@@ -55,9 +60,5 @@ export class ApiService {
 
   getOwner = () => {
     return this.http.get(`${environment.apiURL}/api/owner/get-user`)
-  }
-
-  getUserRoles = () => {
-    return this.http.get(`${environment.apiURL}/api/owner/check-role`)
   }
 }

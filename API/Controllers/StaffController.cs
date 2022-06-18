@@ -33,14 +33,25 @@ public class StaffController : ControllerBase
     }
 
     [HttpGet]
+    [Authorize("write:admin")]
+    [Route("view-pets")]
+    public async Task<ActionResult<List<Pet>>> ViewPets(){
+
+        var pets = await _context.Pet        
+        .ToListAsync();
+
+        return Ok(pets);
+    }
+
+    [HttpGet]
     [Route("view-treatments")]
     [Authorize("write:admin")]
-    public async Task<ActionResult<Response<List<Treatment>>>> GetAllTreatments(){
+    public async Task<ActionResult<List<Treatment>>> GetAllTreatments(){
         var treatments = await _context.Treatment
         .ToListAsync();
 
-        var response = new Response<List<Treatment>>(treatments, true, "treatments successfully returned");
-        return Ok(response);
+        //var response = new Response<List<Treatment>>(treatments, true, "treatments successfully returned");
+        return Ok(treatments);
     }
 
     [HttpPost]

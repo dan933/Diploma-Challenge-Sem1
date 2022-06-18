@@ -5,6 +5,11 @@
         The actual rendered columns are set as a property on the row definition" -->
 
   <!-- Pet Name Column -->
+  <ng-container matColumnDef="Owner ID" *ngIf="isAdmin">
+    <th mat-header-cell *matHeaderCellDef> Owner ID </th>
+    <td mat-cell *matCellDef="let element"> {{element.ownerId}} </td>
+  </ng-container>
+
   <ng-container matColumnDef="Pet Name">
     <th mat-header-cell *matHeaderCellDef> Pet </th>
     <td mat-cell *matCellDef="let element"> {{element.petName}} </td>

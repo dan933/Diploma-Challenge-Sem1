@@ -31,6 +31,9 @@ export class PetsTableComponent implements OnInit {
 
   displayedColumns: string[] = ['Pet Name', 'type']
 
+  role: string | null = null;
+  isAdmin = false;
+
   // selectedRow: any;
 
   // selectRow = (row: any) => {
@@ -39,12 +42,42 @@ export class PetsTableComponent implements OnInit {
   //   // this.selectedPet.emit(this.selectRow)
   // }
 
+  getPets = () => {
+    this.api.checkRole().subscribe({
+
+      next: (resp: any) => { this.role = resp.claim },
+
+      error: (err) => { console.log(err) },
+
+      complete: () => {
+        if (this.role == "write:admin") {
+          this.api.adminGetPets().subscribe({
+            next: (resp: any) => { this.petData = resp as Pets[] },
+            complete: () => {
+              this.isAdmin = true;
+              this.displayedColumns = ['Owner ID','Pet Name', 'type']
+            }
+          })
+
+        } else {
+
+          this.api.getPets().subscribe({
+            next: (resp) => { this.petData = resp as Pets[] },
+            complete:() => { this.displayedColumns = ['Pet Name', 'type'] }
+          }
+
+          )
+
+        }
+      }
+
+    })
+  }
+
   ngOnInit(): void {
 
-    this.api.getPets().subscribe(
-      (resp) => {
-        this.petData = resp as Pets[]
-      }
-    )
+    this.getPets()
+
+
   }
 }

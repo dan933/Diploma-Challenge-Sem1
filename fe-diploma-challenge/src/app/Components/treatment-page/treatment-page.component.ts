@@ -38,12 +38,39 @@ export class TreatmentPageComponent implements OnInit {
 
   }
 
+  isAdmin: boolean = false
+  role:any = null
+
+  getTreatments = () => {
+    this.api.checkRole().subscribe({
+
+      next: (resp: any) => { this.role = resp.claim },
+
+      error: (err) => { console.log(err) },
+
+      complete: () => {
+        if (this.role == "write:admin") {
+          this.api.adminViewTreatments().subscribe({
+            next: (resp) => { this.treatmentData = resp as Treatment[], console.log(resp) },
+
+            complete: () => { }
+
+          })
+
+        } else {
+
+          this.api.viewTreatments().subscribe((resp) => this.treatmentData = resp as Treatment[])
+
+        }
+      }
+    })
+  }
+
   treatmentData: Treatment[] = []
   displayedColumns:string[] = ["ID", "Owner Id", "Pet Name", "Procedure ID", "Date", "Notes", "Payment",]
 
   ngOnInit(): void {
-
-    //this.api.viewTreatments().subscribe((resp) => this.treatmentData = resp as Treatment[])
+    this.getTreatments();
   }
 
 }
