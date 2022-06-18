@@ -45,6 +45,13 @@ export class ApiService {
   }
 
   getOwner = () => {
-    return this.http.get(`${environment.apiURL}/api/owner/get-user`)
+    try {
+
+      return this.http.get(`${environment.apiURL}/api/owner/get-user`)
+
+    } catch (error) {
+      throw error;
+
+    }
   }
 }
