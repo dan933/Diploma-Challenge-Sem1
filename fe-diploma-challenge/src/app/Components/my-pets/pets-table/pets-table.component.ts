@@ -1,3 +1,4 @@
+import { HttpClient } from '@angular/common/http';
 import { Component, OnInit, EventEmitter, Output } from '@angular/core';
 import { AuthService } from '@auth0/auth0-angular';
 import { ApiService } from 'src/app/Services/api.service';
@@ -22,7 +23,8 @@ export class PetsTableComponent implements OnInit {
 
   constructor(
     public auth: AuthService,
-    public api: ApiService
+    public api: ApiService,
+    public http:HttpClient
   ) { }
 
   petData: Pets[] = []
@@ -38,6 +40,7 @@ export class PetsTableComponent implements OnInit {
   // }
 
   ngOnInit(): void {
+
     this.api.getPets().subscribe(
       (resp) => {
         this.petData = resp as Pets[]

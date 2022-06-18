@@ -20,6 +20,11 @@ export class ApiService {
     private http: HttpClient
   ) { }
 
+
+  checkRole = () => {
+    return this.http.get(`${environment.apiURL}/api/staff/check-role`)
+  }
+
   signUp = (signUpReq: any) => {
     return this.http.post(`${environment.apiURL}/api/owner/sign-up`, signUpReq)
   }
@@ -30,6 +35,10 @@ export class ApiService {
 
   viewTreatments = () => {
     return this.http.get(`${environment.apiURL}/api/owner/view-treatments`)
+  }
+
+  staffViewTreatments = () => {
+    return this.http.get(`${environment.apiURL}/api/staff/view-treatments`)
   }
 
   getProcedures = () => {
@@ -46,5 +55,9 @@ export class ApiService {
 
   getOwner = () => {
     return this.http.get(`${environment.apiURL}/api/owner/get-user`)
+  }
+
+  getUserRoles = () => {
+    return this.http.get(`${environment.apiURL}/api/owner/check-role`)
   }
 }

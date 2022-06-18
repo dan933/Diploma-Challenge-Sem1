@@ -20,9 +20,31 @@ public class StaffController : ControllerBase
         _context = context;
     }
 
-    //todo auth header
-    //todo roles for admin
+    [HttpGet]
+    [Route("check-role")]
+    [Authorize]  
+    public ActionResult<Claims> CheckAdmin(){
+
+        var permissions = HttpContext?.User.Claims.FirstOrDefault(c => c.Value == "write:admin");
+        var claim = new Claims();
+        claim.Claim = permissions?.Value;
+
+        return Ok(claim);
+    }
+
+    [HttpGet]
+    [Route("view-treatments")]
+    [Authorize("write:admin")]
+    public async Task<ActionResult<Response<List<Treatment>>>> GetAllTreatments(){
+        var treatments = await _context.Treatment
+        .ToListAsync();
+
+        var response = new Response<List<Treatment>>(treatments, true, "treatments successfully returned");
+        return Ok(response);
+    }
+
     [HttpPost]
+    [Authorize("write:admin")]
     [Route("create-treatment")]
     public async Task<ActionResult<Response<Treatment?>>> CreateTreatment([FromBody] Treatment treatmentReq)
     {
@@ -55,9 +77,8 @@ public class StaffController : ControllerBase
         return Ok(response);
     }
 
-    //todo auth header
-    //todo role admin scope
     [HttpPut]
+    [Authorize("write:admin")]
     [Route("{treatmentID:int}/treatment-paid")]
     public async Task<ActionResult<Response<Treatment?>>> TreatmentPaid(){
 
@@ -97,11 +118,5 @@ public class StaffController : ControllerBase
         return response;
     }
 
-
-
     //todo create new procedures
-    //todo  auth header
-    //todo role admin scope
-
-    //todo CICD pipeline with github and azure
 }

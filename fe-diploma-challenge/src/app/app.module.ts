@@ -11,7 +11,7 @@ import { FormBuilder, Validators, ReactiveFormsModule, FormsModule} from '@angul
 import { environment } from 'src/environments/environment';
 
 // Import the module from the SDK
-import { AuthModule } from '@auth0/auth0-angular';
+import { AuthModule, AuthHttpInterceptor } from '@auth0/auth0-angular';
 import { MyPetsComponent } from './Components/my-pets/my-pets.component';
 import { NavBarComponent } from './Components/nav-bar/nav-bar.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -21,7 +21,6 @@ import { AppMaterialModule } from './app-material/app-material.module';
 
 //------ api modules --------//
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
-import { AuthHttpInterceptor } from '@auth0/auth0-angular';
 import { SignUpPageComponent } from './Components/sign-up-page/sign-up-page.component';
 import { PetsTableComponent } from './Components/my-pets/pets-table/pets-table.component';
 import { TreatmentPageComponent } from './Components/treatment-page/treatment-page.component';
@@ -59,7 +58,7 @@ import { UserDetailsFormComponent } from './Components/user-details-page/user-de
       clientId: environment.AUTH0.clientId,
       redirectUri: environment.AUTH0.redirectUri,
       audience: environment.AUTH0.audience,
-      scope: 'read:message',
+      scope: 'read:message write:admin',
 
       httpInterceptor: {
         allowedList: [
@@ -71,7 +70,7 @@ import { UserDetailsFormComponent } from './Components/user-details-page/user-de
             uri: `${environment.apiURL}/*`,
             tokenOptions: {
               audience: environment.AUTH0.audience,
-              scope: 'read:admin',
+              scope: 'read:message write:admin',
             }
           }
 

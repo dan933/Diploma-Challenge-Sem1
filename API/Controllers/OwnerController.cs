@@ -6,8 +6,6 @@ using Auth0.ManagementApi.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Newtonsoft.Json.Linq;
-using RestSharp;
 
 namespace API.Controllers;
 
@@ -26,13 +24,23 @@ public class OwnerController : ControllerBase
     }
 
     // [HttpGet]
-    // [Route("test")]
-    // public string GetDBToken(){
-    //     ManagementHelper managementHelper = new ManagementHelper();
+    // [Authorize]
+    // [Route("check-role")]
+    // public async Task<ActionResult<Response<string>>> CheckRole(){
+
+    //     var sub = HttpContext?.User.Claims.FirstOrDefault(c => c.Type == System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
+
+    //     var managementHelper = new ManagementHelper();
 
     //     var token = managementHelper.GetManagementToken(Configuration);
-    //     return token;
+
+    //     var clientManagement = new ManagementApiClient(token, new Uri(Configuration["Auth0:ManagementAudience"]));
+
+    //     var userRoles = await clientManagement.Users.GetRolesAsync(sub);
+
+    //     return Ok(userRoles);
     // }
+    
 
     [HttpPost]
     [Route("sign-up")]
@@ -225,6 +233,7 @@ public class OwnerController : ControllerBase
     [Authorize]
     [Route("create-treatment")]
     public async Task<ActionResult<Treatment>> CreateTreatment([FromBody] TreatmentReq treatmentReq){
+
         var sub = HttpContext?.User.Claims.FirstOrDefault(c => c.Type == System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
 
         int ownerID = await _context.Owner
@@ -251,42 +260,4 @@ public class OwnerController : ControllerBase
 
         return Ok(resp);
     }
-
-
-    //todo authorisation header
-    [HttpPut]
-    [Authorize]
-    [Route("{ownerID:int}/update-details")]
-    public async Task<ActionResult<Response<Owner?>>> UpdateOwnerDetails([FromBody] OwnerRequest ownerRequest){
-        var ownerID = Convert.ToInt32(RouteData.Values["ownerID"]);
-
-        //todo get user information from auth header
-
-        var owner =
-        await _context.Owner
-        .FindAsync(ownerID);
-
-        Response<Owner?> resposne;
-
-        if(owner == null){
-            resposne = new Response<Owner?>(null, false, $"OwnerID: {ownerID} does not exist.");
-            return StatusCode(409, resposne);
-        }
-
-        owner.Firstname = ownerRequest.Firstname;
-        owner.Surname = ownerRequest.Surname;
-        owner.Phone = ownerRequest.Phone;
-        owner.Email = ownerRequest.Email;
-
-        await _context.SaveChangesAsync();
-
-        //todo auth0 details also need to be updated
-
-        resposne = new Response<Owner?>(owner, true, "Owner Updated successfully.");
-
-        return Ok(resposne);
-
-    }
-
-
 }

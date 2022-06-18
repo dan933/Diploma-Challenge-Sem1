@@ -42,7 +42,8 @@ export class TreatmentPageComponent implements OnInit {
   displayedColumns:string[] = ["ID", "Owner Id", "Pet Name", "Procedure ID", "Date", "Notes", "Payment",]
 
   ngOnInit(): void {
-    this.api.viewTreatments().subscribe((resp) => this.treatmentData = resp as Treatment[])
+
+    //this.api.viewTreatments().subscribe((resp) => this.treatmentData = resp as Treatment[])
   }
 
 }

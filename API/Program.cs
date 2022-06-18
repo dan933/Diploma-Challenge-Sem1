@@ -51,7 +51,8 @@ builder.Services.AddAuthentication(options =>
 
 builder.Services.AddAuthorization(options =>
 {
-     options.AddPolicy("read:message", policy => policy.Requirements.Add(new HasScopeRequirement("read:message", domain)));
+     options.AddPolicy("read:message", policy => policy.Requirements.Add(new HasScopeRequirement("read:message", domain)));     
+     options.AddPolicy("write:admin", policy => policy.Requirements.Add(new HasScopeRequirement("write:admin", domain)));   
 });
 
 builder.Services.AddSingleton<IAuthorizationHandler, HasScopeHandler>();

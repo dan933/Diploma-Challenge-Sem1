@@ -1,6 +1,8 @@
+import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 
 import { AuthService } from '@auth0/auth0-angular';
+import { ApiService } from 'src/app/Services/api.service';
 import { environment } from 'src/environments/environment';
 
 @Component({
@@ -11,11 +13,23 @@ import { environment } from 'src/environments/environment';
 export class NavBarComponent implements OnInit {
   logoutURL = environment.AUTH0.logoutURL;
   isLoggedIn = false;
-  userEmail? = "";
+  userEmail?= "";
+
+  sub:string|undefined = "";
 
   constructor(
-    public auth: AuthService
+    public auth: AuthService,
+    public api: ApiService,
   ) { }
+
+  checkUserRoles = () => {
+    this.api.getUserRoles().subscribe({
+      next: (resp) => { console.log(resp) },
+      error:(err) => console.log(err)
+    })
+  }
+
+
 
   ngOnInit(): void {
     this.auth.user$.subscribe((resp) => { this.userEmail = resp?.email })
@@ -27,5 +41,4 @@ export class NavBarComponent implements OnInit {
       (resp) => { this.isLoggedIn = resp }
     )
   }
-
 }
