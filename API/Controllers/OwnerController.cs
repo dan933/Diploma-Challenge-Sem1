@@ -1,4 +1,5 @@
 using System.Text.RegularExpressions;
+using API.Helpers;
 using API.models;
 using Auth0.ManagementApi;
 using Auth0.ManagementApi.Models;
@@ -16,9 +17,21 @@ public class OwnerController : ControllerBase
 {
     private readonly PetContext _context;
 
-    public OwnerController(PetContext context)
+    protected readonly IConfiguration Configuration;
+
+    public OwnerController(PetContext context,IConfiguration configuration)
     {
         _context = context;
+        Configuration = configuration;
+    }
+
+    [HttpGet]
+    [Route("test")]
+    public string GetDBToken(){
+        ManagementHelper managementHelper = new ManagementHelper();
+
+        var token = managementHelper.GetManagementToken(Configuration);
+        return token;
     }
 
     [HttpPost]
