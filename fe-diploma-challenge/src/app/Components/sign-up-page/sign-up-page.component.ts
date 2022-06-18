@@ -71,18 +71,19 @@ export class SignUpPageComponent implements OnInit {
       }
 
     } else {
+
       this.signUpForm.controls['password'].setErrors(null)
-        this.signUpForm.controls['confirmPassword'].setErrors(null)
+      this.signUpForm.controls['confirmPassword'].setErrors(null)
       this.passwordValidation.errorMessage = ""
 
       let signUpReq = {
-        firstName:this.signUpForm.controls['firstName'].value,
-        lastName:this.signUpForm.controls['lastName'].value,
-        phoneNumber:this.signUpForm.controls['phoneNumber'].value,
-        email:this.signUpForm.controls['email'].value,
+        firstName:this.signUpForm.controls['firstName'].value.trim(),
+        lastName:this.signUpForm.controls['lastName'].value.trim(),
+        phoneNumber:this.signUpForm.controls['phoneNumber'].value.trim(),
+        email:this.signUpForm.controls['email'].value.trim(),
         password:this.signUpForm.controls['password'].value,
       }
-      console.log(signUpReq)
+
       this.api.signUp(signUpReq).subscribe(
         (resp) => console.log(resp)
       )

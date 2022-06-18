@@ -8,8 +8,6 @@ using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json.Linq;
 using RestSharp;
 
-//deploy testing
-
 namespace API.Controllers;
 
 [ApiController]
@@ -29,11 +27,6 @@ public class OwnerController : ControllerBase
     {
         try
         {
-            ownerSignUpReq.email = ownerSignUpReq.email != null ? ownerSignUpReq.email.Trim() : ownerSignUpReq.email;
-            ownerSignUpReq.lastName = ownerSignUpReq.lastName != null ? ownerSignUpReq.lastName.Trim() : ownerSignUpReq.lastName;
-            ownerSignUpReq.firstName = ownerSignUpReq.firstName != null ? ownerSignUpReq.firstName.Trim() : ownerSignUpReq.firstName;
-            ownerSignUpReq.phoneNumber = ownerSignUpReq.phoneNumber != null ? ownerSignUpReq.phoneNumber.Trim() : ownerSignUpReq.phoneNumber;
-
             Response<Owner?> response;
 
             //check owner email is not already in the database
