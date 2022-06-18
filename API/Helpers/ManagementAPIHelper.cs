@@ -30,11 +30,6 @@ namespace API.Helpers
 
             return token;
         }
-
-        // public ManagementApiClient CreateManagementClient(IConfiguration configuration){
-            
-        // }
-
     }
     
 }

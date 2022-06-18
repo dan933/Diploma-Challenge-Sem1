@@ -42,11 +42,15 @@ export class SignUpPageComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  login = () => {
+    this.auth.loginWithRedirect({ appState:{target:'/pets'} })
+  }
+
   signUp = () => {
 
     this.signUpForm.markAllAsTouched();
     if (this.signUpForm.controls['password'].value != this.signUpForm.controls['confirmPassword'].value) {
-      this.signUpForm.controls['password'].setErrors({'incorrect': true})
+      this.signUpForm.controls['password'].setErrors({ 'incorrect': true })
       this.signUpForm.controls['confirmPassword'].setErrors({ 'incorrect': true })
 
       this.passwordValidation.errorMessage = "Passwords don't match."
@@ -60,7 +64,7 @@ export class SignUpPageComponent implements OnInit {
 
       if (!hasUpperCase || !hasLowerCase || !hasNumbers) {
         this.passwordValidation.errorMessage = "Password requires Lower case (a-z), upper case (A-Z) and numbers (0-9)"
-        this.signUpForm.controls['password'].setErrors({'incorrect': true})
+        this.signUpForm.controls['password'].setErrors({ 'incorrect': true })
         this.signUpForm.controls['confirmPassword'].setErrors({ 'incorrect': true })
 
       } else {
@@ -77,22 +81,18 @@ export class SignUpPageComponent implements OnInit {
       this.passwordValidation.errorMessage = ""
 
       let signUpReq = {
-        firstName:this.signUpForm.controls['firstName'].value.trim(),
-        lastName:this.signUpForm.controls['lastName'].value.trim(),
-        phoneNumber:this.signUpForm.controls['phoneNumber'].value.trim(),
-        email:this.signUpForm.controls['email'].value.trim(),
-        password:this.signUpForm.controls['password'].value,
+        firstName: this.signUpForm.controls['firstName'].value.trim(),
+        lastName: this.signUpForm.controls['lastName'].value.trim(),
+        phoneNumber: this.signUpForm.controls['phoneNumber'].value.trim(),
+        email: this.signUpForm.controls['email'].value.trim(),
+        password: this.signUpForm.controls['password'].value,
       }
 
-      this.api.signUp(signUpReq).subscribe(
-        (resp) => console.log(resp)
-      )
+      this.api.signUp(signUpReq).subscribe({
+        next: (resp) => { console.log(resp) },
+        error: (err) => { alert("sorry something went wrong.") },
+        complete:() => { this.login() }
+      })
     }
   }
-
-
-  login = () => {
-    this.auth.loginWithRedirect({ appState:{target:'/pets'} })
-  }
-
 }

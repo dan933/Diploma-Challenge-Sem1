@@ -53,46 +53,36 @@ public class OwnerController : ControllerBase
                 return StatusCode(409, response);
             }
 
-            //todo environment variables
-            //get token for management API
-            var client = new RestClient("https://dev-tt6-hw09.us.auth0.com");
-            var request = new RestRequest("/oauth/token", Method.Post);
-            request.AddHeader("content-type", "application/json");
+            ManagementHelper managementHelper = new ManagementHelper();
 
-            //todo clean up parameters
-            request.AddParameter("application/json", "{\"client_id\":\"kUAAhoahZIBdb6SMoQZbryn9fZ6WIbsy\",\"client_secret\":\"zTHQ3l3jxD_coV1WO5xJGe1GyXOdZfwapI54k-EPLc3l4NuuyHAvm9c1UpwlObhN\",\"audience\":\"https://dev-tt6-hw09.us.auth0.com/api/v2/\",\"grant_type\":\"client_credentials\"}", ParameterType.RequestBody);
-            RestResponse tokenResponse = client.Execute(request);
+            var token = managementHelper.GetManagementToken(Configuration);
 
-            dynamic token = tokenResponse.Content != null ? JObject.Parse(tokenResponse.Content)["access_token"]!.ToString() : "";
-
-            var clientManagement = new ManagementApiClient(token, new Uri("https://dev-tt6-hw09.us.auth0.com/api/v2"));
+            var clientManagement = new ManagementApiClient(token, new Uri(Configuration["Auth0:ManagementAudience"]));
 
             var newUser = new UserCreateRequest();
-            //Authentication database name
             newUser.Connection = "Username-Password-Authentication";
             newUser.Email = ownerSignUpReq.email;                        
             newUser.FirstName = ownerSignUpReq.firstName;
             newUser.LastName = ownerSignUpReq.lastName;
+            newUser.Password = ownerSignUpReq.password;
 
             var resp = await clientManagement
-            .Users
-            .CreateAsync(newUser);
+            .Users.CreateAsync(newUser);
 
             var userID = resp.UserId;
 
             var newOwner =
             new Owner(
-            userID,
-            ownerSignUpReq.lastName,
-            ownerSignUpReq.firstName,
-            ownerSignUpReq.phoneNumber,
-            ownerSignUpReq.email);
+                userID,
+                ownerSignUpReq.lastName,
+                ownerSignUpReq.firstName,
+                ownerSignUpReq.phoneNumber,
+                ownerSignUpReq.email
+            );
 
             await _context.Owner.AddAsync(newOwner);
             await _context.SaveChangesAsync();
-
-
-
+            
             response = new Response<Owner?>(newOwner, true, "Owner successfully created.");
             
             return Ok(response);
