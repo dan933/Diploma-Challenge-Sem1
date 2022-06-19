@@ -88,4 +88,36 @@ namespace API.models
         [JsonPropertyName("Notes")]
         public string? Notes { get; set; }
     }
+
+
+    public class ViewTreatment{
+        public ViewTreatment(){
+
+        }
+
+        [Key]
+        [JsonPropertyName("ID")]
+        public int ID { get; set; }
+
+        [JsonPropertyName("OwnerId")]
+        public int OwnerID { get; set; }
+
+        [JsonPropertyName("PetName")]
+        public string? PetName { get; set; }
+
+        [JsonPropertyName("ProcedureID")]
+        public int ProcedureID { get; set; }
+
+        [JsonPropertyName("Date")]
+        public DateTime Date { get; set; }
+
+        [JsonPropertyName("Notes")]
+        public string? Notes { get; set; }
+
+        [JsonPropertyName("Payment")]
+        public decimal Payment { get; set; }
+
+        [JsonPropertyName("AmountOwed")]
+        public decimal AmountOwed { get; set; }
+    }
 }

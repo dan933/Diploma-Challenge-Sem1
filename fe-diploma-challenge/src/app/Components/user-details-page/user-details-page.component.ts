@@ -31,7 +31,7 @@ export class UserDetailsPageComponent implements OnInit {
 
   ngOnInit(): void {
     this.api.getOwner().subscribe(
-      (resp:any) => { this.owner = resp.Data, console.log(this.owner)}
+      (resp: any) => { this.owner = resp.Data}
     )
   }
 

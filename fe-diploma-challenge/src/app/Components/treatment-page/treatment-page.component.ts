@@ -32,7 +32,7 @@ export class TreatmentPageComponent implements OnInit {
     const dialogRef = this.dialog.open(CreateTreatmentFormComponent);
     dialogRef.afterClosed().subscribe(
       () => {
-        this.api.viewTreatments().subscribe((resp) => this.treatmentData = resp as Treatment[]);
+        this.getTreatments();
       }
     );
 
@@ -51,7 +51,7 @@ export class TreatmentPageComponent implements OnInit {
       complete: () => {
         if (this.role == "write:admin") {
           this.api.adminViewTreatments().subscribe({
-            next: (resp) => { this.treatmentData = resp as Treatment[], console.log(resp) },
+            next: (resp) => { this.treatmentData = resp as Treatment[] },
 
             complete: () => { }
 
@@ -67,7 +67,7 @@ export class TreatmentPageComponent implements OnInit {
   }
 
   treatmentData: Treatment[] = []
-  displayedColumns:string[] = ["ID", "Owner Id", "Pet Name", "Procedure ID", "Date", "Notes", "Payment",]
+  displayedColumns:string[] = ["ID", "Owner Id", "Pet Name", "Procedure ID", "Date", "Notes", "Payment","Amount Owed"]
 
   ngOnInit(): void {
     this.getTreatments();

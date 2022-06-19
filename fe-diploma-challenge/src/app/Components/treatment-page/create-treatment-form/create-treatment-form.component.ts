@@ -29,10 +29,48 @@ export class CreateTreatmentFormComponent implements OnInit {
     errorMessage: ""
   }
 
+  role: any = null;
+  isAdmin: boolean = false;
+
   checkError = (formControl: any) => {
     let isError = formControl.errors != null ? true : false
 
     return isError;
+  }
+
+  getFormData = () => {
+    this.api.checkRole().subscribe({
+      next: (resp: any) => { this.role = resp.claim, console.log(resp) },
+      error: (err) => { console.log(err) },
+      complete: () => {
+
+        this.api.getProcedures().subscribe(
+          (resp) => {
+            this.procedures = resp;
+          }
+        )
+
+        if (this.role == "write:admin") {
+
+          this.isAdmin = true;
+
+          this.api.adminGetPets().subscribe({
+
+            next:(resp) => { this.pets = resp, console.log(resp) }
+          })
+
+        } else {
+
+          this.api.getPets().subscribe(
+            (resp) => {
+              this.pets = resp;
+            }
+          )
+
+        }
+
+      }
+    })
   }
 
   createTreatmentForm = this.fb.group({
@@ -47,17 +85,7 @@ export class CreateTreatmentFormComponent implements OnInit {
   pets:any = []
 
   ngOnInit(): void {
-    this.api.getProcedures().subscribe(
-      (resp) => {
-        this.procedures = resp;
-      }
-    )
-
-    this.api.getPets().subscribe(
-      (resp) => {
-        this.pets = resp;
-      }
-    )
+    this.getFormData();
   }
 
   closedialog = () => {

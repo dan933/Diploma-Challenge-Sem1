@@ -28,6 +28,9 @@ public class PetContext: DbContext {
         modelBuilder.Entity<Treatment>()
         .HasKey(t => new { t.ID });
 
+        modelBuilder.Entity<ViewTreatment>()
+        .HasNoKey();
+
         modelBuilder.Entity<ProcedureView>()
         .HasNoKey();
 
@@ -40,6 +43,7 @@ public class PetContext: DbContext {
     public virtual DbSet<Owner> Owner { get; set; } = null!;
     public virtual DbSet<Pet> Pet { get; set; } = null!;
     public virtual DbSet<Treatment> Treatment { get; set; } = null!;
+    public virtual DbSet<ViewTreatment> view_Treatment { get; set; } = null!;
 
     public virtual DbSet<ProcedureView> view_procedure { get; set; } = null!;
     public virtual DbSet<Procedure> Procedure { get; set; } = null!;

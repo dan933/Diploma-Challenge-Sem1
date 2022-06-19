@@ -145,7 +145,7 @@ public class OwnerController : ControllerBase
     }
 
     [HttpGet]
-    [Authorize] //("read:message")
+    [Authorize]
     [Route("view-pets")]
     public async Task<ActionResult<List<Pet>>> ViewPets(){
         
@@ -174,7 +174,7 @@ public class OwnerController : ControllerBase
     [HttpGet]
     [Authorize]
     [Route("view-treatments")]
-    public async Task<ActionResult<List<Treatment>>> ViewTreatments()
+    public async Task<ActionResult<List<ViewTreatment>>> ViewTreatments()
     {
 
         var sub = HttpContext?.User.Claims.FirstOrDefault(c => c.Type == System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
@@ -189,8 +189,8 @@ public class OwnerController : ControllerBase
             return StatusCode(409, "Boo");
         }
 
-        var treatments = await _context.Treatment
-        .Where(treatment => treatment.OwnerId == ownerID)
+        var treatments = await _context.view_Treatment
+        .Where(treatment => treatment.OwnerID == ownerID)
         .ToListAsync();
 
         return Ok(treatments);

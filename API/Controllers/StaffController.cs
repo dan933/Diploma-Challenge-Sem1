@@ -46,8 +46,8 @@ public class StaffController : ControllerBase
     [HttpGet]
     [Route("view-treatments")]
     [Authorize("write:admin")]
-    public async Task<ActionResult<List<Treatment>>> GetAllTreatments(){
-        var treatments = await _context.Treatment
+    public async Task<ActionResult<List<ViewTreatment>>> GetAllTreatments(){
+        var treatments = await _context.view_Treatment
         .ToListAsync();
 
         //var response = new Response<List<Treatment>>(treatments, true, "treatments successfully returned");

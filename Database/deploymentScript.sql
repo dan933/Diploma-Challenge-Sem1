@@ -2,6 +2,7 @@ USE DiplomaChallengeSem1;
 --USE challenge;
 
 
+DROP VIEW IF EXISTS view_TREATMENT;
 DROP VIEW IF EXISTS view_PROCEDURE;
 DROP TABLE IF EXISTS ProcedureSelection;
 DROP TABLE IF EXISTS TREATMENT;
@@ -19,7 +20,7 @@ CREATE TABLE [OWNER]
     Surname NVARCHAR(300),
     Firstname NVARCHAR(300),
     Email NVARCHAR(300),
-    Phone NVARCHAR(300)
+    Phone NVARCHAR(300),    
 );
 
 GO
@@ -33,10 +34,11 @@ GO
 
 CREATE TABLE PET
 (
+	ID INT IDENTITY(1,1) PRIMARY KEY,
     OwnerId INT FOREIGN KEY REFERENCES [OWNER],    
     PetName NVARCHAR(300),
-    [Type] NVARCHAR(300)
-    Constraint PK_PET Primary Key (OwnerId, PetName)
+    [Type] NVARCHAR(300),
+	UNIQUE (OwnerID, PetName)
 );
 
 GO
@@ -53,14 +55,20 @@ GO
 CREATE TABLE TREATMENT
 (
     ID INT IDENTITY(1,1) PRIMARY KEY,
-    OwnerID INT,
+    OwnerID INT FOREIGN KEY REFERENCES [OWNER],
     PetName NVARCHAR(300),
     ProcedureID INT FOREIGN key REFERENCES [PROCEDURE],
     [Date] DATE,
     Notes NVARCHAR(300),
     Payment MONEY
-    Constraint FK_PET FOREIGN Key (OwnerID, PetName) REFERENCES PET
 );
+
+GO
+
+CREATE VIEW view_TREATMENT AS
+SELECT T.*, (P.Price - T.Payment) AS AmountOwed
+FROM TREATMENT AS T
+INNER JOIN [PROCEDURE] AS P ON T.ProcedureID = P.ProcedureID;
 
 GO
 
