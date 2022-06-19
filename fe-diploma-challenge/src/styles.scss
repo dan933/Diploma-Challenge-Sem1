@@ -25,3 +25,15 @@ h1{
   padding-bottom: 10px;
   row-gap: 10px;
 }
+
+.center-paginator{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  overflow: auto;
+  width: 85%;
+  height: auto;
+  overflow: auto;
+  padding-bottom: 10px;
+}

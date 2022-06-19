@@ -1,5 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatTableDataSource } from '@angular/material/table';
 import { AuthService } from '@auth0/auth0-angular';
 import { ApiService } from 'src/app/Services/api.service';
 import { CreateTreatmentFormComponent } from './create-treatment-form/create-treatment-form.component';
@@ -20,13 +22,25 @@ export interface Treatment
   templateUrl: './treatment-page.component.html',
   styleUrls: ['./treatment-page.component.scss']
 })
-export class TreatmentPageComponent implements OnInit {
+export class TreatmentPageComponent implements AfterViewInit {
+
+  isAdmin: boolean = false
+  role: any = null
+  treatmentData: Treatment[] = []
+  displayedColumns: string[] = ["ID", "Owner Id", "Pet Name", "Procedure ID", "Date", "Notes", "Payment", "Amount Owed"]
+
+  dataSource: MatTableDataSource<Treatment>;
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
 
   constructor(
     public auth: AuthService,
     public api: ApiService,
     public dialog: MatDialog
-  ) { }
+  ) {
+    this.getTreatments();
+
+    this.dataSource = new MatTableDataSource(this.treatmentData);
+  }
 
   openTreatmentForm() {
     const dialogRef = this.dialog.open(CreateTreatmentFormComponent);
@@ -38,8 +52,7 @@ export class TreatmentPageComponent implements OnInit {
 
   }
 
-  isAdmin: boolean = false
-  role:any = null
+
 
   getTreatments = () => {
     this.api.checkRole().subscribe({
@@ -51,7 +64,11 @@ export class TreatmentPageComponent implements OnInit {
       complete: () => {
         if (this.role == "write:admin") {
           this.api.adminViewTreatments().subscribe({
-            next: (resp) => { this.treatmentData = resp as Treatment[] },
+            next: (resp) => {
+              this.treatmentData = resp as Treatment[]
+              this.dataSource = new MatTableDataSource(this.treatmentData);
+              this.dataSource.paginator = this.paginator;
+            },
 
             complete: () => { }
 
@@ -59,18 +76,21 @@ export class TreatmentPageComponent implements OnInit {
 
         } else {
 
-          this.api.viewTreatments().subscribe((resp) => this.treatmentData = resp as Treatment[])
+          this.api.viewTreatments().subscribe({
+            next: (resp) => { this.treatmentData = resp as Treatment[] },
+            complete: () => {
+              this.dataSource = new MatTableDataSource(this.treatmentData)
+              this.dataSource.paginator = this.paginator;
+            }
+        })
 
         }
       }
     })
   }
 
-  treatmentData: Treatment[] = []
-  displayedColumns:string[] = ["ID", "Owner Id", "Pet Name", "Procedure ID", "Date", "Notes", "Payment","Amount Owed"]
-
-  ngOnInit(): void {
-    this.getTreatments();
+  ngAfterViewInit() {
+    this.dataSource.paginator = this.paginator;
   }
 
 }

@@ -1,9 +1,9 @@
 //source https://medium.com/ampersand-academy/scrollable-table-in-angular-material-6f488e114db0
 .table-responsive {
   display: block;
-  width: 77%;
+  width: 85%;
   overflow-x: auto;
-  .mat-table {
+  .mat-table, .mat-paginator {
       width: 100%;
       max-width: 100%;
       margin-bottom: 1rem;
@@ -30,7 +30,7 @@
 
 
 
-.mat-row .mat-cell {
+.mat-row .mat-cell, .mat-paginator {
   border-bottom: 1px solid transparent;
   border-top: 1px solid transparent;
 }
