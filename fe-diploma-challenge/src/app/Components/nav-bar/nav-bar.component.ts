@@ -38,13 +38,15 @@ export class NavBarComponent implements OnInit {
   }
 
   CheckAdmin = () => {
-    this.api.checkRole().subscribe({
+    if (this.isLoggedIn) {
+      this.api.checkRole().subscribe({
+        next: (resp: any) => {this.role =  resp.claim },
+        error: (err) => { console.log(err) },
+        complete: () => {
+          this.isAdmin = this.role == "write:admin" ? true : false;
+        }
+      })
+    }
 
-      next: (resp: any) => {this.role =  resp.claim },
-      error: (err) => { console.log(err) },
-      complete: () => {
-        this.isAdmin = this.role == "write:admin" ? true : false;
-      }
-    })
   }
 }
