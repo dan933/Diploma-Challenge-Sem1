@@ -61,4 +61,8 @@ export class ApiService {
   getOwner = () => {
     return this.http.get(`${environment.apiURL}/api/owner/get-user`)
   }
+
+  markTreatmentAsPaid = (treatmentID:number) => {
+    return this.http.put(`${environment.apiURL}/api/staff/${treatmentID}/treatment-paid`,{})
+  }
 }

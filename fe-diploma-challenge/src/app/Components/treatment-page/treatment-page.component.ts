@@ -65,8 +65,10 @@ export class TreatmentPageComponent implements AfterViewInit {
         if (this.role == "write:admin") {
           this.api.adminViewTreatments().subscribe({
             next: (resp) => {
+              this.isAdmin = true;
               this.treatmentData = resp as Treatment[]
               this.dataSource = new MatTableDataSource(this.treatmentData);
+              this.displayedColumns =  ["ID", "Owner Id", "Pet Name", "Procedure ID", "Date", "Notes", "Payment", "Amount Owed", "Paid"]
               this.dataSource.paginator = this.paginator;
             },
 
@@ -87,6 +89,17 @@ export class TreatmentPageComponent implements AfterViewInit {
         }
       }
     })
+  }
+
+  markAsPaid = (treatmentID: number) => {
+    this.api.markTreatmentAsPaid(treatmentID).subscribe({
+      next: (resp) => { console.log(resp) },
+      error: (err) => { console.log(err) },
+      complete: () => {
+        this.getTreatments();
+      }
+    })
+
   }
 
   ngAfterViewInit() {
