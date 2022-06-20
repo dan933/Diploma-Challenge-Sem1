@@ -14,4 +14,8 @@ export class ApiService {
   login = (owner:any) => {
     return this.http.post(`${environment.apiURL}/owner/login`,{owner})
   }
+
+  getPets = (userID: number) => {
+    return this.http.get(`${environment.apiURL}/owner/get-pets/${userID}`)
+  }
 }

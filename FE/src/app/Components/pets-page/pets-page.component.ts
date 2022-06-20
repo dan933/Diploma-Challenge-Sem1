@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { ApiService } from 'src/app/Services/api.service';
 
 @Component({
   selector: 'app-pets-page',
@@ -7,9 +9,33 @@ import { Component, OnInit } from '@angular/core';
 })
 export class PetsPageComponent implements OnInit {
 
-  constructor() { }
+  petData: any;
+  displayedColumns: string[] = ['PetName', 'Type'];
+
+  constructor(
+    private activatedRoute: ActivatedRoute,
+    public api: ApiService,
+    private router: Router
+  ) { }
 
   ngOnInit(): void {
+    this.activatedRoute.params.subscribe({
+      next: (param) => {
+        this.api.getPets(param['id']).subscribe({
+          next:(resp:any) => {this.petData = resp.Data, console.log(resp.Data)}
+          })
+
+      },
+
+      complete: () => {
+
+      }
+    })
+  }
+
+  NavPetTreatment = (row:any) => {
+    console.log(row)
+    this.router.navigate(['/pet',row,"treatments"])
   }
 
 }

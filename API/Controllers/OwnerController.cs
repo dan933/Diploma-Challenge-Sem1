@@ -62,4 +62,19 @@ public class OwnerController : ControllerBase
 
     }
 
+
+    [HttpGet]
+    [Route("get-pets/{userId:int}")]
+    public async Task<ActionResult<Response<List<Pet>>>> getPets()
+    {
+        var userId = Convert.ToInt32(RouteData.Values["userId"]);
+
+        var pets = await _context.PET
+        .Where(p => p.OwnerID == userId)
+        .ToListAsync();
+
+        var response = new Response<List<Pet>>(pets, true, "Pets Retrieved");
+
+        return Ok(response);
+    }
 }

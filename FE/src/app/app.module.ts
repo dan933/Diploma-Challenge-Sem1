@@ -10,7 +10,7 @@ import { NavBarComponent } from './Components/nav-bar/nav-bar.component';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { PetsPageComponent } from './Components/pets-page/pets-page.component';
-import {DataTablesModule} from 'angular-datatables';
+import { PetTreatmentComponent } from './Components/pet-treatment/pet-treatment.component';
 
 
 @NgModule({
@@ -18,7 +18,8 @@ import {DataTablesModule} from 'angular-datatables';
     AppComponent,
     LoginPageComponent,
     NavBarComponent,
-    PetsPageComponent
+    PetsPageComponent,
+    PetTreatmentComponent
   ],
   imports: [
     BrowserModule,
@@ -26,8 +27,7 @@ import {DataTablesModule} from 'angular-datatables';
     BrowserAnimationsModule,
     MaterialModule,
     HttpClientModule,
-    ReactiveFormsModule,
-    DataTablesModule
+    ReactiveFormsModule
   ],
   providers: [FormBuilder],
   bootstrap: [AppComponent]
