@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { LoginPageComponent } from './Components/login-page/login-page.component';
 import { SignUpPageComponent } from './Components/sign-up-page/sign-up-page.component';
+import { CreateUserPageComponent } from './Components/create-user-page/create-user-page.component';
 
 // Import the authentication guard
 import { AuthGuard } from '@auth0/auth0-angular';
@@ -17,6 +18,7 @@ const routes: Routes = [
   { path: 'treatments', component: TreatmentPageComponent, canActivate: [AuthGuard] },
   { path: 'procedures', component: ProcedurePageComponent, canActivate: [AuthGuard] },
   { path: 'user', component: UserDetailsPageComponent, canActivate: [AuthGuard] },
+  { path: 'create-user', component: CreateUserPageComponent, canActivate: [AuthGuard] },
   { path: '**', redirectTo:'/pets'}
 ];
 

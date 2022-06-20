@@ -28,6 +28,8 @@ import { CreateTreatmentFormComponent } from './Components/treatment-page/create
 import { ProcedurePageComponent } from './Components/procedure-page/procedure-page.component';
 import { UserDetailsPageComponent } from './Components/user-details-page/user-details-page.component';
 import { UserDetailsFormComponent } from './Components/user-details-page/user-details-form/user-details-form.component';
+import { SignUpFormComponent } from './Components/sign-up-page/sign-up-form/sign-up-form.component';
+import { CreateUserPageComponent } from './Components/create-user-page/create-user-page.component';
 
 
 @NgModule({
@@ -42,7 +44,9 @@ import { UserDetailsFormComponent } from './Components/user-details-page/user-de
     CreateTreatmentFormComponent,
     ProcedurePageComponent,
     UserDetailsPageComponent,
-    UserDetailsFormComponent
+    UserDetailsFormComponent,
+    SignUpFormComponent,
+    CreateUserPageComponent
   ],
   imports: [
     BrowserModule,

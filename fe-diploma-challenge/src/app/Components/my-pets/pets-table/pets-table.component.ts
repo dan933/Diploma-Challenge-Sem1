@@ -19,7 +19,7 @@ export interface Pets {
 
 export class PetsTableComponent implements OnInit {
 
-  // @Output() selectedPet = new EventEmitter<any>();
+  @Output() selectedPet = new EventEmitter<any>();
 
   constructor(
     public auth: AuthService,
@@ -34,13 +34,13 @@ export class PetsTableComponent implements OnInit {
   role: string | null = null;
   isAdmin = false;
 
-  // selectedRow: any;
+  selectedRow: any;
 
-  // selectRow = (row: any) => {
-  //   console.log(row)
-  //   this.selectedRow = row;
-  //   // this.selectedPet.emit(this.selectRow)
-  // }
+  selectRow = (row: any) => {
+    console.log(row)
+    this.selectedRow = row;
+    this.selectedPet.emit(this.selectRow)
+  }
 
   getPets = () => {
     this.api.checkRole().subscribe({

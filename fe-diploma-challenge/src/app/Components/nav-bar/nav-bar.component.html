@@ -28,6 +28,7 @@
       <button mat-raised-button routerLink="/pets" routerLinkActive="active">Pets</button>
       <button mat-raised-button routerLink="/treatments" routerLinkActive="active">Treatment</button>
       <button mat-raised-button routerLink="/procedures" routerLinkActive="active">Procedures</button>
+      <button *ngIf="isAdmin" mat-raised-button routerLink="/create-user" routerLinkActive="active">Create User</button>
     </mat-toolbar-row>
 </mat-toolbar>
 

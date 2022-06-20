@@ -35,10 +35,6 @@ export class SignUpPageComponent implements OnInit {
     confirmPassword:['',[Validators.required, Validators.minLength(7)]]
   })
 
-
-  checkValue = () => {
-  }
-
   ngOnInit(): void {
   }
 

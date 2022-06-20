@@ -23,9 +23,12 @@
 
   <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
   <tr
-  mat-row
-  *matRowDef="let row;
-  columns: displayedColumns;"></tr>
+    (click)="selectRow(row)"
+    mat-row
+    *matRowDef="let row;
+    columns: displayedColumns;"
+  >
+  </tr>
 </table>
 
 <!-- ---------- This was in the tr tag ------------- -->

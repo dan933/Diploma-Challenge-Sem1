@@ -14,6 +14,8 @@ export class NavBarComponent implements OnInit {
   logoutURL = environment.AUTH0.logoutURL;
   isLoggedIn = false;
   userEmail?= "";
+  role: string = "";
+  isAdmin: boolean = false;
 
   sub:string|undefined = "";
 
@@ -24,7 +26,7 @@ export class NavBarComponent implements OnInit {
 
 
   ngOnInit(): void {
-
+    this.CheckAdmin()
     this.auth.user$.subscribe((resp) => { this.userEmail = resp?.email })
     this.checkLoginStatus()
   }
@@ -33,5 +35,16 @@ export class NavBarComponent implements OnInit {
     this.auth.isAuthenticated$.subscribe(
       (resp) => { this.isLoggedIn = resp }
     )
+  }
+
+  CheckAdmin = () => {
+    this.api.checkRole().subscribe({
+
+      next: (resp: any) => {this.role =  resp.claim },
+      error: (err) => { console.log(err) },
+      complete: () => {
+        this.isAdmin = this.role == "write:admin" ? true : false;
+      }
+    })
   }
 }

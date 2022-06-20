@@ -6,9 +6,9 @@ table{
   }
 }
 
-// .selected-row{
-//   background-color: lightblue;
-// }
+.selected-row{
+  background-color: lightblue;
+}
 
 
 .mat-row .mat-cell {
@@ -17,6 +17,7 @@ table{
   //cursor: pointer;
 }
 
-// .mat-row:hover .mat-cell {
-//   background-color: lightblue;
-// }
+.mat-row:hover .mat-cell {
+  background-color: lightblue;
+  cursor: pointer;
+}
