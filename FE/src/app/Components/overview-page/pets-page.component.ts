@@ -3,11 +3,11 @@ import { Router } from '@angular/router';
 import { CookieService } from 'ngx-cookie-service';
 
 @Component({
-  selector: 'app-overview-page',
-  templateUrl: './overview-page.component.html',
-  styleUrls: ['./overview-page.component.scss']
+  selector: 'app-pets-page',
+  templateUrl: './pets-page.component.html',
+  styleUrls: ['./pets-page.component.scss']
 })
-export class OverviewPageComponent implements OnInit {
+export class PetsPageComponent implements OnInit {
 
   userID!: string;
 

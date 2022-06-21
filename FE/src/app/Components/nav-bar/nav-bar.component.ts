@@ -16,6 +16,15 @@ export class NavBarComponent implements OnInit {
     private route: ActivatedRoute,
     private cookieService: CookieService
   ) {
+
+    this.router.events.subscribe({
+      next: (ev) => {
+        if (ev instanceof NavigationEnd) {
+          this.userID = this.cookieService.get('UserID')
+          this.IsLoggedIn = this.userID ? true : false;
+        }
+      }
+    })
   }
 
   ngOnInit(): void {

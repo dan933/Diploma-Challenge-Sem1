@@ -59,7 +59,7 @@ export class LoginPageComponent implements OnInit {
         error: (err) => { console.log(err) },
         complete: () => {
           this.cookieService.set('UserID', '1');
-          this.router.navigate(['overview'])
+          this.router.navigate(['pets'])
         }
       })
     }
