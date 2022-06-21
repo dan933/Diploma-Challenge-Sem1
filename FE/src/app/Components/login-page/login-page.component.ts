@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { CookieService } from 'ngx-cookie-service';
 import { ApiService } from 'src/app/Services/api.service';
-import { Cookie } from 'ng2-cookies/ng2-cookies';
 
 @Component({
   selector: 'app-login-page',
@@ -26,12 +26,13 @@ export class LoginPageComponent implements OnInit {
     },
   ]
 
-  userID!: number;
+  userID!: string;
 
   constructor(
     public fb: FormBuilder,
     public api: ApiService,
     public router: Router,
+    private cookieService: CookieService
   ) { }
 
   registrationForm = this.fb.group({
@@ -57,7 +58,8 @@ export class LoginPageComponent implements OnInit {
         next: (resp:any) => { this.userID = resp.Data.OwnerID },
         error: (err) => { console.log(err) },
         complete: () => {
-          Cookie.set('UserID', `${this.userID}`);
+          this.cookieService.set('UserID', '1');
+          this.router.navigate(['overview'])
         }
       })
     }

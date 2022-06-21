@@ -9,7 +9,12 @@ import { MaterialModule } from './Modules/material/material.module';
 import { NavBarComponent } from './Components/nav-bar/nav-bar.component';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
-import { Cookie } from 'ng2-cookies/ng2-cookies';
+import { OverviewPageComponent } from './Components/overview-page/overview-page.component';
+import { CookieService } from 'ngx-cookie-service';
+import { PetsTableComponent } from './Components/overview-page/pets-table/pets-table.component';
+import { MatTableModule } from '@angular/material/table';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatSortModule } from '@angular/material/sort';
 
 
 @NgModule({
@@ -17,6 +22,8 @@ import { Cookie } from 'ng2-cookies/ng2-cookies';
     AppComponent,
     LoginPageComponent,
     NavBarComponent,
+    OverviewPageComponent,
+    PetsTableComponent,
   ],
   imports: [
     BrowserModule,
@@ -25,8 +32,11 @@ import { Cookie } from 'ng2-cookies/ng2-cookies';
     MaterialModule,
     HttpClientModule,
     ReactiveFormsModule,
+    MatTableModule,
+    MatPaginatorModule,
+    MatSortModule,
   ],
-  providers: [FormBuilder, Cookie],
+  providers: [FormBuilder, CookieService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

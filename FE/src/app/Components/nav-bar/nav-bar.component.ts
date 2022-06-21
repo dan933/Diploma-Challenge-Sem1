@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, Event, NavigationStart, NavigationEnd, NavigationError, ActivatedRoute } from '@angular/router';
+import { CookieService } from 'ngx-cookie-service';
 
 @Component({
   selector: 'app-nav-bar',
@@ -7,15 +8,23 @@ import { Router, Event, NavigationStart, NavigationEnd, NavigationError, Activat
   styleUrls: ['./nav-bar.component.scss']
 })
 export class NavBarComponent implements OnInit {
-  IsLoginPage: boolean = true;
-  private sub: any;
+  IsLoggedIn: boolean = true;
+  userID!:string
 
   constructor(
     private router: Router,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private cookieService: CookieService
   ) {
   }
 
   ngOnInit(): void {
+    this.userID = this.cookieService.get('UserID')
+    this.IsLoggedIn = this.userID ? true : false;
+  }
+
+  logout = () => {
+    this.cookieService.deleteAll()
+    this.router.navigate(['login'])
   }
 }

@@ -4,7 +4,8 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import {MatTableModule} from '@angular/material/table';
+import { MatTableModule } from '@angular/material/table';
+import {MatIconModule} from '@angular/material/icon';
 
 
 
@@ -16,14 +17,16 @@ import {MatTableModule} from '@angular/material/table';
     MatButtonModule,
     MatFormFieldModule,
     MatInputModule,
-    MatTableModule
+    MatTableModule,
+    MatIconModule
   ],
   exports: [
     MatToolbarModule,
     MatButtonModule,
     MatFormFieldModule,
     MatInputModule,
-    MatTableModule
+    MatTableModule,
+    MatIconModule
   ]
 })
 export class MaterialModule { }

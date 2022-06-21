@@ -2,5 +2,14 @@
   <mat-toolbar-row>
     <span>Pets App</span>
     <span class="spacer-right"></span>
+    <button
+    *ngIf="IsLoggedIn"
+    style="margin-left:auto;"
+     mat-mini-fab color="primary"
+     aria-label="Example icon button with a filter list icon"
+     (click)="logout()"
+     >
+      <mat-icon>logout</mat-icon>
+    </button>
   </mat-toolbar-row>
 </mat-toolbar>
