@@ -13,6 +13,8 @@ import { CookieService } from 'ngx-cookie-service';
 import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
+import { PetsPageComponent } from './Components/pets-page/pets-page.component';
+import { PetsTableComponent } from './Components/pets-page/pets-table/pets-table.component';
 
 
 @NgModule({
@@ -20,6 +22,8 @@ import { MatSortModule } from '@angular/material/sort';
     AppComponent,
     LoginPageComponent,
     NavBarComponent,
+    PetsPageComponent,
+    PetsTableComponent
   ],
   imports: [
     BrowserModule,
