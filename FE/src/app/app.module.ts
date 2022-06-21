@@ -9,6 +9,7 @@ import { MaterialModule } from './Modules/material/material.module';
 import { NavBarComponent } from './Components/nav-bar/nav-bar.component';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
+import { Cookie } from 'ng2-cookies/ng2-cookies';
 
 
 @NgModule({
@@ -23,9 +24,9 @@ import { HttpClientModule } from '@angular/common/http';
     BrowserAnimationsModule,
     MaterialModule,
     HttpClientModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
   ],
-  providers: [FormBuilder],
+  providers: [FormBuilder, Cookie],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
