@@ -9,8 +9,6 @@ import { MaterialModule } from './Modules/material/material.module';
 import { NavBarComponent } from './Components/nav-bar/nav-bar.component';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
-import { PetsPageComponent } from './Components/pets-page/pets-page.component';
-import { PetTreatmentComponent } from './Components/pet-treatment/pet-treatment.component';
 
 
 @NgModule({
@@ -18,8 +16,6 @@ import { PetTreatmentComponent } from './Components/pet-treatment/pet-treatment.
     AppComponent,
     LoginPageComponent,
     NavBarComponent,
-    PetsPageComponent,
-    PetTreatmentComponent
   ],
   imports: [
     BrowserModule,
