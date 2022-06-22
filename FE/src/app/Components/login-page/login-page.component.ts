@@ -3,7 +3,7 @@ import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms'
 import { Router } from '@angular/router';
 import { CookieService } from 'ngx-cookie-service';
 import { ApiService } from 'src/app/Services/api.service';
-//deploy
+
 @Component({
   selector: 'app-login-page',
   templateUrl: './login-page.component.html',
