@@ -23,3 +23,8 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 .active{
   background-color: darkblue;
 }
+
+.center-container{
+  display: flex;
+  justify-content: center;
+}

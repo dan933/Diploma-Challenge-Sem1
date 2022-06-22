@@ -12,10 +12,14 @@ export class ApiService {
   ) { }
 
   login = (owner:any) => {
-    return this.http.post(`${environment.apiURL}/owner/login`,{owner})
+    return this.http.post(`${environment.apiURL}/owner/login`,owner)
   }
 
   getPets = (userID: number) => {
     return this.http.get(`${environment.apiURL}/owner/get-pets/${userID}`)
+  }
+
+  createPets = (userID: number, pet:any) => {
+    return this.http.post(`${environment.apiURL}/owner/${userID}/add-pet`,pet)
   }
 }

@@ -11,22 +11,7 @@ import { ApiService } from 'src/app/Services/api.service';
 })
 export class LoginPageComponent implements OnInit {
 
-  formControlNames = [
-    {
-    controlName:'FirstName',
-    displayedName:'First Name'
-    },
-    {
-    controlName:'SurName',
-    displayedName:'Last Name'
-    },
-    {
-    controlName:'Phone',
-    displayedName:'Phone Number'
-    },
-  ]
-
-  userID!: string;
+  userID: string = "";
 
   constructor(
     public fb: FormBuilder,
@@ -58,7 +43,8 @@ export class LoginPageComponent implements OnInit {
         next: (resp:any) => { this.userID = resp.Data.OwnerID },
         error: (err) => { console.log(err) },
         complete: () => {
-          this.cookieService.set('UserID', '1');
+          console.log(this.userID)
+          this.cookieService.set('UserID', this.userID);
           this.router.navigate(['pets'])
         }
       })

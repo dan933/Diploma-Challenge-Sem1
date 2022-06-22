@@ -1,21 +1,25 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Injector, NgModule } from '@angular/core';
 import { Router } from '@angular/router';
 import { CookieService } from 'ngx-cookie-service';
+
+export let AppInjector: Injector;
 
 @Component({
   selector: 'app-pets-page',
   templateUrl: './pets-page.component.html',
   styleUrls: ['./pets-page.component.scss']
 })
+
 export class PetsPageComponent implements OnInit {
 
   userID!: string;
 
   constructor(
     private cookieService: CookieService,
-    public router: Router
+    public router: Router,
+    private injector: Injector,
   ) {
-
+    AppInjector = this.injector;
   }
 
   ngOnInit(): void {
@@ -25,5 +29,6 @@ export class PetsPageComponent implements OnInit {
       this.router.navigate(['login'])
     }
   }
+
 
 }

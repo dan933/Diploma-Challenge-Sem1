@@ -30,10 +30,12 @@ export class NavBarComponent implements OnInit {
   ngOnInit(): void {
     this.userID = this.cookieService.get('UserID')
     this.IsLoggedIn = this.userID ? true : false;
+    this.router.navigate(['/pets'])
   }
 
   logout = () => {
     this.cookieService.deleteAll()
+    this.IsLoggedIn = false;
     this.router.navigate(['login'])
   }
 }

@@ -77,4 +77,36 @@ public class OwnerController : ControllerBase
 
         return Ok(response);
     }
+
+    [HttpPost]
+    [Route("{userId:int/add-pet")]
+    public async Task<ActionResult<Response<Pet?>>> addPet([FromBody] AddPetReq petReq){
+         var userId = Convert.ToInt32(RouteData.Values["userId"]);
+        var IsPet = await _context.PET
+        .Where(p => p.OwnerID == userId)
+        .Where(p => p.PetName == petReq.PetName)        
+        .FirstOrDefaultAsync();
+
+        Response<Pet?> response;
+
+        if(IsPet != null){
+            response = new Response<Pet?>(IsPet, false, "A Pet with this name already exists");
+            return StatusCode(409, response);
+        }
+
+        var newPet = new Pet();
+
+        newPet.PetName = petReq.PetName;
+        newPet.OwnerID = petReq.OwnerID;
+        newPet.Type = petReq.Type;
+
+        await _context.PET.AddAsync(newPet);
+
+        await _context.SaveChangesAsync();
+
+        response = new Response<Pet?>(newPet, true, "Pet successfully created");
+
+        return Ok(response);
+
+    }
 }

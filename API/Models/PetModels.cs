@@ -24,3 +24,19 @@ public class Pet
     [JsonPropertyName("Type")]
     public string? Type { get; set; }
 }
+
+public class AddPetReq
+{
+    public AddPetReq()
+    {
+        
+    }    
+    [JsonPropertyName("OwnerID")]
+    public int OwnerID { get; set; }
+
+    [JsonPropertyName("PetName")]
+    public string? PetName { get; set; }
+
+    [JsonPropertyName("Type")]
+    public string? Type { get; set; }
+}

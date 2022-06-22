@@ -15,6 +15,7 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
 import { PetsPageComponent } from './Components/pets-page/pets-page.component';
 import { PetsTableComponent } from './Components/pets-page/pets-table/pets-table.component';
+import { AddPetPopupFormComponent } from './Components/pets-page/add-pet-popup-form/add-pet-popup-form.component';
 
 
 @NgModule({
@@ -23,7 +24,8 @@ import { PetsTableComponent } from './Components/pets-page/pets-table/pets-table
     LoginPageComponent,
     NavBarComponent,
     PetsPageComponent,
-    PetsTableComponent
+    PetsTableComponent,
+    AddPetPopupFormComponent
   ],
   imports: [
     BrowserModule,
