@@ -2,14 +2,18 @@
   <mat-toolbar-row>
     <span>Pets App</span>
     <span class="spacer-right"></span>
-    <button
-    *ngIf="IsLoggedIn"
-    style="margin-left:auto;"
-     mat-mini-fab color="primary"
-     aria-label="Example icon button with a filter list icon"
-     (click)="logout()"
-     >
-      <mat-icon>logout</mat-icon>
-    </button>
+    <ng-container *ngIf="IsLoggedIn">
+      <button mat-raised-button routerLink="/pets" color="primary">My Pets</button>
+      <button mat-raised-button routerLink="/treatments" color="primary">Treatments</button>
+      <button
+
+      style="margin-left:auto;"
+       mat-mini-fab color="primary"
+       aria-label="Example icon button with a filter list icon"
+       (click)="logout()"
+       >
+        <mat-icon>logout</mat-icon>
+      </button>
+    </ng-container>
   </mat-toolbar-row>
 </mat-toolbar>

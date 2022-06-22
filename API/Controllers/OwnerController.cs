@@ -79,7 +79,7 @@ public class OwnerController : ControllerBase
     }
 
     [HttpPost]
-    [Route("{userId:int/add-pet")]
+    [Route("{userId:int}/add-pet")]
     public async Task<ActionResult<Response<Pet?>>> addPet([FromBody] AddPetReq petReq){
          var userId = Convert.ToInt32(RouteData.Values["userId"]);
         var IsPet = await _context.PET

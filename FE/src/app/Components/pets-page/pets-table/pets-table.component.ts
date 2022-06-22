@@ -3,6 +3,7 @@ import { CookieService } from 'ngx-cookie-service';
 import { ApiService } from 'src/app/Services/api.service';
 import { MatDialog } from '@angular/material/dialog';
 import { AddPetPopupFormComponent } from '../add-pet-popup-form/add-pet-popup-form.component';
+import { FormBuilder } from '@angular/forms';
 
 @Component({
   selector: 'app-pets-table',
@@ -21,21 +22,24 @@ export class PetsTableComponent implements OnInit {
     public api: ApiService,
     private cookieService: CookieService,
     public dialog: MatDialog
-  ) {}
+  ) { }
+
+  getPets = () => {
+    this.api.getPets(this.userID).subscribe({
+      next: (resp: any) => { this.dataSource = resp.Data }
+    })
+  }
 
   ngOnInit(): void {
     this.userID = +this.cookieService.get('UserID');
-    this.api.getPets(this.userID).subscribe({
-      next: (resp: any) => { this.dataSource = resp.Data, console.log(resp.Data) }
-    })
-
+    this.getPets();
   }
 
   openCreatePetsForm() {
     const dialogRef = this.dialog.open(AddPetPopupFormComponent);
 
-    dialogRef.afterClosed().subscribe(result => {
-      console.log(`Dialog result: ${result}`);
+    dialogRef.afterClosed().subscribe(() => {
+      this.getPets();
     });
   }
 }
