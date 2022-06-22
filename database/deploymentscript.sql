@@ -48,7 +48,7 @@ GO
 
 CREATE VIEW view_TREATMENT
 AS 
-SELECT T.ID, T.FK_PetID, P.PetName, T.Date, T.Notes, T.Payment
+SELECT p.OwnerID, T.ID, T.FK_PetID, P.PetName, T.Date, T.Notes, T.Payment
 FROM TREATMENT as T
 INNER JOIN PET AS P ON T.FK_PetID = P.ID
 

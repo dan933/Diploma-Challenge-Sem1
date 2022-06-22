@@ -17,14 +17,18 @@ public class PetContext: DbContext {
         options.UseSqlServer(Configuration["DB"]);
     }
 
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-       modelBuilder.Entity<Owner>()
-        .HasKey(o => new { o.OwnerID });
+        modelBuilder.Entity<Owner>()
+         .HasKey(o => new { o.OwnerID });
 
-       modelBuilder.Entity<Pet>()
-        .HasKey(o => new { o.ID });
+        modelBuilder.Entity<Pet>()
+         .HasKey(o => new { o.ID });
+
+        modelBuilder.Entity<View_Treatment>()
+        .HasNoKey();
     }
     public virtual DbSet<Owner> OWNER { get; set; } = null!;
     public virtual DbSet<Pet> PET { get; set; } = null!;
+    public virtual DbSet<View_Treatment> View_TREATMENT { get; set; } = null!;
 }

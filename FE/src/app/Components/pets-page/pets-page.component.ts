@@ -17,9 +17,7 @@ export class PetsPageComponent implements OnInit {
   constructor(
     private cookieService: CookieService,
     public router: Router,
-    private injector: Injector,
   ) {
-    AppInjector = this.injector;
   }
 
   ngOnInit(): void {

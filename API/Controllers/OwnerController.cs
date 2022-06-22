@@ -81,7 +81,7 @@ public class OwnerController : ControllerBase
     [HttpPost]
     [Route("{userId:int}/add-pet")]
     public async Task<ActionResult<Response<Pet?>>> addPet([FromBody] AddPetReq petReq){
-         var userId = Convert.ToInt32(RouteData.Values["userId"]);
+        var userId = Convert.ToInt32(RouteData.Values["userId"]);
         var IsPet = await _context.PET
         .Where(p => p.OwnerID == userId)
         .Where(p => p.PetName == petReq.PetName)        
@@ -108,5 +108,18 @@ public class OwnerController : ControllerBase
 
         return Ok(response);
 
+    }
+
+    [HttpGet]
+    [Route("{userId:int}/view-treatments")]
+    public async Task<ActionResult<Response<List<View_Treatment>>>> getTreatments(){
+        var userId = Convert.ToInt32(RouteData.Values["userId"]);
+        var treatments = await _context.View_TREATMENT
+        .Where(t => t.OwnerID == userId)
+        .ToListAsync();
+
+        Response<List<View_Treatment>> response = new Response<List<View_Treatment>>(treatments, true, "Treatments Successfully returned");
+
+        return Ok(response);
     }
 }

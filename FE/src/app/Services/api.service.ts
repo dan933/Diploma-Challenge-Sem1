@@ -22,4 +22,9 @@ export class ApiService {
   createPets = (userID: number, pet:any) => {
     return this.http.post(`${environment.apiURL}/owner/${userID}/add-pet`,pet)
   }
+
+  viewTreatments = (userID: number) => {
+    return this.http.get(`${environment.apiURL}/owner/${userID}/view-treatments`)
+  }
+
 }
