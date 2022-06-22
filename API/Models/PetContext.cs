@@ -14,7 +14,7 @@ public class PetContext: DbContext {
     protected override void OnConfiguring(DbContextOptionsBuilder options)
     {
         // connect to sql server with connection string from app settings
-        options.UseSqlServer(Configuration["DB"]);
+        options.UseSqlServer(Configuration["DBLaptop"]);
     }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
