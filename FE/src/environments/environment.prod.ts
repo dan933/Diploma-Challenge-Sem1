@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  apiURL:'enter here'
+  apiURL:'https://challenge-api-one.azurewebsites.net'
 };

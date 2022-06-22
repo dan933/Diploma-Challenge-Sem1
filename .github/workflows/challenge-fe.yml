@@ -9,6 +9,7 @@ on:
       - 'fe-diploma-challenge/**'
     branches:
       - deploy
+      - pass
   workflow_dispatch:
 
 env:
