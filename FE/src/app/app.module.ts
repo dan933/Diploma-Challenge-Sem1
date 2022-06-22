@@ -16,6 +16,7 @@ import { MatSortModule } from '@angular/material/sort';
 import { PetsPageComponent } from './Components/pets-page/pets-page.component';
 import { PetsTableComponent } from './Components/pets-page/pets-table/pets-table.component';
 import { AddPetPopupFormComponent } from './Components/pets-page/add-pet-popup-form/add-pet-popup-form.component';
+import { TreatmentPageComponent } from './Components/treatment-page/treatment-page.component';
 
 
 @NgModule({
@@ -25,7 +26,8 @@ import { AddPetPopupFormComponent } from './Components/pets-page/add-pet-popup-f
     NavBarComponent,
     PetsPageComponent,
     PetsTableComponent,
-    AddPetPopupFormComponent
+    AddPetPopupFormComponent,
+    TreatmentPageComponent
   ],
   imports: [
     BrowserModule,

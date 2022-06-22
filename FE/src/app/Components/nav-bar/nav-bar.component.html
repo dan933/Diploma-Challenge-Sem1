@@ -3,8 +3,8 @@
     <span>Pets App</span>
     <span class="spacer-right"></span>
     <ng-container *ngIf="IsLoggedIn">
-      <button mat-raised-button routerLink="/pets" color="primary">My Pets</button>
-      <button mat-raised-button routerLink="/treatments" color="primary">Treatments</button>
+      <button class="nav-button" mat-raised-button routerLink="/pets" routerLinkActive="active" color="primary">My Pets</button>
+      <button class="nav-button" mat-raised-button routerLink="/treatment" routerLinkActive="active" color="primary">Treatments</button>
       <button
 
       style="margin-left:auto;"
