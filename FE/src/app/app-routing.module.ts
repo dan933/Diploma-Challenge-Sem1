@@ -5,7 +5,8 @@ import { PetsPageComponent } from './Components/pets-page/pets-page.component';
 
 const routes: Routes = [
   { path: 'login', component: LoginPageComponent },
-  { path: 'pets', component: PetsPageComponent }
+  { path: 'pets', component: PetsPageComponent },
+  { path: '**', redirectTo:'login' },
 ];
 
 @NgModule({
