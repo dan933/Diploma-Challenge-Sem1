@@ -38,6 +38,10 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   justify-content: flex-end;
   align-items: flex-end;
   flex-wrap: wrap;
+
+  .mat-cell{
+    padding:5px;
+  }
 }
 
 .paginator{
