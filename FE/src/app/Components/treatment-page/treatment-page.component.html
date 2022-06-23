@@ -35,14 +35,13 @@
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
     <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
   </table>
-
-  <mat-paginator #paginator
-      [length]="dataSource?.data?.length"
-      [pageIndex]="0"
-      [pageSize]="10"
-      [pageSizeOptions]="[5, 10, 20]"
+      <mat-paginator #paginator class="paginator"
+        [length]="dataSource?.data?.length"
+        [pageIndex]="0"
+        [pageSize]="10"
+        [pageSizeOptions]="[5, 10, 20]"
       aria-label="Select page">
-  </mat-paginator>
+      </mat-paginator>
 </div>
 <div class="center-container">
   <button mat-raised-button color="primary">Add Treatment</button>
