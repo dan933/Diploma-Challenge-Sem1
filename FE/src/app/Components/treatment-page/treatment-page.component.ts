@@ -17,7 +17,7 @@ export class TreatmentPageComponent implements AfterViewInit {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
   dataSource!: any;
-  displayedColumns = ["ID", "PetID", "PetName","ProcedureName", "Date", "Notes", "Payment"];
+  displayedColumns = ["ID", "PetID", "PetName","ProcedureName", "Date", "Notes", "Payment","AmountOwed"];
 
   userID!:number
 

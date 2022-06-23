@@ -23,6 +23,9 @@ public class View_Treatment
     [JsonPropertyName("PetName")]
     public string? PetName { get; set; }
 
+    [JsonPropertyName("ProcedureID")]
+    public int ProcedureID { get; set; }
+
     [JsonPropertyName("ProcedureName")]
     public string? ProcedureName { get; set; }
 
@@ -34,4 +37,7 @@ public class View_Treatment
 
     [JsonPropertyName("Payment")]
     public decimal Payment { get; set; }
+
+    [JsonPropertyName("AmountOwed")]
+    public decimal? AmountOwed { get; set; }
 }

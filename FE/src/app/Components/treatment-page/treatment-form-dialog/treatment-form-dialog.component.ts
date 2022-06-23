@@ -12,12 +12,15 @@ import { ApiService } from 'src/app/Services/api.service';
 })
 export class TreatmentFormDialogComponent implements OnInit {
 
+  myDatepipe!: any;
+
   constructor(
     private fb: FormBuilder,
     public api: ApiService,
     public dialog: MatDialog,
     private cookieService: CookieService,
-  ) { }
+  ) {
+  }
 
   ngOnInit(): void {
     this.userID = + this.cookieService.get('UserID')
@@ -46,6 +49,22 @@ export class TreatmentFormDialogComponent implements OnInit {
     this.api.getProcedures().subscribe({
       next: (resp: any) => { this.procedures = resp, console.log(resp) }
     })
+  }
+
+  CreateTreatment = () => {
+    if (this.createTreatmentForm.valid) {
+      let newTreatment = {
+        FK_PetID: +this.createTreatmentForm.controls["Pet"].value,
+        FK_ProcedureID: +this.createTreatmentForm.controls["Procedure"].value,
+        Date: this.createTreatmentForm.controls["Date"].value,
+        Notes: this.createTreatmentForm.controls["Notes"].value
+      }
+
+      let DateFormat = new Date(newTreatment.Date)
+      newTreatment.Date = DateFormat.toISOString().slice(0, 10)
+      console.log(newTreatment)
+
+    }
   }
 
 }

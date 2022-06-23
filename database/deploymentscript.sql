@@ -48,10 +48,10 @@ GO
 
 CREATE VIEW view_TREATMENT
 AS 
-SELECT p.OwnerID, T.ID, T.FK_PetID, P.PetName, PR.[DESCRIPTION] AS [ProcedureName], T.Date, T.Notes, T.Payment
+SELECT p.OwnerID, T.ID, T.FK_PetID, P.PetName, PR.ID, PR.[DESCRIPTION] AS [ProcedureName], T.Date, T.Notes, T.Payment, (PR.Price - T.Payment) AS AmountOwed
 FROM TREATMENT as T
 INNER JOIN PET AS P ON T.FK_PetID = P.ID
-INNER JOIN [PROCEDURE] AS PR ON PR.ID = T.FK_ProcedureID;
+INNER JOIN [PROCEDURE] AS PR ON PR.ID = T.FK_ProcedureID
 
 GO
 
