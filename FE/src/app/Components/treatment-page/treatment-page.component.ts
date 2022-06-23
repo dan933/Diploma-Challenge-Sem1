@@ -1,9 +1,11 @@
 import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
 import { CookieService } from 'ngx-cookie-service';
 import { ApiService } from 'src/app/Services/api.service';
+import { TreatmentFormDialogComponent } from './treatment-form-dialog/treatment-form-dialog.component';
 
 @Component({
   selector: 'app-treatment-page',
@@ -21,7 +23,8 @@ export class TreatmentPageComponent implements AfterViewInit {
 
   constructor(
     private cookieService: CookieService,
-    public api:ApiService
+    public api:ApiService,
+    public dialog: MatDialog
   ) { }
 
   getTreatments = () => {
@@ -29,6 +32,14 @@ export class TreatmentPageComponent implements AfterViewInit {
       next:(resp:any) => { this.dataSource = new MatTableDataSource<any>(resp.Data) },
       complete:() => { this.dataSource.paginator = this.paginator; }
     })
+  }
+
+  openTreatmentForm(){
+    const dialogRef = this.dialog.open(TreatmentFormDialogComponent);
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log(`Dialog result: ${result}`);
+    });
   }
 
   ngAfterViewInit(): void {
