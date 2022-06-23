@@ -27,4 +27,8 @@ export class ApiService {
     return this.http.get(`${environment.apiURL}/owner/${userID}/view-treatments`)
   }
 
+  getProcedures = () => {
+    return this.http.get(`${environment.apiURL}/Owner/get-procedures`)
+  }
+
 }

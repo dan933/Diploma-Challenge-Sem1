@@ -28,7 +28,7 @@ GO
 
 CREATE TABLE [PROCEDURE](
     ID INT IDENTITY(1,1) PRIMARY KEY,
-    ProcdeureID INT,
+    ProcedureID INT,
     Description NVARCHAR(300),
     Price DECIMAL
 )
@@ -48,9 +48,10 @@ GO
 
 CREATE VIEW view_TREATMENT
 AS 
-SELECT p.OwnerID, T.ID, T.FK_PetID, P.PetName, T.Date, T.Notes, T.Payment
+SELECT p.OwnerID, T.ID, T.FK_PetID, P.PetName, PR.[DESCRIPTION] AS [ProcedureName], T.Date, T.Notes, T.Payment
 FROM TREATMENT as T
 INNER JOIN PET AS P ON T.FK_PetID = P.ID
+INNER JOIN [PROCEDURE] AS PR ON PR.ID = T.FK_ProcedureID;
 
 GO
 
@@ -83,7 +84,7 @@ VALUES
 GO
 
 INSERT INTO [PROCEDURE](
-    ProcdeureID,
+    ProcedureID,
     Description,
     Price
 )

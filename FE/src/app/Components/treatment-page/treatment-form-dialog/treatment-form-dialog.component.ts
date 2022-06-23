@@ -4,6 +4,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { CookieService } from 'ngx-cookie-service';
 import { ApiService } from 'src/app/Services/api.service';
 
+
 @Component({
   selector: 'app-treatment-form-dialog',
   templateUrl: './treatment-form-dialog.component.html',
@@ -21,8 +22,9 @@ export class TreatmentFormDialogComponent implements OnInit {
   ngOnInit(): void {
     this.userID = + this.cookieService.get('UserID')
     this.getPets()
+    this.getProcedures()
   }
-  
+
   createTreatmentForm = this.fb.group({
     Pet: ['', Validators.required],
     Procedure: ['', Validators.required],
@@ -31,11 +33,18 @@ export class TreatmentFormDialogComponent implements OnInit {
   })
 
   pets!:any;
-  userID!:any;
+  userID!: any;
+  procedures!: any;
 
   getPets = () => {
     this.api.getPets(this.userID).subscribe({
-      next: (resp: any) => { console.log(resp) }
+      next: (resp: any) => { this.pets = resp.Data, console.log(resp.Data) }
+    })
+  }
+
+  getProcedures = () => {
+    this.api.getProcedures().subscribe({
+      next: (resp: any) => { this.procedures = resp, console.log(resp) }
     })
   }
 

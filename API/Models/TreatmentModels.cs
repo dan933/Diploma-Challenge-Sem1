@@ -23,6 +23,9 @@ public class View_Treatment
     [JsonPropertyName("PetName")]
     public string? PetName { get; set; }
 
+    [JsonPropertyName("ProcedureName")]
+    public string? ProcedureName { get; set; }
+
     [JsonPropertyName("Date")]
     public DateTime Date { get; set; }
 

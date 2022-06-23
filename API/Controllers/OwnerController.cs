@@ -122,4 +122,12 @@ public class OwnerController : ControllerBase
 
         return Ok(response);
     }
+
+    [HttpGet]
+    [Route("get-procedures")]
+    public async Task<ActionResult<Procedure>> GetProcedures(){
+        var procedures = await _context.Procedure.ToListAsync();
+
+        return Ok(procedures);
+    }
 }

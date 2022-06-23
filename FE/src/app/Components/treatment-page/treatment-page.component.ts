@@ -17,7 +17,7 @@ export class TreatmentPageComponent implements AfterViewInit {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
   dataSource!: any;
-  displayedColumns = ["ID", "PetID", "PetName", "Date", "Notes", "Payment"];
+  displayedColumns = ["ID", "PetID", "PetName","ProcedureName", "Date", "Notes", "Payment"];
 
   userID!:number
 
@@ -29,7 +29,7 @@ export class TreatmentPageComponent implements AfterViewInit {
 
   getTreatments = () => {
     this.api.viewTreatments(this.userID).subscribe({
-      next:(resp:any) => { this.dataSource = new MatTableDataSource<any>(resp.Data) },
+      next:(resp:any) => { this.dataSource = new MatTableDataSource<any>(resp.Data), console.log(resp.Data) },
       complete:() => { this.dataSource.paginator = this.paginator; }
     })
   }

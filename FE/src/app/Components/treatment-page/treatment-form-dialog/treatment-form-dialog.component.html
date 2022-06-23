@@ -1,17 +1,16 @@
-<!-- <form class="sign-up-box" [formGroup]="createTreatmentForm">
+<form class="sign-up-box" [formGroup]="createTreatmentForm">
     <div class="form-container">
       <mat-form-field appearance="fill">
         <mat-label>Pet</mat-label>
           <mat-select formControlName="Pet">
-            <mat-option *ngFor="let item of pets" value="{{item.petName}}"> {{isAdmin ? "ID: " + item.ownerId :null}} {{item.petName}}</mat-option>
+            <mat-option *ngFor="let item of pets" value="{{item.PetName}}">{{item.PetName}}</mat-option>
           </mat-select>
         </mat-form-field>
-  
-        <mat-form-field appearance="fill">
+      <mat-form-field appearance="fill">
         <mat-label>Procedure</mat-label>
           <mat-select formControlName="Procedure">
-            <mat-option *ngFor="let item of procedures" [value]="item">{{item.description}}</mat-option>
+            <mat-option *ngFor="let item of procedures" value="{{item.ID}}">{{item.Description}}</mat-option>
           </mat-select>
         </mat-form-field>
     </div>
-</form> -->
+</form>
