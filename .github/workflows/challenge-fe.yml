@@ -8,8 +8,7 @@ on:
     paths:
       - 'FE/**'
     branches:
-      - deploy
-      - pass
+      - deploy      
   workflow_dispatch:
 
 env:
