@@ -51,18 +51,23 @@ export class TreatmentFormDialogComponent implements OnInit {
     })
   }
 
+  addTreatment = (treatment:any) => {
+    this.api.addTreatment(treatment).subscribe({
+      next: (resp: any) => { console.log(resp) },
+      complete:() => { this.dialog.closeAll(); }
+    })
+  }
+
   CreateTreatment = () => {
     if (this.createTreatmentForm.valid) {
       let newTreatment = {
-        FK_PetID: +this.createTreatmentForm.controls["Pet"].value,
-        FK_ProcedureID: +this.createTreatmentForm.controls["Procedure"].value,
-        Date: this.createTreatmentForm.controls["Date"].value,
-        Notes: this.createTreatmentForm.controls["Notes"].value
+        fkPetId: +this.createTreatmentForm.controls["Pet"].value,
+        fkProcedureId: +this.createTreatmentForm.controls["Procedure"].value,
+        date: this.createTreatmentForm.controls["Date"].value,
+        notes: this.createTreatmentForm.controls["Notes"].value
       }
-
-      let DateFormat = new Date(newTreatment.Date)
-      newTreatment.Date = DateFormat.toISOString().slice(0, 10)
       console.log(newTreatment)
+      this.addTreatment(newTreatment);
 
     }
   }

@@ -4,26 +4,26 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace API.Models;
 
-public class Owner
-{
-    public Owner()
-    {
+// public class Owner
+// {
+//     public Owner()
+//     {
         
-    }
+//     }
     
-    [Key]
-    [JsonPropertyName("OwnerID")]
-    public int OwnerID { get; set; }
+//     [Key]
+//     [JsonPropertyName("OwnerID")]
+//     public int OwnerID { get; set; }
     
-    [JsonPropertyName("Surname")]
-    public string? Surname { get; set; }
+//     [JsonPropertyName("Surname")]
+//     public string? Surname { get; set; }
 
-    [JsonPropertyName("FirstName")]
-    public string? FirstName { get; set; }
+//     [JsonPropertyName("FirstName")]
+//     public string? FirstName { get; set; }
 
-    [JsonPropertyName("Phone")]
-    public string? Phone { get; set; }
-}
+//     [JsonPropertyName("Phone")]
+//     public string? Phone { get; set; }
+// }
 
 public class CreateOwnerReq
 {

@@ -14,8 +14,6 @@ import { TreatmentFormDialogComponent } from './treatment-form-dialog/treatment-
 })
 export class TreatmentPageComponent implements AfterViewInit {
 
-  @ViewChild(MatPaginator) paginator!: MatPaginator;
-
   dataSource!: any;
   displayedColumns = ["ID", "PetID", "PetName","ProcedureName", "Date", "Notes", "Payment","AmountOwed"];
 
@@ -29,8 +27,7 @@ export class TreatmentPageComponent implements AfterViewInit {
 
   getTreatments = () => {
     this.api.viewTreatments(this.userID).subscribe({
-      next:(resp:any) => { this.dataSource = new MatTableDataSource<any>(resp.Data), console.log(resp.Data) },
-      complete:() => { this.dataSource.paginator = this.paginator; }
+      next:(resp:any) => { this.dataSource = new MatTableDataSource<any>(resp.Data), console.log(resp.Data) }
     })
   }
 
@@ -38,7 +35,7 @@ export class TreatmentPageComponent implements AfterViewInit {
     const dialogRef = this.dialog.open(TreatmentFormDialogComponent);
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log(`Dialog result: ${result}`);
+      this.getTreatments();
     });
   }
 

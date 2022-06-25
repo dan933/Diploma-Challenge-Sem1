@@ -31,4 +31,8 @@ export class ApiService {
     return this.http.get(`${environment.apiURL}/Owner/get-procedures`)
   }
 
+  addTreatment = (treatment:any) => {
+    return this.http.post(`${environment.apiURL}/Owner/add-treatment`, treatment)
+  }
+
 }

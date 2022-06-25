@@ -7,7 +7,7 @@ DROP TABLE IF EXISTS [PROCEDURE];
 GO 
 
 CREATE TABLE OWNER(
-    OwnerID INT IDENTITY(1,1) PRIMARY KEY,
+    OwnerId INT IDENTITY(1,1) PRIMARY KEY,
     SurName NVARCHAR(300),
     FirstName NVARCHAR(300),
     Phone NVARCHAR(300)
@@ -17,18 +17,18 @@ CREATE TABLE OWNER(
 GO
 
 CREATE TABLE PET(
-    ID INT IDENTITY(1,1) PRIMARY KEY,
-    OwnerID INT FOREIGN KEY REFERENCES OWNER,
+    Id INT IDENTITY(1,1) PRIMARY KEY,
+    OwnerId INT FOREIGN KEY REFERENCES OWNER,
     PetName NVARCHAR(300),
     Type NVARCHAR(300)
-    CONSTRAINT UN_PetOwner UNIQUE (OwnerID, PetName)
+    CONSTRAINT UN_PetOwner UNIQUE (OwnerId, PetName)
 )
 
 GO
 
 CREATE TABLE [PROCEDURE](
-    ID INT IDENTITY(1,1) PRIMARY KEY,
-    ProcedureID INT,
+    Id INT IDENTITY(1,1) PRIMARY KEY,
+    ProcedureId INT,
     Description NVARCHAR(300),
     Price DECIMAL
 )
@@ -36,9 +36,9 @@ CREATE TABLE [PROCEDURE](
 GO 
 
 CREATE TABLE TREATMENT(
-    ID INT IDENTITY(1,1) PRIMARY KEY,
-    FK_PetID INT FOREIGN KEY REFERENCES PET,
-    FK_ProcedureID INT FOREIGN KEY REFERENCES [PROCEDURE],
+    Id INT IDENTITY(1,1) PRIMARY KEY,
+    FK_PetId INT FOREIGN KEY REFERENCES PET,
+    FK_ProcedureId INT FOREIGN KEY REFERENCES [PROCEDURE],
     Date DATETIME,
     Notes NVARCHAR(300),
     Payment DECIMAL
@@ -48,10 +48,10 @@ GO
 
 CREATE VIEW view_TREATMENT
 AS 
-SELECT p.OwnerID, T.ID, T.FK_PetID, P.PetName, PR.ID, PR.[DESCRIPTION] AS [ProcedureName], T.Date, T.Notes, T.Payment, (PR.Price - T.Payment) AS AmountOwed
+SELECT p.OwnerId, T.Id AS TreatmentId, T.FK_PetId, P.PetName, PR.Id as ProcedureId, PR.[DESCRIPTION] AS [ProcedureName], T.Date, T.Notes, T.Payment, (PR.Price - T.Payment) AS AmountOwed
 FROM TREATMENT as T
-INNER JOIN PET AS P ON T.FK_PetID = P.ID
-INNER JOIN [PROCEDURE] AS PR ON PR.ID = T.FK_ProcedureID
+INNER JOIN PET AS P ON T.FK_PetId = P.Id
+INNER JOIN [PROCEDURE] AS PR ON PR.Id = T.FK_ProcedureId
 
 GO
 
@@ -71,7 +71,7 @@ VALUES
 GO 
 
 INSERT INTO PET(
-    OwnerID,
+    OwnerId,
     PetName,
     Type
 )
@@ -84,7 +84,7 @@ VALUES
 GO
 
 INSERT INTO [PROCEDURE](
-    ProcedureID,
+    ProcedureId,
     Description,
     Price
 )
@@ -98,8 +98,8 @@ VALUES
 GO 
 
 INSERT INTO TREATMENT(
-    FK_PetID,
-    FK_ProcedureID,
+    FK_PetId,
+    FK_ProcedureId,
     Date,
     Notes,
     Payment

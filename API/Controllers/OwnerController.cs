@@ -1,5 +1,5 @@
-using API.models;
 using API.Models;
+using API.NewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -10,9 +10,9 @@ namespace API.Controllers;
 public class OwnerController : ControllerBase
 {
 
-    private readonly PetContext _context;
+    private readonly DiplomaChallengeSem1Context _context;
 
-    public OwnerController(PetContext context)
+    public OwnerController(DiplomaChallengeSem1Context context)
     {
         _context = context;
     }
@@ -70,7 +70,7 @@ public class OwnerController : ControllerBase
         var userId = Convert.ToInt32(RouteData.Values["userId"]);
 
         var pets = await _context.PET
-        .Where(p => p.OwnerID == userId)
+        .Where(p => p.OwnerId == userId)
         .ToListAsync();
 
         var response = new Response<List<Pet>>(pets, true, "Pets Retrieved");
@@ -83,7 +83,7 @@ public class OwnerController : ControllerBase
     public async Task<ActionResult<Response<Pet?>>> addPet([FromBody] AddPetReq petReq){
         var userId = Convert.ToInt32(RouteData.Values["userId"]);
         var IsPet = await _context.PET
-        .Where(p => p.OwnerID == userId)
+        .Where(p => p.OwnerId == userId)
         .Where(p => p.PetName == petReq.PetName)        
         .FirstOrDefaultAsync();
 
@@ -97,7 +97,7 @@ public class OwnerController : ControllerBase
         var newPet = new Pet();
 
         newPet.PetName = petReq.PetName;
-        newPet.OwnerID = petReq.OwnerID;
+        newPet.OwnerId = petReq.OwnerID;
         newPet.Type = petReq.Type;
 
         await _context.PET.AddAsync(newPet);
@@ -115,7 +115,7 @@ public class OwnerController : ControllerBase
     public async Task<ActionResult<Response<List<View_Treatment>>>> getTreatments(){
         var userId = Convert.ToInt32(RouteData.Values["userId"]);
         var treatments = await _context.View_TREATMENT
-        .Where(t => t.OwnerID == userId)
+        .Where(t => t.OwnerId == userId)
         .ToListAsync();
 
         Response<List<View_Treatment>> response = new Response<List<View_Treatment>>(treatments, true, "Treatments Successfully returned");
@@ -129,5 +129,25 @@ public class OwnerController : ControllerBase
         var procedures = await _context.Procedure.ToListAsync();
 
         return Ok(procedures);
+    }
+
+    [HttpPost]
+    [Route("add-treatment")]
+    public async Task<ActionResult<Response<Treatment>>> addTreatment([FromBody] TreatmentReq treatmentReq){
+        var treatment = new Treatment();
+
+        
+        treatment.Date = treatmentReq.Date;
+        treatment.Notes = treatmentReq.Notes;
+        treatment.Fk_PetId = treatmentReq.FkPetId;
+        treatment.Fk_ProcedureId = treatmentReq.FkProcedureId;
+        treatment.Payment = 0;
+
+        await _context.TREATMENT.AddAsync(treatment);
+        await _context.SaveChangesAsync();
+
+        var response = new Response<Treatment>(treatment, true, "Treatment Added");
+
+        return Ok(response);
     }
 }
