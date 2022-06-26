@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace API.Models
 {
-    public partial class Procedure
+    public class Procedure
     {
         public Procedure()
         {            
