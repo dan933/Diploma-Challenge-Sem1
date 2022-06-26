@@ -1,6 +1,4 @@
-
-using API;
-using API.NewModels;
+using API.Models;
 
 var  MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
 

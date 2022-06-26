@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 
-namespace API.NewModels
+namespace API.Models
 {
     public partial class DiplomaChallengeSem1Context : DbContext
     {

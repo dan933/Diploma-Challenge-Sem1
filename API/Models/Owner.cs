@@ -1,31 +1,24 @@
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
-using Microsoft.AspNetCore.Mvc;
 
-namespace API.Models;
-
-// public class Owner
-// {
-//     public Owner()
-//     {
+namespace API.Models
+{
+    public class Owner
+    {
+        public Owner()
+        {
+                        
+        }
         
-//     }
+        public int OwnerId { get; set; }
+        public string? Surname { get; set; }
+        public string? FirstName { get; set; }
+        public string? Phone { get; set; }
+    }
     
-//     [Key]
-//     [JsonPropertyName("OwnerID")]
-//     public int OwnerID { get; set; }
-    
-//     [JsonPropertyName("Surname")]
-//     public string? Surname { get; set; }
-
-//     [JsonPropertyName("FirstName")]
-//     public string? FirstName { get; set; }
-
-//     [JsonPropertyName("Phone")]
-//     public string? Phone { get; set; }
-// }
-
-public class CreateOwnerReq
+    public class CreateOwnerReq
 {
     public CreateOwnerReq()
     {
@@ -51,4 +44,5 @@ public class LoginModel
     
     [JsonPropertyName("Phone")]
     public string? Phone { get; set; }
+}
 }

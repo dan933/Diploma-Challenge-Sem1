@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace API.NewModels
+namespace API.Models
 {
     public partial class ViewProcedure
     {
