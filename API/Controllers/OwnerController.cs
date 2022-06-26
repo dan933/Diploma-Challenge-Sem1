@@ -18,17 +18,20 @@ public class OwnerController : ControllerBase
     }
 
     [HttpGet]
-    [Route("get-owners")]
-    public async Task<ActionResult<List<Owner>>> getOwners(){
-        var owners = await _context.OWNER
-        .ToListAsync();
+    [Route("get-owner/{userId:int}")]
+    public async Task<ActionResult<Owner>> getOwners(){
+        var userId = Convert.ToInt32(RouteData.Values["userId"]);
 
-        return Ok(owners);
+        var owner = await _context.OWNER
+        .Where(o => o.OwnerId == userId)
+        .FirstOrDefaultAsync();
+
+        return Ok(owner);
     }
 
     [HttpPost]
-    [Route("login")]
-    public async Task<ActionResult<Response<Owner?>>> login([FromBody] CreateOwnerReq ownerReq) {
+    [Route("register")]
+    public async Task<ActionResult<Response<Owner?>>> register([FromBody] CreateOwnerReq ownerReq) {
         //check owner doesn't already exist
         var IsOwner = await _context.OWNER
         .Where(o => o.Phone == ownerReq.Phone)
@@ -37,9 +40,9 @@ public class OwnerController : ControllerBase
         Response<Owner?> response;
 
         if(IsOwner != null){
-            response = new Response<Owner?>(IsOwner, true, "Owner Retrieved");
+            response = new Response<Owner?>(null, false, "Phone Number taken");
 
-            return Ok(response);
+            return StatusCode(409, response);
         }
 
         var newOwner = new Owner();
@@ -62,6 +65,65 @@ public class OwnerController : ControllerBase
 
     }
 
+    [HttpPost]
+    [Route("login")]
+    public async Task<ActionResult<Response<Owner?>>> login([FromBody] LoginModel user)
+    {
+        var owner = await _context.OWNER
+        .Where(o => o.Phone == user.Phone)
+        .FirstOrDefaultAsync();
+
+        Response<Owner?> response;
+
+        if(owner == null){
+            response = new Response<Owner?>(null, false, "owner not found");
+
+            return StatusCode(409, response);
+        }
+
+        response = new Response<Owner?>(owner, true, "owner retrieved");
+
+        return Ok(response);
+    }
+
+    [HttpPut]
+    [Route("update-owner/{userId:int}")]
+    public async Task<ActionResult<Response<Owner?>>> updateOwner([FromBody] CreateOwnerReq ownerReq ){
+        
+        var userId = Convert.ToInt32(RouteData.Values["userId"]);
+
+        var owner = await _context.OWNER
+        .Where(o => o.OwnerId == userId)
+        .FirstOrDefaultAsync();
+
+        Response<Owner?> response;
+
+        if( owner == null){
+            response = new Response<Owner?>(owner, false, "Owner not found");
+
+            return StatusCode(409, response);
+        }
+
+        var isNumberTaken = await _context.OWNER
+        .Where(o => o.Phone != owner.Phone)
+        .Where(o => o.Phone == ownerReq.Phone)
+        .FirstOrDefaultAsync();
+
+        if(isNumberTaken != null){
+            response = new Response<Owner?>(null, false, "Phone number is already taken");
+            return StatusCode(409, response);
+        }        
+
+        owner.FirstName = ownerReq.FirstName!.Trim();
+        owner.Surname = ownerReq.Surname!.Trim();
+        owner.Phone = ownerReq.Phone!.Trim();
+
+        await _context.SaveChangesAsync();
+
+        response = new Response<Owner?>(owner, true, "Owner Successfully Updated");
+
+        return Ok(response);
+    }
 
     [HttpGet]
     [Route("get-pets/{userId:int}")]
@@ -139,8 +201,8 @@ public class OwnerController : ControllerBase
         
         treatment.Date = treatmentReq.Date;
         treatment.Notes = treatmentReq.Notes;
-        treatment.Fk_PetId = treatmentReq.FkPetId;
-        treatment.Fk_ProcedureId = treatmentReq.FkProcedureId;
+        treatment.FkPetId = treatmentReq.FkPetId;
+        treatment.FkProcedureId = treatmentReq.FkProcedureId;
         treatment.Payment = 0;
 
         await _context.TREATMENT.AddAsync(treatment);
@@ -150,4 +212,5 @@ public class OwnerController : ControllerBase
 
         return Ok(response);
     }
+
 }

@@ -18,6 +18,13 @@ import { PetsTableComponent } from './Components/pets-page/pets-table/pets-table
 import { AddPetPopupFormComponent } from './Components/pets-page/add-pet-popup-form/add-pet-popup-form.component';
 import { TreatmentPageComponent } from './Components/treatment-page/treatment-page.component';
 import { TreatmentFormDialogComponent } from './Components/treatment-page/treatment-form-dialog/treatment-form-dialog.component';
+import { ApiService } from './Services/api.service';
+import { AccountPageComponent } from './Components/account-page/account-page.component';
+import { MatInputModule } from '@angular/material/input';
+import { MatButtonModule } from '@angular/material/button';
+import { MatSelectModule } from '@angular/material/select';
+import { MatRadioModule } from '@angular/material/radio';
+import { MatCardModule } from '@angular/material/card';
 
 
 @NgModule({
@@ -29,7 +36,8 @@ import { TreatmentFormDialogComponent } from './Components/treatment-page/treatm
     PetsTableComponent,
     AddPetPopupFormComponent,
     TreatmentPageComponent,
-    TreatmentFormDialogComponent
+    TreatmentFormDialogComponent,
+    AccountPageComponent,
   ],
   imports: [
     BrowserModule,
@@ -41,8 +49,13 @@ import { TreatmentFormDialogComponent } from './Components/treatment-page/treatm
     MatTableModule,
     MatPaginatorModule,
     MatSortModule,
+    MatInputModule,
+    MatButtonModule,
+    MatSelectModule,
+    MatRadioModule,
+    MatCardModule,
   ],
-  providers: [FormBuilder, CookieService],
+  providers: [FormBuilder, CookieService, ApiService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

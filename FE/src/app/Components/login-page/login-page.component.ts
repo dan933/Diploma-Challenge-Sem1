@@ -12,6 +12,8 @@ import { ApiService } from 'src/app/Services/api.service';
 export class LoginPageComponent implements OnInit {
 
   userID: string = "";
+  errorMessage: string = "";
+  errorMessageLogin: string = "";
 
   constructor(
     public fb: FormBuilder,
@@ -23,6 +25,10 @@ export class LoginPageComponent implements OnInit {
   registrationForm = this.fb.group({
     FirstName: ['', Validators.required],
     SurName: ['', Validators.required],
+    Phone:['', [Validators.required, Validators.pattern(/\d*/)]]
+  })
+
+  loginForm = this.fb.group({
     Phone:['', [Validators.required, Validators.pattern(/\d*/)]]
   })
 
@@ -39,11 +45,26 @@ export class LoginPageComponent implements OnInit {
         Phone:this.registrationForm.controls['Phone'].value.trim()
       }
 
-      this.api.login(user).subscribe({
-        next: (resp:any) => { this.userID = resp.Data.OwnerID },
-        error: (err) => { console.log(err) },
+      this.api.register(user).subscribe({
+        next: (resp:any) => { this.userID = resp.Data.ownerId },
+        error: (err:any) => { this.errorMessageLogin = err.error.Message, console.log(err.error.Message) },
         complete: () => {
           console.log(this.userID)
+          this.cookieService.set('UserID', this.userID);
+          this.router.navigate(['pets'])
+        }
+      })
+    }
+
+    if (this.loginForm.valid) {
+      let user = {
+        Phone:this.loginForm.controls['Phone'].value.trim()
+      }
+
+      this.api.login(user).subscribe({
+        next: (resp:any) => { this.userID = resp.Data.ownerId },
+        error: (err) => { this.errorMessage = err.error.Message, console.log(err) },
+        complete: () => {
           this.cookieService.set('UserID', this.userID);
           this.router.navigate(['pets'])
         }

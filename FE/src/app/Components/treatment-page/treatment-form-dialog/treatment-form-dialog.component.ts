@@ -54,6 +54,7 @@ export class TreatmentFormDialogComponent implements OnInit {
   addTreatment = (treatment:any) => {
     this.api.addTreatment(treatment).subscribe({
       next: (resp: any) => { console.log(resp) },
+      error:(err) => {console.log(err)},
       complete:() => { this.dialog.closeAll(); }
     })
   }
@@ -63,10 +64,9 @@ export class TreatmentFormDialogComponent implements OnInit {
       let newTreatment = {
         fkPetId: +this.createTreatmentForm.controls["Pet"].value,
         fkProcedureId: +this.createTreatmentForm.controls["Procedure"].value,
-        date: this.createTreatmentForm.controls["Date"].value,
-        notes: this.createTreatmentForm.controls["Notes"].value
+        Date: this.createTreatmentForm.controls["Date"].value,
+        Notes: this.createTreatmentForm.controls["Notes"].value
       }
-      console.log(newTreatment)
       this.addTreatment(newTreatment);
 
     }

@@ -41,3 +41,14 @@ public class CreateOwnerReq
     [JsonPropertyName("Phone")]
     public string? Phone { get; set; }
 }
+
+public class LoginModel
+{
+    public LoginModel()
+    {
+        
+    }
+    
+    [JsonPropertyName("Phone")]
+    public string? Phone { get; set; }
+}
