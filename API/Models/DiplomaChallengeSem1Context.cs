@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace API.Models
 {
-    public partial class DiplomaChallengeSem1Context : DbContext
+    public class DiplomaChallengeSem1Context : DbContext
     {
         public DiplomaChallengeSem1Context()
         {
@@ -43,7 +43,7 @@ namespace API.Models
             .HasKey(p => new { p.Id });
 
             modelBuilder.Entity<Procedure>()
-            .HasKey(p => new { p.Id });
+            .HasKey(p =>  p.Id );
 
             modelBuilder.Entity<Treatment>(entity =>
             {
