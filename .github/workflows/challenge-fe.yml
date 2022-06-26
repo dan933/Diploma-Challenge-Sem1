@@ -6,7 +6,7 @@ name: Build and deploy Node.js app to Azure Web App - challenge-app-one
 on:
   push:
     paths:
-      - 'fe-diploma-challenge/**'
+      - 'FE/**'
     branches:
       - deploy
   workflow_dispatch:
@@ -20,7 +20,7 @@ jobs:
   build:
     defaults:
         run:
-          working-directory: ./fe-diploma-challenge
+          working-directory: ./FE
     runs-on: windows-latest
 
     steps:
@@ -42,7 +42,7 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: node-app
-          path: ./fe-diploma-challenge/dist/fe-diploma-challenge
+          path: ./FE/dist/FE
 
   deploy:
     runs-on: ubuntu-latest
