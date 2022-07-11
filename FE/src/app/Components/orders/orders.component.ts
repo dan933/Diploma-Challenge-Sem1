@@ -18,7 +18,8 @@ export class OrdersComponent implements OnInit {
 "orderDate",
 "quantity",
 "shipDate",
-"shipMode"
+"shipMode",
+"total"
   ]
 
   constructor(
@@ -49,7 +50,7 @@ export class OrdersComponent implements OnInit {
     this.route.navigate(['order',row.id])
   }
 
-  
+
 
   ngOnInit(): void {
     this._route.params.subscribe({

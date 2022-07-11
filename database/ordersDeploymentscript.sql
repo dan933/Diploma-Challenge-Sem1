@@ -73,7 +73,7 @@ GO
 
 CREATE VIEW view_orders 
 AS
-SELECT o.Id,c.Id AS CustId ,p.[Description], o.OrderDate, o.Quantity, o.ShipDate, s.ShipMode
+SELECT o.Id,c.Id AS CustId ,p.[Description], o.OrderDate, o.Quantity, o.ShipDate, s.ShipMode, p.UnitPrice * o.Quantity as Total
 FROM Customer AS C
 INNER JOIN [Order] AS O ON C.Id = O.CustomerId
 INNER JOIN Product AS P ON P.Id = o.ProductId

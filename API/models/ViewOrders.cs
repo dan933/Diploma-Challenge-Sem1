@@ -19,6 +19,7 @@ namespace API.Models
         public int? Quantity { get; set; }
         public DateTime? ShipDate { get; set; }
         public string? ShipMode { get; set; }
+        public Decimal? Total { get; set; }
        
     }
 }
