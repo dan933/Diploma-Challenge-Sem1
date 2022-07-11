@@ -26,6 +26,7 @@ import { CustomersTableComponent } from './Components/customers-table/customers-
 import { OrdersComponent } from './Components/orders/orders.component';
 import { OrderFormComponent } from './Components/orders/order-form/order-form.component';
 import { OrderComponent } from './Components/order/order.component';
+import { FlexLayoutModule } from '@angular/flex-layout';
 
 @NgModule({
   declarations: [
@@ -56,6 +57,7 @@ import { OrderComponent } from './Components/order/order.component';
     MatSidenavModule,
     MatIconModule,
     MatListModule,
+    FlexLayoutModule
   ],
   providers: [FormBuilder, CookieService, ApiService],
   bootstrap: [AppComponent]

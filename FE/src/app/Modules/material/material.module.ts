@@ -10,13 +10,11 @@ import { MatDialogModule } from '@angular/material/dialog';
 import {MatSelectModule} from '@angular/material/select';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
-import {MatTabsModule} from '@angular/material/tabs';
+import { MatTabsModule } from '@angular/material/tabs';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatListModule } from '@angular/material/list';
 
-
-
-@NgModule({
-  declarations: [],
-  imports: [
+const modules = [
     CommonModule,
     MatToolbarModule,
     MatButtonModule,
@@ -28,21 +26,18 @@ import {MatTabsModule} from '@angular/material/tabs';
     MatSelectModule,
     MatDatepickerModule,
     MatNativeDateModule,
-    MatTabsModule
+    MatTabsModule,
+    MatSidenavModule,
+    MatListModule
+]
 
+@NgModule({
+  declarations: [],
+  imports: [
+    modules
   ],
   exports: [
-    MatToolbarModule,
-    MatButtonModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatTableModule,
-    MatIconModule,
-    MatDialogModule,
-    MatSelectModule,
-    MatDatepickerModule,
-    MatTabsModule
-
+    modules
   ],
   providers: [
 
