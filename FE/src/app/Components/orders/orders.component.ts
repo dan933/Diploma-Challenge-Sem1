@@ -19,6 +19,7 @@ export class OrdersComponent implements OnInit {
 "quantity",
 "shipDate",
 "shipMode",
+"gst",
 "total"
   ]
 

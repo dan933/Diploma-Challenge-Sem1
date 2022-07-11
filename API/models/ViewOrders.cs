@@ -20,6 +20,6 @@ namespace API.Models
         public DateTime? ShipDate { get; set; }
         public string? ShipMode { get; set; }
         public Decimal? Total { get; set; }
-       
+        public Decimal? Gst { get { return Total > 0 ? Math.Round((Decimal)Total*(Decimal)0.1):0; } }
     }
 }
