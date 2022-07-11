@@ -1,34 +1,45 @@
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.Text.Json.Serialization;
 
-namespace API.models
+namespace API.Models
 {
     public class Owner
     {
-        public Owner(){
-
-        }
-
-        public Owner(
-            string? userID, string? surname,
-            string? firstName, string? phone, string? email)
+        public Owner()
         {
-            UserID = userID;
-            Surname = surname;
-            Firstname = firstName;
-            Phone = phone;
-            Email = email;
+                        
         }
-
-
+        
         public int OwnerId { get; set; }
-        public string? UserID { get; set; }
-
         public string? Surname { get; set; }
-
-        public string? Firstname { get; set; }
-
+        public string? FirstName { get; set; }
         public string? Phone { get; set; }
-        public string? Email { get; set; }
     }
+    
+    public class CreateOwnerReq
+{
+    public CreateOwnerReq()
+    {
+        
+    }
+    
+    [JsonPropertyName("Surname")]
+    public string? Surname { get; set; }
+
+    [JsonPropertyName("FirstName")]
+    public string? FirstName { get; set; }
+
+    [JsonPropertyName("Phone")]
+    public string? Phone { get; set; }
+}
+
+public class LoginModel
+{
+    public LoginModel()
+    {
+        
+    }
+    
+    [JsonPropertyName("Phone")]
+    public string? Phone { get; set; }
+}
 }

@@ -1,18 +1,34 @@
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿using System;
+using System.Collections.Generic;
+using System.Text.Json.Serialization;
 
-namespace API.models
+namespace API.Models
 {
     public class Pet
     {
-        public Pet(){
-
+        public Pet()
+        {            
         }
 
-        public int OwnerId { get; set; }
-
+        public int Id { get; set; }
+        public int? OwnerId { get; set; }
         public string? PetName { get; set; }
-
         public string? Type { get; set; }
     }
+
+public class AddPetReq
+{
+    public AddPetReq()
+    {
+        
+    }    
+    [JsonPropertyName("OwnerID")]
+    public int OwnerID { get; set; }
+
+    [JsonPropertyName("PetName")]
+    public string? PetName { get; set; }
+
+    [JsonPropertyName("Type")]
+    public string? Type { get; set; }
+}
 }

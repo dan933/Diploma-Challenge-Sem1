@@ -1,63 +1,29 @@
-using System.Security.Claims;
-using API;
-using API.Auth;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.IdentityModel.Tokens;
+using API.Models;
+using API.Test;
+
+var  MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
 
 var builder = WebApplication.CreateBuilder(args);
 
-var  AllowPetsApp = "_allowPetsApp";
-
-
-//add cors
+// Add services to the container.
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy(
-        name: AllowPetsApp,
-        policy =>
-        {
-            policy.WithOrigins(
-                "https://localhost:4200",
-                "http://localhost:4200",
-                "https://challenge-app-one.azurewebsites.net"
-                );
-            policy.AllowCredentials();
-            policy.AllowAnyHeader();            
-            policy.AllowAnyMethod();
-        }
-    );
-});
-
-string domain = builder.Configuration["Auth0:Domain"];
-
-// Add services to the container.
-
-builder.Services.AddAuthentication(options =>
-{
-    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-
-}).AddJwtBearer(options =>
-{
-    options.Authority = domain;
-    options.Audience = builder.Configuration["Auth0:Audience"];
-
-    options.TokenValidationParameters = new TokenValidationParameters
+    options.AddPolicy(name: MyAllowSpecificOrigins,
+    policy  =>
     {
-        NameClaimType = ClaimTypes.NameIdentifier
-    };
+        policy
+        .WithOrigins(
+            "https://localhost:4200",
+            "http://localhost:4200",
+            "http://challenge-app-one.azurewebsites.net",
+            "https://challenge-app-one.azurewebsites.net"
+            )            
+            .AllowAnyHeader()
+            .AllowAnyMethod();
+    });
 });
 
-builder.Services.AddAuthorization(options =>
-{
-     options.AddPolicy("read:message", policy => policy.Requirements.Add(new HasScopeRequirement("read:message", domain)));     
-     options.AddPolicy("write:admin", policy => policy.Requirements.Add(new HasScopeRequirement("write:admin", domain)));   
-});
-
-builder.Services.AddSingleton<IAuthorizationHandler, HasScopeHandler>();
-
-builder.Services.AddDbContext<PetContext>();
+builder.Services.AddDbContext<diplomachallengeContext>();
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -73,11 +39,9 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseCors(AllowPetsApp);
+app.UseCors(MyAllowSpecificOrigins);
 
 app.UseHttpsRedirection();
-
-app.UseAuthentication();
 
 app.UseAuthorization();
 

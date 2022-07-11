@@ -1,244 +1,142 @@
-using System.Text.RegularExpressions;
-using API.Helpers;
-using API.models;
-using Auth0.ManagementApi;
-using Auth0.ManagementApi.Models;
-using Microsoft.AspNetCore.Authorization;
+using API.Models;
+using API.Test;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace API.Controllers;
 
 [ApiController]
-[Route("api/owner")]
+[Route("[controller]")]
 public class OwnerController : ControllerBase
 {
-    private readonly PetContext _context;
 
-    protected readonly IConfiguration Configuration;
+    private readonly diplomachallengeContext _context;
 
-    public OwnerController(PetContext context,IConfiguration configuration)
+    public OwnerController(diplomachallengeContext context)
     {
         _context = context;
-        Configuration = configuration;
-    }   
+    }
 
-    [HttpPost]
-    [Route("sign-up")]
-    public async Task<ActionResult<Response<Owner?>>> CreateOwner([FromBody] OwnerSignUpReq ownerSignUpReq)
+    [HttpDelete]
+    [Route("delete-order/{Id:int}")]
+    public async Task<ActionResult<OrderReq>> deleteOrder()
     {
-        try
+        var OrderId = Convert.ToInt32(RouteData.Values["Id"]);
+
+        var order = await _context.Orders
+        .Where(o => o.Id == OrderId)
+        .FirstOrDefaultAsync();
+
+        _context.Orders.Remove(order!);
+
+        _context.SaveChanges();
+
+        return Ok(order);
+
+    }
+
+
+    [HttpPut]
+    [Route("update-order/{Id:int}")]
+    public async Task<ActionResult<OrderReq>> updateOrder([FromBody] OrderReq orderReq)
+    {
+        var OrderId = Convert.ToInt32(RouteData.Values["Id"]);
+
+        var order = await _context.Orders
+        .Where(o => o.Id == OrderId)
+        .FirstOrDefaultAsync();
+
+        if (order != null)
         {
-            Response<Owner?> response;
+            order.Quantity = orderReq.Quantity;
+            order.OrderDate = orderReq.OrderDate;
+            order.ShipDate = orderReq.ShipDate;
+            order.ProductId = orderReq.ProductId;
+            order.ShipMode = orderReq.ShipMode;
 
-            //check owner email is not already in the database
-            var isOwner = await _context.Owner
-            .Where(o => o.Email == ownerSignUpReq.email)
-            .FirstOrDefaultAsync();
-
-            
-            if ( isOwner != null ){
-                response = new Response<Owner?>(isOwner, false, "Owner already Exists!");
-                return StatusCode(409, response);
-            }
-
-            ManagementHelper managementHelper = new ManagementHelper();
-
-            var token = managementHelper.GetManagementToken(Configuration);
-
-            var clientManagement = new ManagementApiClient(token, new Uri(Configuration["Auth0:ManagementAudience"]));
-
-            var newUser = new UserCreateRequest();
-            newUser.Connection = "Username-Password-Authentication";
-            newUser.Email = ownerSignUpReq.email;                        
-            newUser.FirstName = ownerSignUpReq.firstName;
-            newUser.LastName = ownerSignUpReq.lastName;
-            newUser.Password = ownerSignUpReq.password;
-
-            var resp = await clientManagement
-            .Users.CreateAsync(newUser);
-
-            var userID = resp.UserId;
-
-            var newOwner =
-            new Owner(
-                userID,
-                ownerSignUpReq.lastName,
-                ownerSignUpReq.firstName,
-                ownerSignUpReq.phoneNumber,
-                ownerSignUpReq.email
-            );
-
-            await _context.Owner.AddAsync(newOwner);
             await _context.SaveChangesAsync();
 
-            response = new Response<Owner?>(newOwner, true, "Owner successfully created.");
-            
-            return Ok(response);
-                     
-        }
-        catch (System.Exception)
-        {
-
-            throw;
-        }
-    }
-
-    
-    [HttpGet]
-    [Authorize]
-    [Route("get-user")]
-    public async Task<ActionResult<Response<Owner?>>> CreateOwner(){
-
-        var sub = HttpContext?.User.Claims.FirstOrDefault(c => c.Type == System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
-
-        var owner = await _context.Owner
-        .Where(o => o.UserID == sub)
-        .FirstOrDefaultAsync();
-
-        var response = new Response<Owner?>(owner, true, "Owner Successfully returned.");
-
-        return Ok(response);
-
-    }
-
-    [HttpPost]
-    [Authorize]
-    [Route("update-owner")]
-    public async Task<ActionResult<Response<Owner?>>> UpdateOwner([FromBody] OwnerSignUpReq? updateUserReq){
-
-        var sub = HttpContext?.User.Claims.FirstOrDefault(c => c.Type == System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
-
-        var owner = await _context.Owner
-        .Where(o => o.UserID == sub)
-        .FirstOrDefaultAsync();
-
-        if(owner == null){
-            //create owner table record
-            return StatusCode(409, "boo");
+            return Ok(order);
         }
 
-        var managementHelper = new ManagementHelper();
+        return Ok(null);
 
-        var token = managementHelper.GetManagementToken(Configuration);
-
-        var clientManagement = new ManagementApiClient(token, new Uri("https://dev-tt6-hw09.us.auth0.com/api/v2"));
-
-        var updateUser = new UserUpdateRequest();
-
-        updateUser.Email = updateUserReq?.email;
-        updateUser.FirstName = updateUserReq?.firstName;
-        updateUser.LastName = updateUserReq?.lastName;
-
-
-        await clientManagement.Users.UpdateAsync(sub, updateUser);
-
-        owner.Email = updateUserReq?.email != null ? updateUserReq.email : owner.Email;
-        owner.Firstname = updateUserReq?.firstName != null ? updateUserReq.firstName : owner.Firstname;
-        owner.Surname = updateUserReq?.lastName != null ? updateUserReq.lastName : owner.Surname;
-        owner.Phone = updateUserReq?.phoneNumber != null ? updateUserReq.phoneNumber : owner.Phone;
-
-        await _context.SaveChangesAsync();
-
-        return Ok(owner);
 
     }
 
     [HttpGet]
-    [Authorize]
-    [Route("view-pets")]
-    public async Task<ActionResult<List<Pet>>> ViewPets(){
-        
-        var sub = HttpContext?.User.Claims.FirstOrDefault(c => c.Type == System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
-
-        int ownerID = await _context.Owner
-        .Where(o => o.UserID == sub)
-        .Select(o => o.OwnerId)
-        .FirstOrDefaultAsync();
-
-        if(ownerID <= 0){
-            //create owner table record
-            return StatusCode(409, "boo");
-        }
-
-
-        var pets = await _context.Pet
-        .Where(p => p.OwnerId == ownerID)
-        .ToListAsync();
-
-        return Ok(pets);
-
-    }
-
-
-    [HttpGet]
-    [Authorize]
-    [Route("view-treatments")]
-    public async Task<ActionResult<List<ViewTreatment>>> ViewTreatments()
+    [Route("get-order/{Id:int}")]
+    public async Task<ActionResult<Order>> getOrder()
     {
 
-        var sub = HttpContext?.User.Claims.FirstOrDefault(c => c.Type == System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
+        var OrderId = Convert.ToInt32(RouteData.Values["Id"]);
 
-        int ownerID = await _context.Owner
-        .Where(o => o.UserID == sub)
-        .Select(o => o.OwnerId)
+        var order = await _context.Orders
+        .Where(o => o.Id == OrderId)
         .FirstOrDefaultAsync();
 
-        if(ownerID <= 0){
-            //create owner table record
-            return StatusCode(409, "Boo");
-        }
-
-        var treatments = await _context.view_Treatment
-        .Where(treatment => treatment.OwnerID == ownerID)
-        .ToListAsync();
-
-        return Ok(treatments);
-
+        return Ok(order);
     }
 
+    [HttpGet]
+    [Route("get-products")]
+    public async Task<ActionResult<Customer>> getProducts()
+    {
+        var products = await _context.Products.ToListAsync();
+
+        return Ok(products);
+    }
 
     [HttpGet]
-    [Authorize]
-    [Route("procedures")]
-    public async Task<ActionResult<List<Procedure>>> ViewProcedures()
-    {      
-        var procedures =
-        await _context.Procedure   
+    [Route("get-shipping")]
+    public async Task<ActionResult<Customer>> getShipping()
+    {
+        var shippings = await _context.Shippings.ToListAsync();
+
+        return Ok(shippings);
+    }
+
+    [HttpGet]
+    [Route("get-customers")]
+    public async Task<ActionResult<Customer>> getCustomers()
+    {
+        var customers = await _context.Customers.ToListAsync();
+
+        return Ok(customers);
+    }
+
+    [HttpGet]
+    [Route("get-orders/{Id:int}")]
+    public async Task<ActionResult<Order>> getOrders()
+    {
+
+        var userId = Convert.ToInt32(RouteData.Values["Id"]);
+
+        var orders = await _context.view_orders
+        .Where(o => o.CustId == userId)
         .ToListAsync();
 
-        return Ok(procedures);
+        return Ok(orders);
     }
 
     [HttpPost]
-    [Authorize]
-    [Route("create-treatment")]
-    public async Task<ActionResult<Treatment>> CreateTreatment([FromBody] TreatmentReq treatmentReq){
+    [Route("{Id:int}/create-order")]
+    public async Task<ActionResult<Order>> createOrders([FromBody] OrderReq orderReq)
+    {
+        var userId = Convert.ToInt32(RouteData.Values["Id"]);
 
-        var sub = HttpContext?.User.Claims.FirstOrDefault(c => c.Type == System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
+        var order = new Order();
 
-        int ownerID = await _context.Owner
-        .Where(o => o.UserID == sub)
-        .Select(o => o.OwnerId)
-        .FirstOrDefaultAsync();
+        order.CustomerId = userId;
+        order.ProductId = orderReq.ProductId;
+        order.OrderDate = orderReq.OrderDate;
+        order.Quantity = orderReq.Quantity;
+        order.ShipDate = orderReq.ShipDate;
+        order.ShipMode = orderReq.ShipMode;
 
-        if(ownerID <= 0){
-            //create owner table record
-            return StatusCode(409, "boo");
-        }
+        await _context.Orders.AddAsync(order);
+        await _context.SaveChangesAsync();
 
-        var treatment = new Treatment(
-            ownerID,
-             treatmentReq.PetName,
-             treatmentReq.ProcedureID,
-             treatmentReq.Date,
-             treatmentReq.Notes,
-             0
-            );
-
-        await _context.Treatment.AddAsync(treatment);
-        var resp = await _context.SaveChangesAsync();
-
-        return Ok(resp);
+        return Ok(order);
     }
 }

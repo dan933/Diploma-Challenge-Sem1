@@ -1,12 +1,12 @@
 # Docs for the Azure Web Apps Deploy action: https://github.com/Azure/webapps-deploy
 # More GitHub Actions for Azure: https://github.com/Azure/actions
 
-name: Build and deploy Node.js app to Azure Web App - challenge-app-one
+name: FE Build
 
 on:
   push:
     paths:
-      - 'fe-diploma-challenge/**'
+      - 'FE/**'
     branches:
       - deploy
   workflow_dispatch:
@@ -20,7 +20,7 @@ jobs:
   build:
     defaults:
         run:
-          working-directory: ./fe-diploma-challenge
+          working-directory: ./FE
     runs-on: windows-latest
 
     steps:
@@ -35,14 +35,14 @@ jobs:
 
       - name: npm install, build, and test
         run: |
-          npm install
+          npm install --force
           npm run build --if-present          
       
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v2
         with:
           name: node-app
-          path: ./fe-diploma-challenge/dist/fe-diploma-challenge
+          path: ./FE/dist/FE
 
   deploy:
     runs-on: ubuntu-latest

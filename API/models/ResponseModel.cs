@@ -1,6 +1,6 @@
 using System.Text.Json.Serialization;
 
-namespace API.models;
+namespace API.Models;
 
 
 public class Response<T>
